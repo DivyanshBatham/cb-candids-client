@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './login.scss';
 
 class Login extends Component {
@@ -20,23 +21,43 @@ class Login extends Component {
   };
 
   render() {
+    const { username, password } = this.state;
+    const userImage =
+      'https://avatars0.githubusercontent.com/u/29652551?s=460&v=4';
+    console.log(this.state);
     return (
       <div className="login">
-        <div />
-        <form onSubmit={this.handleLogin} className="login--form">
-          <input
-            placeholder="Username"
-            type="text"
-            name="username"
-            onChange={this.handleState}
-          />
-          <input
-            placeholder="Password"
-            type="password"
-            name="password"
-            onChange={this.handleState}
-          />
-          <button>Login!</button>
+        <div className="login--logo">
+          <img src={userImage} alt="userProfile" />
+          <span> CB-Candid </span>
+        </div>
+        <form className="login--form" onSubmit={this.handleLogin}>
+          <div className="login--form--items">
+            <label>
+              <FontAwesomeIcon
+                icon={['fas', 'user']}
+                // icon="edit"
+              />
+            </label>
+            <input
+              type="text"
+              placeholder="username"
+              name="username"
+              value={username}
+              onChange={this.handleState}
+            />
+          </div>
+          <div className="login--form--items">
+            <label>Password</label>
+            <input
+              type="password"
+              placeholder="password"
+              name="password"
+              value={password}
+              onChange={this.handleState}
+            />
+          </div>
+          <button className="login--form--button">Sign In!!</button>
         </form>
       </div>
     );
