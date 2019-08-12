@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './register.scss';
 
 class Register extends Component {
   constructor() {
@@ -25,31 +26,33 @@ class Register extends Component {
   };
   render() {
     return (
-      <div>
+      <div className="register">
         <div />
-        <form onSubmit={this.handleRegister}>
-          <input
-            placeholder="Username"
-            name="username"
-            type="text"
-            onChange={this.handleState}
-          />
-          <input
-            placeholder="Email"
-            name="email"
-            type="email"
-            onChange={this.handleState}
-          />
-          <input
-            placeholder="Password"
-            name="password"
-            type="password"
-            onChange={this.handleState}
-          />
-          <button>Register!</button>
-        </form>
         <div>
-          <button onClick={this.handleAuth}>Register with Google</button>
+          <form onSubmit={this.handleRegister} className="register--form">
+            <input
+              placeholder="Username"
+              name="username"
+              type="text"
+              onChange={this.handleState}
+            />
+            <input
+              placeholder="Email"
+              name="email"
+              type="email"
+              onChange={this.handleState}
+            />
+            <input
+              placeholder="Password"
+              name="password"
+              type="password"
+              onChange={this.handleState}
+            />
+            <button>Register!</button>
+          </form>
+          <div>
+            <button onClick={this.handleAuth}>Register with Google</button>
+          </div>
         </div>
       </div>
     );

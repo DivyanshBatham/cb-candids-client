@@ -1,0 +1,40 @@
+.profileSetting {
+  display: flex;
+  flex-direction: column;
+  // justify-content: space-around;
+  height: 100vh;
+  margin: 1rem auto;
+  &--userAvatar {
+    margin: auto auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    min-width: 300px;
+    flex-basis: 60%;
+    background-color: black;
+    align-items: center;
+    border-bottom-left-radius: 1rem 2rem;
+    border-bottom-right-radius: 1rem 2rem;
+    img {
+        padding: 1rem;
+      width: 150px;
+      border-radius: 50%;
+    }
+  }
+  &--userDetails {
+    margin: 1rem auto;
+    flex-basis: 30%;
+    // background-color: blue;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    &--field {
+      display: flex;
+      justify-content: space-between;
+      span {
+        margin-right: 3rem;
+      }
+    }
+  }
+}
