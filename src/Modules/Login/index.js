@@ -24,7 +24,6 @@ class Login extends Component {
     const { username, password } = this.state;
     const userImage =
       'https://avatars0.githubusercontent.com/u/29652551?s=460&v=4';
-    console.log(this.state);
     return (
       <div className="login">
         <div className="login--logo">
@@ -35,8 +34,7 @@ class Login extends Component {
           <div className="login--form--items">
             <label>
               <FontAwesomeIcon
-                icon={['fas', 'user']}
-                // icon="edit"
+                icon="user"
               />
             </label>
             <input
@@ -48,7 +46,11 @@ class Login extends Component {
             />
           </div>
           <div className="login--form--items">
-            <label>Password</label>
+            <label>
+              <FontAwesomeIcon
+                icon="unlock-alt"
+              />
+            </label>
             <input
               type="password"
               placeholder="password"
