@@ -11,7 +11,7 @@ class profileSetting extends Component {
       pushNotification: false,
     };
   }
-  handleUpdateText = (e) => {
+  handleState = (e) => {
     e.preventDefault();
     this.setState({ [e.target.name]: e.target.value });
   };
