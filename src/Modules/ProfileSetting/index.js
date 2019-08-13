@@ -11,7 +11,11 @@ class profileSetting extends Component {
       pushNotification: false,
     };
   }
-  handleUpdateText = (e) => {
+  componentDidMount() {
+    // TODO:here we will fetch inital data
+    console.log('will fetch initial data');
+  }
+  handleState = (e) => {
     e.preventDefault();
     this.setState({ [e.target.name]: e.target.value });
   };
