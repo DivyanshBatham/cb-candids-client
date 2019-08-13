@@ -1,0 +1,29 @@
+.card {
+    display: flex;
+    flex-direction: column;
+    margin: 1rem;
+    &--authorDetails{
+        display: flex;
+        align-items: center;
+        img{
+            width: 50px;
+            border-radius: 50%;
+        }
+    }
+    &--postImage{
+        width: 100%;
+        border-radius: 2rem;
+    }
+    &--postDetails {
+        display: flex;
+        flex-direction: column;
+    }
+    &--postStats{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        &--icons{
+            display: flex;
+        }
+    }
+}

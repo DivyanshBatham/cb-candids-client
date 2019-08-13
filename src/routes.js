@@ -1,5 +1,6 @@
 import React, { lazy, Suspense } from 'react';
 import { Switch, Route, BrowserRouter as Router } from 'react-router-dom';
+import Card from './components/Card';
 
 const Dashboard = lazy(() => import('./components/Dashboard'));
 const Home = lazy(() => import('./components/Home'));
@@ -20,6 +21,8 @@ const Routes = () => (
         <Route path="/register" component={Register} />
         <Route path="/recoverPassword" component={forgetPassword} />
         <Route path="/:username/setting" component={ProfileSetting} />
+        {/* Route for tesing */}
+        <Route path="/card" component={Card} />
       </Switch>
     </Router>
   </Suspense>

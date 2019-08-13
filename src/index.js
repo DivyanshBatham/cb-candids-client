@@ -5,7 +5,7 @@ import Routes from './routes';
 import './fontawesome-lib';
 
 const Index = () => (
-    <Routes />
+  <Routes />
 );
 
 ReactDOM.render(<Index />, document.getElementById('index'));
