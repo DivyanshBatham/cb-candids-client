@@ -5,9 +5,7 @@ import Routes from './routes';
 import './fontawesome-lib';
 
 const Index = () => (
-  <div className={styles.cb}>
     <Routes />
-  </div>
 );
 
 ReactDOM.render(<Index />, document.getElementById('index'));

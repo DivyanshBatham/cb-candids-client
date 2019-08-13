@@ -1,13 +1,13 @@
 .login {
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
-    height: 100vh;
+    justify-content: space-between;
+    flex: 1;
     background-color: #415B5A;
     &--form{
         display: flex;
         flex-direction: column;
-        // margin: 1rem auto;
+        margin-bottom: 1rem;
         &--items {
             position: relative;
             // margin: 15px 0 5px 0;
@@ -60,6 +60,7 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        margin-top: 4rem;
         img {
             width: 200px;
             border-radius: 1rem;
