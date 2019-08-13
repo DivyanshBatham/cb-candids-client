@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './profileSetting.scss';
 
 class profileSetting extends Component {
   constructor() {
     super();
     this.state = {
-      username: 'adsfa',
-      bio: 'asfda',
+      username: '',
+      bio: '',
       pushNotification: false,
     };
   }
@@ -19,56 +20,65 @@ class profileSetting extends Component {
     this.setState(prevState => ({
       pushNotification: !prevState.pushNotification,
     }));
+  };
+  handleUpdateProfile = (e) => {
+    e.preventDefault();
+    console.log(this.state);
   }
   render() {
-    const {
-      username,
-      bio,
-      pushNotification,
-    } = this.state;
-    const userImage = 'https://avatars0.githubusercontent.com/u/29652551?s=460&v=4';
+    const { username, bio, pushNotification } = this.state;
+    const userImage =
+      'https://avatars0.githubusercontent.com/u/29652551?s=460&v=4';
     console.log(this.state);
     return (
       <div className="profileSetting">
-        <div className="profileSetting--userAvatar">
+        <div className="profileSetting--logo">
           <img src={userImage} alt="userProfile" />
+          <span className="profileSetting--logo--text"> CB-Candid </span>
         </div>
-        <div className="profileSetting--userDetails">
-          <div className="profileSetting--userDetails--field">
-            <span>Username</span>
+        <form className="profileSetting--form" onSubmit={this.handleUpdateProfile}>
+          <div className="profileSetting--form--items">
+            <label>
+              <FontAwesomeIcon
+                className="profileSetting--form--items--icon"
+                icon="user"
+              />
+            </label>
             <input
-              value={username}
+              type="text"
+              placeholder="username"
               name="username"
-              onChange={this.handleUpdateText}
+              value={username}
+              onChange={this.handleState}
             />
           </div>
-          <div className="profileSetting--userDetails--field">
-            <span>Bio</span>
-            <textarea
-              value={bio}
+          <div className="profileSetting--form--items">
+            <label>
+              <FontAwesomeIcon
+                className="profileSetting--form--items--icon"
+                icon="info-circle"
+              />
+            </label>
+            <input
+              type="text"
+              placeholder="Bio"
               name="bio"
-              onChange={this.handleUpdateText}
+              value={bio}
+              onChange={this.handleState}
             />
           </div>
-          <div className="profileSetting--userDetails--field">
-            <span>Push Notification</span>
-            <button onClick={this.handlePushNotificationState}>{pushNotification ? 'Disable' : 'Enable'}</button>
-          </div>
-          <button>Update Profile</button>
-        </div>
-            {/* <form className="profileSetting--userDetails">
-            <label>username</label>
-             <input />
-             <label>username</label>
-             <input />
-             <label>username</label>
-             <input />
-             <label>username</label>
-             <input />
-             <label>username</label>
-             <input />
-            </form> */}
-          
+          <button
+            onClick={this.handlePushNotificationState}
+            className={`profileSetting--form--button profileSetting--form--button--${
+              pushNotification ? 'enabled' : 'disabled'
+            }`}
+          >
+            {`${pushNotification ? 'Disable' : 'Enable'}-Push-notification`}
+          </button>
+          <button className="profileSetting--form--button">
+            Update Profile
+          </button>
+        </form>
       </div>
     );
   }
