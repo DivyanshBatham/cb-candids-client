@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Link } from 'react-router-dom';
 import './login.scss';
 
 class Login extends Component {
@@ -28,12 +29,13 @@ class Login extends Component {
       <div className="login">
         <div className="login--logo">
           <img src={userImage} alt="userProfile" />
-          <span> CB-Candid </span>
+          <span className="login--logo--text"> CB-Candid </span>
         </div>
         <form className="login--form" onSubmit={this.handleLogin}>
           <div className="login--form--items">
             <label>
               <FontAwesomeIcon
+                className="login--form--items--icon"
                 icon="user"
               />
             </label>
@@ -48,6 +50,7 @@ class Login extends Component {
           <div className="login--form--items">
             <label>
               <FontAwesomeIcon
+                className="login--form--items--icon"
                 icon="unlock-alt"
               />
             </label>
@@ -59,7 +62,13 @@ class Login extends Component {
               onChange={this.handleState}
             />
           </div>
-          <button className="login--form--button">Sign In!!</button>
+          <Link to="/recoverPassword" className="login--form--text">
+            Forgot password?
+          </Link>
+          <button className="login--form--button">Log In</button>
+          <Link to="/register" className="login--form--text">
+            Register
+          </Link>
         </form>
       </div>
     );

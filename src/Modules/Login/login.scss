@@ -3,22 +3,26 @@
     flex-direction: column;
     justify-content: space-around;
     height: 100vh;
+    background-color: #415B5A;
     &--form{
         display: flex;
         flex-direction: column;
         // margin: 1rem auto;
         &--items {
-            display: flex;
-            align-items: center;
+            position: relative;
+            // margin: 15px 0 5px 0;
+            left: 50%;
+            transform: translateX(-50%);
+            border: none;
             border-bottom: 1px solid #58a4b0;
-            margin: 0 20px;
+            width: 85%;
             input {
                 border: 0;
                 border-left: 1px solid #58a4b0;
                 background: transparent;
                 padding: 2px 10px;
                 margin: 18px 4px 0 4px;
-                // color: rgba(255, 255, 255, 0.7);
+                color:#7F9897;
                 font-family: "Noto Sans", sans-serif;
                 font-size: 14px;
                 outline: none;
@@ -26,21 +30,29 @@
             label {
                 padding-top: 20px;
             }
+            &--icon{
+                color: #FDCDA3;
+            }
         }
         &--button {
             position: relative;
             margin: 15px 0 5px 0;
             left: 50%;
             transform: translateX(-50%);
-            background: #58a4b0;
+            background: #FDCDA3;
             border: none;
             border-radius: 5px;
             padding: 10px;
-            color: white;
+            color: #415B5A;
             width: 85%;
             font-family: "Noto Sans", sans-serif;
             font-size: 14px;
             cursor: pointer;
+        }
+        &--text {
+            margin: 0.5rem auto 0 auto;
+            font-size: 0.8rem;
+            color: #7F9897;
         }
     }
     &--logo {
@@ -50,6 +62,14 @@
         align-items: center;
         img {
             width: 200px;
+            border-radius: 1rem;
+        }
+        &--text {
+            color: #FDCDA3;
         }
     }
 }
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: #7F9897;
+    opacity: 1; /* Firefox */
+  }
