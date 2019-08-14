@@ -18,17 +18,23 @@ class Card extends Component {
         </div>
         <img className="card--postImage" src={userImage} alt="post" />
         <div className="card--postDetails">
-          <h4>Title</h4>
-          <p>Description</p>
+          <h4 className="card--postDetails--title">Title</h4>
+          <p className="card--postDetails--description">Description</p>
         </div>
         <div className="card--postStats">
           <div className="card--postStats--icons">
-            <div>
-              <FontAwesomeIcon icon={['far', 'comment']} />
+            <div className="card--postStats--icons--item">
+              <FontAwesomeIcon
+                icon={['far', 'comment']}
+                className="card--postStats--icons--item--icon"
+              />
               <span>count</span>
             </div>
             <div>
-              <FontAwesomeIcon icon={['far', 'heart']} />
+              <FontAwesomeIcon
+                icon={['far', 'heart']}
+                className="card--postStats--icons--item--icon"
+              />
               <span>count</span>
             </div>
           </div>
