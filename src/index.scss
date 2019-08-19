@@ -1,3 +1,8 @@
-.cb {
-  color: red;
+body {
+  margin: 0;
+}
+#index {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
