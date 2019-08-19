@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 import './login.scss';
 
 class Login extends Component {
@@ -18,7 +19,25 @@ class Login extends Component {
   handleLogin = (e) => {
     e.preventDefault();
     const { username, password } = this.state;
-    console.log(username, password);
+    const url = 'https://calm-waters-47062.herokuapp.com/auth/login';
+    const data = {
+      email: username,
+      password,
+    };
+    axios({
+      method: 'post',
+      url,
+      data,
+    }).then((res) => {
+      const { success, token } = res.data;
+      if (success) {
+        localStorage.setItem('cb-token', token);
+        this.props.history.push('/');
+      } else {
+        // TODO: Toast for valid credential
+        console.log('enter valid username of password');
+      }
+    });
   };
 
   render() {
