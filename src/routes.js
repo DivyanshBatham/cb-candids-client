@@ -9,6 +9,7 @@ const Register = lazy(() => import('./Modules/Register'));
 const Navbar = lazy(() => import('./components/Navbar'));
 const ProfileSetting = lazy(() => import('./Modules/ProfileSetting'));
 const forgetPassword = lazy(() => import('./Modules/ForgetPassword'));
+const Profile = lazy(() => import('./Modules/Profie'));
 
 const Routes = () => (
   <Suspense fallback={<div>loading...</div>}>
@@ -21,6 +22,7 @@ const Routes = () => (
         <Route path="/register" component={Register} />
         <Route path="/recoverPassword" component={forgetPassword} />
         <Route path="/:username/setting" component={ProfileSetting} />
+        <Route path="/:username" component={Profile} />
         {/* Route for tesing */}
         <Route path="/card" component={Card} />
       </Switch>
