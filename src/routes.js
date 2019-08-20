@@ -1,5 +1,10 @@
 import React, { lazy, Suspense } from 'react';
-import { Switch, Route, BrowserRouter as Router, Redirect } from 'react-router-dom';
+import {
+  Switch,
+  Route,
+  Redirect,
+  withRouter,
+} from 'react-router-dom';
 import Card from './components/Card';
 import PrivateRoute from './PrivateRoute';
 
@@ -12,24 +17,25 @@ const ProfileSetting = lazy(() => import('./Modules/ProfileSetting'));
 const forgetPassword = lazy(() => import('./Modules/ForgetPassword'));
 const Profile = lazy(() => import('./Modules/Profie'));
 
-const Routes = () => {
+const Routes = (props) => {
+  console.log(props);
   return (
     <Suspense fallback={<div>loading...</div>}>
-      <Router>
-        <Navbar />
-        <Switch>
-          <PrivateRoute path="/" component={Home} exact />
-          <Route path="/dashboard" component={Dashboard} />
-          <Route path="/login" component={Login} />
-          <Route path="/register" component={Register} />
-          <Route path="/recoverPassword" component={forgetPassword} />
-          <Route path="/:username/setting" component={ProfileSetting} />
-          <Route path="/:username" component={Profile} />
-          {/* Route for tesing */}
-          <Route path="/card" component={Card} />
-        </Switch>
-      </Router>
+      <Navbar />
+      <Switch>
+        <PrivateRoute path="/" component={Home} exact />
+        <Route path="/dashboard" component={Dashboard} />
+        <Route path="/login" component={Login} />
+        <Route path="/register" component={Register} />
+        {/* <Route path="/verifyEmail/:token" component={VerifyEmail} /> */}
+        <Route path="/forgetPassword" component={forgetPassword} />
+        {/* <Route path="/resetPassword/:token" component={resetPassword} /> */}
+        <PrivateRoute path="/setting" component={ProfileSetting} />
+        <PrivateRoute path="/user/:username" component={Profile} />
+        {/* Route for tesing */}
+        <Route path="/card" component={Card} />
+      </Switch>
     </Suspense>
   );
 };
-export default Routes;
+export default withRouter(Routes);

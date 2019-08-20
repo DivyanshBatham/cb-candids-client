@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import axios from 'axios';
 import './login.scss';
 
@@ -10,12 +10,16 @@ class Login extends Component {
     this.state = {
       username: '',
       password: '',
+      loggedIn: false,
     };
   }
   handleState = (e) => {
     e.preventDefault();
     this.setState({ [e.target.name]: e.target.value });
   };
+  handleLocalStorage = (key,value)=> {
+    localStorage.setItem(key,value);
+  }
   handleLogin = (e) => {
     e.preventDefault();
     const { username, password } = this.state;
@@ -31,8 +35,11 @@ class Login extends Component {
     }).then((res) => {
       const { success, token } = res.data;
       if (success) {
-        localStorage.setItem('cb-token', token);
-        this.props.history.push('/');
+        const { user } = res.data.data;
+        this.handleLocalStorage('cb-token', token);
+        this.handleLocalStorage('cb-username', user.username);
+        this.setState({ loggedIn: true });
+        // this.props.history.push('/');
       } else {
         // TODO: Toast for valid credential
         console.log('enter valid username of password');
@@ -41,7 +48,13 @@ class Login extends Component {
   };
 
   render() {
-    const { username, password } = this.state;
+    const { username, password, loggedIn } = this.state;
+    // If it's not redirected from anywhere, after login send it to /
+    const { from } = this.props.location.state || { from: { pathname: '/' } };
+
+    // Redirect to where user came from, if he came from no where then send to /.
+    if (localStorage.getItem('cb-token') && loggedIn) return <Redirect to={from} />;
+
     const userImage =
       'https://avatars0.githubusercontent.com/u/29652551?s=460&v=4';
     return (
