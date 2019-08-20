@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 import './register.scss';
 
 class Register extends Component {
@@ -20,6 +21,25 @@ class Register extends Component {
     e.preventDefault();
     const { username, email, password } = this.state;
     console.log(username, email, password);
+    const url = 'https://calm-waters-47062.herokuapp.com/auth/register';
+    axios({
+      method: 'post',
+      url,
+      data: {
+        username,
+        email,
+        password,
+      },
+    }).then((res) => {
+      const { success } = res.data;
+      if (success) {
+        const { token } = res.data;
+        localStorage.setItem('cb-token', token);
+        this.props.history.push('/');
+      } else {
+        // TODO:Add a Toast msg for warning
+      }
+    });
   };
   render() {
     const { username, password, email } = this.state;

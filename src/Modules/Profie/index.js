@@ -9,6 +9,7 @@ class Profile extends Component {
     this.state = {};
   }
   render() {
+    console.log(this.props);
     const userImage =
       'https://avatars0.githubusercontent.com/u/29652551?s=460&v=4';
     const username = this.props.match.params.username;
