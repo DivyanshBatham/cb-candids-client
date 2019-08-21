@@ -12,6 +12,7 @@ const ProfileSetting = lazy(() => import('./Modules/ProfileSetting'));
 const forgetPassword = lazy(() => import('./Modules/ForgetPassword'));
 const Profile = lazy(() => import('./Modules/Profie'));
 const VerifyEmail = lazy(() => import('./Modules/VerifyEmail'));
+const resetPassword = lazy(() => import('./Modules/ResetPassword'));
 
 const Routes = (props) => {
   console.log(props);
@@ -25,7 +26,7 @@ const Routes = (props) => {
         <Route path="/register" component={Register} />
         <Route path="/verifyEmail/:token" component={VerifyEmail} />
         <Route path="/forgetPassword" component={forgetPassword} />
-        {/* <Route path="/resetPassword/:token" component={resetPassword} /> */}
+        <Route path="/resetPassword/:token" component={resetPassword} />
         <PrivateRoute path="/setting" component={ProfileSetting} />
         <PrivateRoute path="/user/:username" component={Profile} />
         {/* Route for tesing */}
