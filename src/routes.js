@@ -1,10 +1,5 @@
 import React, { lazy, Suspense } from 'react';
-import {
-  Switch,
-  Route,
-  Redirect,
-  withRouter,
-} from 'react-router-dom';
+import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import Card from './components/Card';
 import PrivateRoute from './PrivateRoute';
 
@@ -16,6 +11,7 @@ const Navbar = lazy(() => import('./components/Navbar'));
 const ProfileSetting = lazy(() => import('./Modules/ProfileSetting'));
 const forgetPassword = lazy(() => import('./Modules/ForgetPassword'));
 const Profile = lazy(() => import('./Modules/Profie'));
+const VerifyEmail = lazy(() => import('./Modules/VerifyEmail'));
 
 const Routes = (props) => {
   console.log(props);
@@ -27,7 +23,7 @@ const Routes = (props) => {
         <Route path="/dashboard" component={Dashboard} />
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
-        {/* <Route path="/verifyEmail/:token" component={VerifyEmail} /> */}
+        <Route path="/verifyEmail/:token" component={VerifyEmail} />
         <Route path="/forgetPassword" component={forgetPassword} />
         {/* <Route path="/resetPassword/:token" component={resetPassword} /> */}
         <PrivateRoute path="/setting" component={ProfileSetting} />

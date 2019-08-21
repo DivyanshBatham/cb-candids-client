@@ -64,7 +64,9 @@ module.exports = {
     minimizer: [new UglifyJsPlugin()],
   },
   devServer: {
-    historyApiFallback: true,
+    historyApiFallback: {
+      disableDotRule: true
+    },
     disableHostCheck: true
-  }
+  },
 };
