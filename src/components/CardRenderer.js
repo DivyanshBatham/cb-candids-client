@@ -2,16 +2,16 @@ import React, { Component } from 'react';
 import Card from './Card';
 
 class Home extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {};
   }
   render() {
-    const arr = [1, 2, 3, 4, 5, 6, 7, 8, 1, 2];
+    const { posts } = this.props;
     return (
       <div>
         {
-          arr.map(() => <Card />)
+          posts.map(post => <Card key={post._id} post={post} />)
         }
       </div>
     );

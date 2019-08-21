@@ -4,7 +4,7 @@ import Card from './components/Card';
 import PrivateRoute from './PrivateRoute';
 
 const Dashboard = lazy(() => import('./components/Dashboard'));
-const Home = lazy(() => import('./components/Home'));
+const Home = lazy(() => import('./Modules/Home'));
 const Login = lazy(() => import('./Modules/Login'));
 const Register = lazy(() => import('./Modules/Register'));
 const Navbar = lazy(() => import('./components/Navbar'));

@@ -27,6 +27,8 @@ class VerifyEmail extends Component {
         const { success } = res.data;
         if (success) {
           localStorage.setItem('cb-token', res.data.token);
+          localStorage.setItem('cb-email', res.data.data.user.email);
+          localStorage.setItem('cb-username', res.data.data.user.username);
           this.setState({ verified: true });
         }
       })
