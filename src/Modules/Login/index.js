@@ -38,6 +38,7 @@ class Login extends Component {
         const { user } = res.data.data;
         this.handleLocalStorage('cb-token', token);
         this.handleLocalStorage('cb-username', user.username);
+        this.handleLocalStorage('cb-email', user.email);
         this.setState({ loggedIn: true });
         // this.props.history.push('/');
       } else {
@@ -94,7 +95,7 @@ class Login extends Component {
               onChange={this.handleState}
             />
           </div>
-          <Link to="/recoverPassword" className="login--form--text">
+          <Link to="/forgetPassword" className="login--form--text">
             Forgot password?
           </Link>
           <button className="login--form--button">Log In</button>

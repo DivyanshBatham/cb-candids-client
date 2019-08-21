@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Home from '../../components/Home';
+import CardRenderer from '../../components/CardRenderer';
 import './profile.scss';
 
 class Profile extends Component {
@@ -31,7 +31,7 @@ class Profile extends Component {
         <div className="profile--postHeader" >Posts</div>
         <div>
           {/* TODO: add a card render component here */}
-          <Home />
+          {/* <CardRenderer /> */}
         </div>
       </div>
     );

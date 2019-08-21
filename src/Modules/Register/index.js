@@ -35,6 +35,7 @@ class Register extends Component {
       if (success) {
         const { token } = res.data;
         localStorage.setItem('cb-token', token);
+        // TODO: Change the route here..
         this.props.history.push('/');
       } else {
         // TODO:Add a Toast msg for warning
