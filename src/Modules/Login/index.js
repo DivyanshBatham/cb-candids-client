@@ -8,7 +8,7 @@ class Login extends Component {
   constructor() {
     super();
     this.state = {
-      username: '',
+      email: '',
       password: '',
       loggedIn: false,
     };
@@ -22,10 +22,10 @@ class Login extends Component {
   }
   handleLogin = (e) => {
     e.preventDefault();
-    const { username, password } = this.state;
+    const { email, password } = this.state;
     const url = 'https://calm-waters-47062.herokuapp.com/auth/login';
     const data = {
-      email: username,
+      email,
       password,
     };
     axios({
@@ -38,6 +38,7 @@ class Login extends Component {
         const { user } = res.data.data;
         this.handleLocalStorage('cb-token', token);
         this.handleLocalStorage('cb-username', user.username);
+        localStorage.setItem('cb-email', user.email);
         this.setState({ loggedIn: true });
         // this.props.history.push('/');
       } else {
@@ -68,13 +69,13 @@ class Login extends Component {
             <label>
               <FontAwesomeIcon
                 className="login--form--items--icon"
-                icon="user"
+                icon="at"
               />
             </label>
             <input
-              type="text"
-              placeholder="username"
-              name="username"
+              type="email"
+              placeholder="email"
+              name="email"
               value={username}
               onChange={this.handleState}
             />

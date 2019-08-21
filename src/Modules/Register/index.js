@@ -34,7 +34,10 @@ class Register extends Component {
       const { success } = res.data;
       if (success) {
         const { token } = res.data;
-        localStorage.setItem('cb-token', token);
+        const { user } = res.data.data;
+        this.handleLocalStorage('cb-token', token);
+        this.handleLocalStorage('cb-username', user.username);
+        localStorage.setItem('cb-email', user.email);
         this.props.history.push('/');
       } else {
         // TODO:Add a Toast msg for warning
