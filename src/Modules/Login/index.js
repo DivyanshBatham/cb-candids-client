@@ -38,11 +38,7 @@ class Login extends Component {
         const { user } = res.data.data;
         this.handleLocalStorage('cb-token', token);
         this.handleLocalStorage('cb-username', user.username);
-<<<<<<< HEAD
         this.handleLocalStorage('cb-email', user.email);
-=======
-        localStorage.setItem('cb-email', user.email);
->>>>>>> 93e0a6d63ded7141d404a79e890c3d0c0f78fc31
         this.setState({ loggedIn: true });
         // this.props.history.push('/');
       } else {
