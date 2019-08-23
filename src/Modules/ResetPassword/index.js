@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
+import { passwordValidator } from '../../helpers';
 import './resetPassword.scss';
 
 class resetPassword extends Component {
@@ -10,13 +11,25 @@ class resetPassword extends Component {
     this.state = {
       password: '',
       confirmPassword: '',
+      passwordError: null,
+      confirmPasswordError: null,
     };
   }
   handleSubmitPassword = (e) => {
     e.preventDefault();
     const { token } = this.props.match.params;
-    const { password, confirmPassword } = this.state;
-    if (password.length > 0 && password === confirmPassword) {
+    const {
+      password,
+      confirmPassword,
+      confirmPasswordError,
+      passwordError,
+    } = this.state;
+    if (
+      !passwordError &&
+      !confirmPasswordError &&
+      !password.length > 0 &&
+      password === confirmPassword
+    ) {
       axios({
         method: 'post',
         url: 'https://calm-waters-47062.herokuapp.com/auth/resetPassword',
@@ -37,17 +50,37 @@ class resetPassword extends Component {
           }
         })
         .catch(err => console.log(err));
-    } else {
-      // TODO: Show the toast message for password mis-match
-      console.log('password missmatch');
     }
   };
   handleState = (e) => {
     e.preventDefault();
-    this.setState({ [e.target.name]: e.target.value });
+    const { password, confirmPassword } = this.state;
+    // if it is password then show the password message
+    if (e.target.name === 'password') {
+      const response = passwordValidator(e.target.value);
+      this.setState({
+        passwordError: response.length < 3 ? null : `Must contain ${response}`,
+      });
+    } else if (e.target.name === 'confirmPassword') {
+      console.log(password, confirmPassword);
+      this.setState({
+        confirmPasswordError:
+          password === e.target.value ? null : 'Password must be same!',
+      });
+    }
+
+    this.setState({
+      [e.target.name]: e.target.value,
+    });
   };
   render() {
-    const { password, confirmPassword } = this.state;
+    console.log(this.state);
+    const {
+      password,
+      confirmPassword,
+      passwordError,
+      confirmPasswordError,
+    } = this.state;
     const userImage =
       'https://avatars0.githubusercontent.com/u/29652551?s=460&v=4';
     return (
@@ -61,34 +94,50 @@ class resetPassword extends Component {
           onSubmit={this.handleSubmitPassword}
         >
           <div className="resetPassword--form--items">
-            <label>
-              <FontAwesomeIcon
-                className="resetPassword--form--items--icon"
-                icon="unlock-alt"
+            <div className="resetPassword--form--items--input">
+              <label>
+                <FontAwesomeIcon
+                  className="resetPassword--form--items--input--icon"
+                  icon="unlock-alt"
+                />
+              </label>
+              <input
+                type="text"
+                required
+                placeholder="New Password"
+                name="password"
+                value={password}
+                onChange={this.handleState}
               />
-            </label>
-            <input
-              type="text"
-              placeholder="New Password"
-              name="password"
-              value={password}
-              onChange={this.handleState}
-            />
+            </div>
+            <span className="resetPassword--form--items--error">
+              {passwordError && password.length > 0
+                ? `* ${passwordError}`
+                : '   '}
+            </span>
           </div>
           <div className="resetPassword--form--items">
-            <label>
-              <FontAwesomeIcon
-                className="resetPassword--form--items--icon"
-                icon="unlock-alt"
+            <div className="resetPassword--form--items--input">
+              <label>
+                <FontAwesomeIcon
+                  className="resetPassword--form--items--input--icon"
+                  icon="unlock-alt"
+                />
+              </label>
+              <input
+                type="text"
+                required
+                placeholder="Confirm Password"
+                name="confirmPassword"
+                value={confirmPassword}
+                onChange={this.handleState}
               />
-            </label>
-            <input
-              type="text"
-              placeholder="Confirm Password"
-              name="confirmPassword"
-              value={confirmPassword}
-              onChange={this.handleState}
-            />
+            </div>
+            <span className="resetPassword--form--items--error">
+              {confirmPasswordError && confirmPassword.length > 0
+                ? `* ${confirmPasswordError}`
+                : '   '}
+            </span>
           </div>
           <button className="resetPassword--form--button">Submit</button>
           <Link to="/login" className="resetPassword--form--text">
