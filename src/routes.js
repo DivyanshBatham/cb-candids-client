@@ -29,6 +29,7 @@ const Routes = (props) => {
         <Route path="/resetPassword/:token" component={resetPassword} />
         <PrivateRoute path="/setting" component={ProfileSetting} />
         <PrivateRoute path="/user/:username" component={Profile} />
+        {/* <PrivateRoute path="/post/:postId" component={Post} /> */}
         {/* Route for tesing */}
         <Route path="/card" component={Card} />
       </Switch>
