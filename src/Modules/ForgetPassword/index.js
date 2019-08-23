@@ -53,6 +53,7 @@ class forgetPassword extends Component {
               />
             </label>
             <input
+              required
               type="email"
               placeholder="email"
               name="email"
