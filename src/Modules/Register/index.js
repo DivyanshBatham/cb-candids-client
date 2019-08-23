@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { passwordValidator } from '../../helpers';
 import './register.scss';
 
 class Register extends Component {
@@ -21,11 +22,21 @@ class Register extends Component {
   };
   handleState = (e) => {
     e.preventDefault();
+    const password = e.target.value;
+    if (e.target.name === 'password') {
+      const response = passwordValidator(password);
+      this.setState({
+        passwordError: response.length < 3 ? null : `Must contain ${response}`,
+      });
+    }
     this.setState({ [e.target.name]: e.target.value });
   };
   handleRegister = (e) => {
     e.preventDefault();
-    const { username, email, password } = this.state;
+    const {
+      username, email, password, passwordError,
+    } = this.state;
+    if (passwordError) return;
     const url = 'https://calm-waters-47062.herokuapp.com/auth/register';
     axios({
       method: 'post',
@@ -35,29 +46,36 @@ class Register extends Component {
         email,
         password,
       },
-    }).then((res) => {
-      console.log(res);
-      const { success } = res.data;
-      if (success) {
-        const { token } = res.data;
-        const { user } = res.data.data;
-        this.handleLocalStorage('cb-token', token);
-        this.handleLocalStorage('cb-username', user.username);
-        this.handleLocalStorage('cb-email', user.email);
-        this.props.history.push('/');
-      }
-    }).catch((err) => {
-      console.log(err.response);
-      this.setState({
-        usernameError: err.response.data.errors.username || null,
-        emailError: err.response.data.errors.email || null,
-        passwordError: err.response.data.errors.password || null,
+    })
+      .then((res) => {
+        console.log(res);
+        const { success } = res.data;
+        if (success) {
+          const { token } = res.data;
+          const { user } = res.data.data;
+          this.handleLocalStorage('cb-token', token);
+          this.handleLocalStorage('cb-username', user.username);
+          this.handleLocalStorage('cb-email', user.email);
+          this.props.history.push('/');
+        }
+      })
+      .catch((err) => {
+        console.log(err.response);
+        this.setState({
+          usernameError: err.response.data.errors.username || null,
+          emailError: err.response.data.errors.email || null,
+          passwordError: err.response.data.errors.password || null,
+        });
       });
-    });
   };
   render() {
     const {
-      username, password, email, usernameError, emailError, passwordError,
+      username,
+      password,
+      email,
+      usernameError,
+      emailError,
+      passwordError,
     } = this.state;
     const userImage =
       'https://avatars0.githubusercontent.com/u/29652551?s=460&v=4';
@@ -85,7 +103,9 @@ class Register extends Component {
                 onChange={this.handleState}
               />
             </div>
-            <span className="register--form--items--error">{usernameError ? `* ${usernameError}` : '   '}</span>
+            <span className="register--form--items--error">
+              {usernameError ? `* ${usernameError}` : '   '}
+            </span>
           </div>
           <div className="register--form--items">
             <div className="register--form--items--inputField">
@@ -104,7 +124,9 @@ class Register extends Component {
                 onChange={this.handleState}
               />
             </div>
-            <span className="register--form--items--error">{emailError ? `* ${emailError}` : '   '}</span>
+            <span className="register--form--items--error">
+              {emailError ? `* ${emailError}` : '   '}
+            </span>
           </div>
           <div className="register--form--items">
             <div className="register--form--items--inputField">
@@ -123,7 +145,9 @@ class Register extends Component {
                 onChange={this.handleState}
               />
             </div>
-            <span className="register--form--items--error">{passwordError ? `* ${passwordError}` : '   '}</span>
+            <span className="register--form--items--error">
+              {passwordError && password.length > 0 ? `* ${passwordError}` : '   '}
+            </span>
           </div>
           <button className="register--form--button">Register</button>
           <Link to="/login" className="register--form--text">
