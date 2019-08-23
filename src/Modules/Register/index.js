@@ -11,8 +11,14 @@ class Register extends Component {
       username: '',
       email: '',
       password: '',
+      usernameError: null,
+      emailError: null,
+      passwordError: null,
     };
   }
+  handleLocalStorage = (key, value) => {
+    localStorage.setItem(key, value);
+  };
   handleState = (e) => {
     e.preventDefault();
     this.setState({ [e.target.name]: e.target.value });
@@ -20,7 +26,6 @@ class Register extends Component {
   handleRegister = (e) => {
     e.preventDefault();
     const { username, email, password } = this.state;
-    console.log(username, email, password);
     const url = 'https://calm-waters-47062.herokuapp.com/auth/register';
     axios({
       method: 'post',
@@ -31,21 +36,29 @@ class Register extends Component {
         password,
       },
     }).then((res) => {
+      console.log(res);
       const { success } = res.data;
       if (success) {
         const { token } = res.data;
         const { user } = res.data.data;
         this.handleLocalStorage('cb-token', token);
         this.handleLocalStorage('cb-username', user.username);
-        localStorage.setItem('cb-email', user.email);
+        this.handleLocalStorage('cb-email', user.email);
         this.props.history.push('/');
-      } else {
-        // TODO:Add a Toast msg for warning
       }
+    }).catch((err) => {
+      console.log(err.response);
+      this.setState({
+        usernameError: err.response.data.errors.username || null,
+        emailError: err.response.data.errors.email || null,
+        passwordError: err.response.data.errors.password || null,
+      });
     });
   };
   render() {
-    const { username, password, email } = this.state;
+    const {
+      username, password, email, usernameError, emailError, passwordError,
+    } = this.state;
     const userImage =
       'https://avatars0.githubusercontent.com/u/29652551?s=460&v=4';
     return (
@@ -56,49 +69,61 @@ class Register extends Component {
         </div>
         <form className="register--form" onSubmit={this.handleRegister}>
           <div className="register--form--items">
-            <label>
-              <FontAwesomeIcon
-                className="register--form--items--icon"
-                icon="user"
+            <div className="register--form--items--inputField">
+              <label>
+                <FontAwesomeIcon
+                  className="register--form--items--inputField--icon"
+                  icon="user"
+                />
+              </label>
+              <input
+                required
+                type="text"
+                placeholder="username"
+                name="username"
+                value={username}
+                onChange={this.handleState}
               />
-            </label>
-            <input
-              type="text"
-              placeholder="username"
-              name="username"
-              value={username}
-              onChange={this.handleState}
-            />
+            </div>
+            <span className="register--form--items--error">{usernameError ? `* ${usernameError}` : '   '}</span>
           </div>
           <div className="register--form--items">
-            <label>
-              <FontAwesomeIcon
-                className="register--form--items--icon"
-                icon="at"
+            <div className="register--form--items--inputField">
+              <label>
+                <FontAwesomeIcon
+                  className="register--form--items--inputField--icon"
+                  icon="at"
+                />
+              </label>
+              <input
+                required
+                type="email"
+                placeholder="email"
+                name="email"
+                value={email}
+                onChange={this.handleState}
               />
-            </label>
-            <input
-              type="email"
-              placeholder="email"
-              name="email"
-              value={email}
-              onChange={this.handleState}
-            />
+            </div>
+            <span className="register--form--items--error">{emailError ? `* ${emailError}` : '   '}</span>
           </div>
           <div className="register--form--items">
-            <label>
-              <FontAwesomeIcon
-                className="register--form--items--icon"
-                icon="unlock-alt"
+            <div className="register--form--items--inputField">
+              <label>
+                <FontAwesomeIcon
+                  className="register--form--items--inputField--icon"
+                  icon="unlock-alt"
+                />
+              </label>
+              <input
+                required
+                type="password"
+                placeholder="password"
+                name="password"
+                value={password}
+                onChange={this.handleState}
               />
-            </label>
-            <input
-              type="password"
-              placeholder="password"
-              name="password"
-              value={password}
-              onChange={this.handleState}
-            />
+            </div>
+            <span className="register--form--items--error">{passwordError ? `* ${passwordError}` : '   '}</span>
           </div>
           <button className="register--form--button">Register</button>
           <Link to="/login" className="register--form--text">

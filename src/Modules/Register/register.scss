@@ -10,6 +10,9 @@
         margin-bottom: 1rem;
         &--items {
             position: relative;
+            margin-bottom: 1rem;
+            &--inputField{
+            position: relative;
             // margin: 15px 0 5px 0;
             left: 50%;
             transform: translateX(-50%);
@@ -33,6 +36,15 @@
             &--icon{
                 color: #FDCDA3;
             }
+        }
+        &--error{
+            position: absolute;
+            top: 110%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 85%;
+            color: #FDCDA3;
+        }
         }
         &--button {
             position: relative;
