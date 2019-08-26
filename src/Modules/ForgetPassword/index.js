@@ -24,6 +24,7 @@ class forgetPassword extends Component {
     })
       .then((res) => {
         console.log(res.data);
+        this.props.history.push('/login');
         // TODO: Toast for the success
       })
       .catch((err) => {
