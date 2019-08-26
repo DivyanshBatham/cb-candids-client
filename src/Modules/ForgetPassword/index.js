@@ -9,6 +9,7 @@ class forgetPassword extends Component {
     super();
     this.state = {
       email: '',
+      emailError: null,
     };
   }
   handleSubmitPassword = (e) => {
@@ -23,16 +24,20 @@ class forgetPassword extends Component {
     })
       .then((res) => {
         console.log(res.data);
-      // TODO: Toast for the success
+        // TODO: Toast for the success
       })
-      .catch(err => console.log(err));
+      .catch((err) => {
+        this.setState({
+          emailError: err.response.data.errors.email || null,
+        });
+      });
   };
   handleState = (e) => {
     e.preventDefault();
-    this.setState({ [e.target.name]: e.target.value });
+    this.setState({ [e.target.name]: e.target.value, emailError: null });
   };
   render() {
-    const { email } = this.state;
+    const { email, emailError } = this.state;
     const userImage =
       'https://avatars0.githubusercontent.com/u/29652551?s=460&v=4';
     return (
@@ -46,20 +51,25 @@ class forgetPassword extends Component {
           onSubmit={this.handleSubmitPassword}
         >
           <div className="forgetPassword--form--items">
-            <label>
-              <FontAwesomeIcon
-                className="forgetPassword--form--items--icon"
-                icon="at"
+            <div className="forgetPassword--form--items--input">
+              <label>
+                <FontAwesomeIcon
+                  className="forgetPassword--form--items--input--icon"
+                  icon="at"
+                />
+              </label>
+              <input
+                required
+                type="email"
+                placeholder="email"
+                name="email"
+                value={email}
+                onChange={this.handleState}
               />
-            </label>
-            <input
-              required
-              type="email"
-              placeholder="email"
-              name="email"
-              value={email}
-              onChange={this.handleState}
-            />
+            </div>
+            <span className="forgetPassword--form--items--error">
+              {emailError ? `* ${emailError}` : ''}
+            </span>
           </div>
           <button className="forgetPassword--form--button">Submit</button>
           <Link to="/login" className="forgetPassword--form--text">
