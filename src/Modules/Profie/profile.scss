@@ -3,6 +3,7 @@
   flex-direction: column;
   background-color: white;
   width: 100%;
+  height: 100vh;
   &--user {
     display: flex;
     flex-direction: row;
@@ -57,7 +58,7 @@
     }
   }
   &--postHeader {
-    &--border{
+    &--border {
       border: 1px dashed #999;
       // border-width: 1px;
       // border-style: dashed;
@@ -65,12 +66,17 @@
       // border-image: url("http://i.stack.imgur.com/wLdVc.png") 2 round;
       text-align: center;
       margin: 0 2rem;
-      span{
+      span {
         font-size: 14px;
-      line-height: 16px;
-      font-weight: 600;
+        line-height: 16px;
+        font-weight: 600;
       }
     }
-
   }
+}
+.error {
+  color: red;
+  font-size: 2rem;
+  text-align: center;
+  margin-top: 5rem;
 }
