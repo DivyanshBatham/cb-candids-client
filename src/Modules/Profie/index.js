@@ -8,8 +8,8 @@ class Profile extends Component {
   constructor() {
     super();
     this.state = {
-      posts: [],
-      errors: null
+      data: '',
+      errors: null,
     };
   }
   componentDidMount() {
@@ -18,30 +18,33 @@ class Profile extends Component {
       method: 'get',
       url: `https://calm-waters-47062.herokuapp.com/users/${username}`,
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('cb-token')}`
-      }
+        Authorization: `Bearer ${localStorage.getItem('cb-token')}`,
+      },
     })
-      .then(res => {
+      .then((res) => {
         if (res.data.success) {
-          this.setState({ posts: res.data.data.posts });
+          this.setState({ data: res.data.data });
         }
       })
-      .catch(err => {
+      .catch((err) => {
         this.setState({
-          errors: err.response.data.errors
+          errors: err.response.data.errors,
         });
       });
   }
   render() {
     console.log(this.state);
     console.log(this.props);
-    const userImage =
-      'https://avatars0.githubusercontent.com/u/29652551?s=460&v=4';
-    const { username } = this.props.match.params;
-    const { errors, posts } = this.state;
-    const { author } = posts;
-    const totalLikes = 100;
-    const postsCount = 25;
+    // const userImage =
+    //   'https://avatars0.githubusercontent.com/u/29652551?s=460&v=4';
+    // const { username } = this.props.match.params;
+    // const { errors, data } = this.state;
+    // const { user } = data;
+    // const totalLikes = 100;
+    // const postsCount = 25;
+    const {
+      likeCount, postCount, posts, user, errors,
+    } = this.state.data;
     return (
       <React.Fragment>
         {errors ? (
@@ -50,14 +53,14 @@ class Profile extends Component {
           <div className="profile">
             <div className="profile--user">
               <img
-                src={userImage}
+                src={user && user.imgSrc}
                 alt="user"
                 className="profile--user--image"
               />
               <div className="profile--user--stats">
                 <div className="profile--user--stats--item">
                   <span className="profile--user--stats--item--number">
-                    {postsCount}
+                    {postCount}
                   </span>
                   <span className="profile--user--stats--item--text">
                     POSTS
@@ -65,7 +68,7 @@ class Profile extends Component {
                 </div>
                 <div className="profile--user--stats--item">
                   <span className="profile--user--stats--item--number">
-                    {totalLikes}
+                    {likeCount}
                   </span>
                   <span className="profile--user--stats--item--text">
                     LIKES
@@ -74,12 +77,10 @@ class Profile extends Component {
               </div>
             </div>
             <div className="profile--details">
-              <span className="profile--details--username">{username}</span>
+              <span className="profile--details--username">{user && user.username}</span>
               <span className="profile--details--bio">
                 {
-                author && author.bio
-                  ? author.bio
-                  : 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
+                user && user.bio
                 }
               </span>
             </div>
@@ -88,7 +89,7 @@ class Profile extends Component {
                 <span>POSTS</span>
               </div>
             </div>
-            {posts.length > 0 ? (
+            {posts && posts.length > 0 ? (
               <CardRenderer posts={posts} />
             ) : (
               <div>No post found</div>

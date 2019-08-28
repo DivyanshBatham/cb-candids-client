@@ -10,8 +10,11 @@
     align-items: center;
     margin: 1rem 2rem 0 2rem;
     &--image {
+      height: 9em;
       width: 9rem;
       border: 2px solid black;
+      background-repeat: no-repeat;
+      background-position: 50%;
       border-radius: 50%;
     }
     &--stats {
