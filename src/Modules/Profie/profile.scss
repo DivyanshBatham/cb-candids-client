@@ -1,40 +1,73 @@
 .profile {
-    display: flex;
-    flex-direction: column;
-    background-color: aqua;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  width: 100%;
   &--user {
     display: flex;
     flex-direction: row;
-    //  justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
+    margin: 1rem 2rem 0 2rem;
     &--image {
-      width: 100px;
+      width: 9rem;
+      border: 2px solid black;
       border-radius: 50%;
     }
-    &--data {
-      margin-left: 1rem;
+    &--stats {
       display: flex;
       flex-direction: column;
-      &--username {
-        &--name {
-          font-size: 1.5rem;
-          font-weight: bold;
+      justify-content: space-around;
+      margin-top: 0.5rem;
+      &--item {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        margin-bottom: 0.5rem;
+        &--number {
+          font-weight: 600;
+          font-size: 18px;
         }
-        &--icon {
-          margin-left: 0.5rem;
+        &--text {
+          font-size: 14px;
+          font-weight: 400;
         }
-      }
-      &--bio {
-        font-size: 14px;
-        font-style: italic;
       }
     }
   }
-  &--postHeader{
-      width: 100%;
-      margin-top: 1rem;
-      border: 1px solid black;
+  &--details {
+    display: flex;
+    flex-direction: column;
+    margin: 1rem 0 1rem 2rem;
+    &--username {
+      font-family: 'Roboto', sans-serif;
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 21px;
+      margin-bottom: 0.3rem;
+    }
+    &--bio {
+      font-weight: 300;
+      font-size: 14px;
+      line-height: 21px;
+      color: #373636;
+    }
+  }
+  &--postHeader {
+    &--border{
+      border: 1px dashed #999;
+      // border-width: 1px;
+      // border-style: dashed;
+      // border-color: #373636;
+      // border-image: url("http://i.stack.imgur.com/wLdVc.png") 2 round;
       text-align: center;
+      margin: 0 2rem;
+      span{
+        font-size: 14px;
+      line-height: 16px;
+      font-weight: 600;
+      }
+    }
+
   }
 }
