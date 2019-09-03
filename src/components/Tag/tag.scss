@@ -1,0 +1,11 @@
+.tag{
+    background-color: #FDB433;
+    color: #ffffff;
+    border-radius: 1rem;
+    padding: 0.1rem 1rem;
+    margin: 0 auto;
+    font-size: 0.8rem;
+    &:hover{
+        cursor: pointer;
+    }
+}
