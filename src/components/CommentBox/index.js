@@ -10,12 +10,17 @@ class CommentBox extends Component {
       value: '',
       rows: 1,
       minRows: 1,
-      maxRows: 5,
+      maxRows: 5
     };
   }
+  handleComment = e => {
+    e.preventDefault();
+    console.log('comment Submit');
+    // TODO: logic for handleComment
+  };
 
   // REFERENCE = https://codepen.io/Libor_G/pen/eyzwOx
-  handleValue = (event) => {
+  handleValue = event => {
     const textareaLineHeight = 18;
     const { minRows, maxRows } = this.state;
 
@@ -44,7 +49,7 @@ class CommentBox extends Component {
       'https://avatars0.githubusercontent.com/u/29652551?s=460&v=4';
     const { rows, value } = this.state;
     return (
-      <form className="commentBox">
+      <form className="commentBox" onSubmit={this.handleComment}>
         <img className="commentBox--image" src={userImage} alt="user" />
         <textarea
           rows={rows}
@@ -54,7 +59,9 @@ class CommentBox extends Component {
           type="text"
           placeholder="Add a comment..."
         />
-        <span className="commentBox--button">Post</span>
+        <span className="commentBox--button" onClick={this.handleComment}>
+          Post
+        </span>
       </form>
     );
   }
