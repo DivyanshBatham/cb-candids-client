@@ -1,0 +1,18 @@
+.postDetails {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+  position: relative;
+  height: 100vh;
+  &--commets{
+      margin-top: 1rem;
+  }
+  &--commentBox {
+    display: flex;
+    justify-content: center;
+    position: sticky;
+    bottom: 0;
+    width: 100%;
+  }
+}
