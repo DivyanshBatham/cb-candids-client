@@ -1,6 +1,7 @@
 import React, { lazy, Suspense } from 'react';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import Card from './components/Card';
+import Comment from './components/Comment';
 import PrivateRoute from './PrivateRoute';
 
 const Dashboard = lazy(() => import('./components/Dashboard'));
@@ -32,6 +33,7 @@ const Routes = (props) => {
         {/* <PrivateRoute path="/post/:postId" component={Post} /> */}
         {/* Route for tesing */}
         <Route path="/card" component={Card} />
+        <Route path="/comment" component={Comment} />
       </Switch>
     </Suspense>
   );

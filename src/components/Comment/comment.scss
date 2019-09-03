@@ -1,0 +1,52 @@
+@import '../../variables.scss';
+
+.comment {
+  display: flex;
+  padding: 1rem;
+  color: $darkText;
+  &--image {
+    width: 2.2rem;
+    height: 2.2rem;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+    border-color: $primeryYellow;
+  }
+  &--content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    border-radius: 1rem;
+    background-color: $lightYellow;
+    // box-shadow: 10px $lightPlaceholder;
+    box-shadow: 
+        0 0 8px 0 rgba(17, 22, 26, 0.16),
+        0 4px 8px 0 rgba(17, 22, 26, 0.08), 
+        0 8px 16px 0 rgba(17, 22, 26, 0.08);
+    padding: 1rem;
+    &--header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.6rem;
+      &--username {
+        font-size: 14px;
+        font-weight: 600;
+      }
+      &--icon {
+        font-size: 1rem;
+        font-weight: light;
+      }
+    }
+    &--text {
+      font-size: 12px;
+      color: $darkText;
+      line-height: 18px;
+      margin-bottom: 0.5rem;
+    }
+    &--time {
+      font-size: 10px;
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+}
