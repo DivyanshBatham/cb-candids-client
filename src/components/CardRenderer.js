@@ -8,8 +8,9 @@ class Home extends Component {
   }
   render() {
     const { posts } = this.props;
+    console.log(posts);
     return (
-      <div>
+      <div className="container">
         {
           posts.map(post => <Card key={post._id} post={post} />)
         }

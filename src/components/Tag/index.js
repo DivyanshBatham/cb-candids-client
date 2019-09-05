@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import './tag.scss';
 
 class Tag extends Component {
@@ -8,7 +9,8 @@ class Tag extends Component {
   }
   handleTag = (e) => {
     e.preventDefault();
-    // TODO: redirect to user page
+    const { name } = this.props;
+    this.props.history.push(`/user/${name}`);
   };
   render() {
     const { name } = this.props;
@@ -20,4 +22,4 @@ class Tag extends Component {
   }
 }
 
-export default Tag;
+export default withRouter(Tag);

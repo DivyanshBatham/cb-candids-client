@@ -4,14 +4,24 @@
   display: flex;
   color: $darkText;
   margin-top: 1rem;
-  &--image {
+
+  &--self {
+    flex-direction: row-reverse;
+  }
+
+  &__image {
     width: 2.2rem;
     height: 2.2rem;
     border-radius: 50%;
     margin-right: 1rem;
     border-color: $primeryYellow;
+
+    &--self {
+      margin-right: 0rem;
+      margin-left: 1rem;
+    }
   }
-  &--content {
+  &__content {
     display: flex;
     flex-direction: column;
     flex: 1;
@@ -23,27 +33,27 @@
         0 4px 8px 0 rgba(17, 22, 26, 0.08), 
         0 8px 16px 0 rgba(17, 22, 26, 0.08);
     padding: 1rem;
-    &--header {
+    &__header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 0.6rem;
-      &--username {
+      &__username {
         font-size: 14px;
         font-weight: 600;
       }
-      &--icon {
+      &__icon {
         font-size: 1rem;
         font-weight: light;
       }
     }
-    &--text {
+    &__text {
       font-size: 12px;
       color: $darkText;
       line-height: 18px;
       margin-bottom: 0.5rem;
     }
-    &--time {
+    &__time {
       font-size: 10px;
       display: flex;
       justify-content: flex-end;

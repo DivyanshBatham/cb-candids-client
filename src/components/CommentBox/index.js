@@ -10,17 +10,24 @@ class CommentBox extends Component {
       value: '',
       rows: 1,
       minRows: 1,
-      maxRows: 5
+      maxRows: 5,
     };
   }
-  handleComment = e => {
+  handleComment = (e) => {
     e.preventDefault();
     console.log('comment Submit');
     // TODO: logic for handleComment
   };
 
+  // handleKeyPress = (e) => {
+  //   e.preventDefault();
+  //   if (e.key === 'Enter') {
+  //     this.handleComment(e);
+  //   }
+  // };
+
   // REFERENCE = https://codepen.io/Libor_G/pen/eyzwOx
-  handleValue = event => {
+  handleValue = (event) => {
     const textareaLineHeight = 18;
     const { minRows, maxRows } = this.state;
 
@@ -40,11 +47,12 @@ class CommentBox extends Component {
 
     this.setState({
       value: event.target.value,
-      rows: currentRows < maxRows ? currentRows : maxRows
+      rows: currentRows < maxRows ? currentRows : maxRows,
     });
   };
 
   render() {
+    console.log(this.state.value);
     const userImage =
       'https://avatars0.githubusercontent.com/u/29652551?s=460&v=4';
     const { rows, value } = this.state;
@@ -57,7 +65,9 @@ class CommentBox extends Component {
           onChange={this.handleValue}
           className="commentBox--input"
           type="text"
+          name="commentBox"
           placeholder="Add a comment..."
+          // onKeyUp={this.handleKeyPress}
         />
         <span className="commentBox--button" onClick={this.handleComment}>
           Post
