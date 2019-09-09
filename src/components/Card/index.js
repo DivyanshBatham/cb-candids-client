@@ -79,6 +79,7 @@ class Card extends Component {
       imgSrc,
       taggedUsers,
     } = this.props.post;
+    console.log(author);
     return (
       <div className="card">
         <div className="card--titleWrapper">
