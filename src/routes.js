@@ -1,6 +1,7 @@
 import React, { lazy, Suspense } from 'react';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import Card from './components/Card';
+import Comment from './components/Comment';
 import PrivateRoute from './PrivateRoute';
 
 const Dashboard = lazy(() => import('./components/Dashboard'));
@@ -13,12 +14,13 @@ const forgetPassword = lazy(() => import('./Modules/ForgetPassword'));
 const Profile = lazy(() => import('./Modules/Profie'));
 const VerifyEmail = lazy(() => import('./Modules/VerifyEmail'));
 const resetPassword = lazy(() => import('./Modules/ResetPassword'));
+const PostDetails = lazy(() => import('./Modules/PostDetails'));
 
 const Routes = (props) => {
   console.log(props);
   return (
     <Suspense fallback={<div>loading...</div>}>
-      <Navbar />
+      {/* <Navbar /> */}
       <Switch>
         <PrivateRoute path="/" component={Home} exact />
         <Route path="/dashboard" component={Dashboard} />
@@ -28,10 +30,11 @@ const Routes = (props) => {
         <Route path="/forgetPassword" component={forgetPassword} />
         <Route path="/resetPassword/:token" component={resetPassword} />
         <PrivateRoute path="/setting" component={ProfileSetting} />
-        <PrivateRoute path="/user/:username" component={Profile} />
-        {/* <PrivateRoute path="/post/:postId" component={Post} /> */}
+        <PrivateRoute sensitive path="/user/:username" component={Profile} />
+        <PrivateRoute path="/post/:postId" component={PostDetails} />
         {/* Route for tesing */}
         <Route path="/card" component={Card} />
+        <Route path="/comment" component={Comment} />
       </Switch>
     </Suspense>
   );

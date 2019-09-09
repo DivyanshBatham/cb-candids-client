@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link, Redirect } from 'react-router-dom';
 import axios from 'axios';
 import { passwordValidator } from '../../helpers';
+import PumpkinLogo from '../../asset/pumpkin';
+import nameLogo from '../../asset/name';
 import './login.scss';
 
 class Login extends Component {
@@ -19,13 +20,18 @@ class Login extends Component {
   handleState = (e) => {
     e.preventDefault();
     const password = e.target.value;
+    this.setState({
+      emailError: null,
+      passwordError: null,
+      [e.target.name]: e.target.value,
+    });
     if (e.target.name === 'password') {
       const response = passwordValidator(password);
       this.setState({
         passwordError: response.length < 3 ? null : `Must contain ${response}`,
       });
     }
-    this.setState({ [e.target.name]: e.target.value });
+    // this.setState({ [e.target.name]: e.target.value });
   };
   handleLocalStorage = (key, value) => {
     localStorage.setItem(key, value);
@@ -45,6 +51,7 @@ class Login extends Component {
       data,
     })
       .then((res) => {
+        console.log(res.data);
         const { success, token } = res.data;
         if (success) {
           const { user } = res.data.data;
@@ -64,12 +71,9 @@ class Login extends Component {
 
   render() {
     const {
-      username,
-      password,
-      loggedIn,
-      emailError,
-      passwordError,
+      email, password, loggedIn, emailError, passwordError,
     } = this.state;
+
     // If it's not redirected from anywhere, after login send it to /
     const { from } = this.props.location.state || { from: { pathname: '/' } };
 
@@ -77,66 +81,58 @@ class Login extends Component {
     if (localStorage.getItem('cb-token') && loggedIn) {
       return <Redirect to={from} />;
     }
-
-    const userImage =
-      'https://avatars0.githubusercontent.com/u/29652551?s=460&v=4';
     return (
       <div className="login">
-        <div className="login--logo">
-          <img src={userImage} alt="userProfile" />
-          <span className="login--logo--text"> CB-Candid </span>
+        <div className="login__logo">
+          <div className="login__logo__pumpkin">{PumpkinLogo}</div>
+          <div className="login__logo__name">{nameLogo}</div>
         </div>
-        <form className="login--form" onSubmit={this.handleLogin}>
-          <div className="login--form--items">
-            <div className="login--form--items--input">
-              <label>
-                <FontAwesomeIcon
-                  className="login--form--items--input--icon"
-                  icon="at"
-                />
-              </label>
+        <form className="login__form" onSubmit={this.handleLogin}>
+          <div className="login__form__wrapper">
+            <div className="login__form__wrapper__inputWrapper">
+              <label htmlFor="email">Email</label>
               <input
-                required
-                type="email"
-                placeholder="email"
+                type="text"
                 name="email"
-                value={username}
+                aria-label="Email"
+                placeholder="Enter your email"
+                value={email}
                 onChange={this.handleState}
               />
+              <span className="login__form__wrapper__inputWrapper__error">
+                {emailError ? `* ${emailError}` : '   '}
+              </span>
             </div>
-            <span className="login--form--items--error">
-              {emailError ? `* ${emailError}` : '   '}
-            </span>
-          </div>
-          <div className="login--form--items">
-            <div className="login--form--items--input">
-              <label>
-                <FontAwesomeIcon
-                  className="login--form--items--input--icon"
-                  icon="unlock-alt"
-                />
-              </label>
+            <div className="login__form__wrapper__inputWrapper">
+              <label htmlFor="password">Password</label>
               <input
-                required
                 type="password"
-                placeholder="password"
                 name="password"
+                aria-label="passWord"
+                placeholder="Enter your password"
                 value={password}
                 onChange={this.handleState}
               />
+              <span className="login__form__wrapper__inputWrapper__error">
+                {passwordError && password.length > 0
+                  ? `* ${passwordError}`
+                  : '   '}
+              </span>
             </div>
-            <span className="login--form--items--error">
-              {passwordError && password.length > 0 ? `* ${passwordError}` : '   '}
-            </span>
           </div>
-          <Link to="/forgetPassword" className="login--form--text">
+        </form>
+        <div className="login__footer">
+          <Link to="/forgetPassword" className="login__footer__forgetText">
             Forgot password?
           </Link>
-          <button className="login--form--button">Log In</button>
-          <Link to="/register" className="login--form--text">
-            Register
+          <button className="login__footer__button" onClick={this.handleLogin}>
+            {' '}
+            Sign In
+          </button>
+          <Link to="/register" className="login__footer__registerText">
+            Don’t have an account? Sign Up
           </Link>
-        </form>
+        </div>
       </div>
     );
   }

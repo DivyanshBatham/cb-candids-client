@@ -1,134 +1,166 @@
 import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { withRouter } from 'react-router-dom';
-import './card.scss';
+import PropTypes from 'prop-types';
 import axios from 'axios';
+import './card.scss';
+import Tag from '../Tag';
 
 class Card extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      openDescription: false,
       likesCount: props.post.likes.length,
       liked: this.isLiked(),
     };
   }
+
   isLiked = () => {
     const currentUser = localStorage.getItem('cb-username');
     const likedArray = this.props.post.likes;
     return likedArray.filter(item => currentUser === item.username).length > 0;
   };
-  handleRedirectUserProfile = (e) => {
+  handleLikes = (e) => {
     e.preventDefault();
-    console.log(this.props);
-    const { author } = this.props.post;
-    this.props.history.push({
-      pathname: `/user/${author.username}`,
-      state: { userData: author },
-    });
-    console.log(author);
-  };
-  handleRedirectPost = (e) => {
-    e.preventDefault();
-    this.props.history.push({
-      pathname: `/post/${this.props.post._id}`,
-      state: { post: this.props.post },
-    });
-  };
-  handleLikePost = (e) => {
-    e.preventDefault();
+    const extraPoint = this.state.liked ? -1 : 1;
     this.setState(prevState => ({
-      likesCount: prevState.likesCount + 1,
-      liked: true,
+      likesCount: prevState.likesCount + extraPoint,
+      liked: !prevState.liked,
     }));
     axios({
       method: 'post',
-      url: `https://calm-waters-47062.herokuapp.com/posts/${
-        this.props.post._id
-      }/likes`,
+      url: `https://calm-waters-47062.herokuapp.com/posts/${this.props.post._id}/likes`,
       headers: {
         Authorization: `Bearer ${localStorage.getItem('cb-token')}`,
       },
     })
       .then((res) => {
+        console.log(res.data);
         if (!res.data.success) {
           this.setState(prevState => ({
-            likesCount: prevState.likesCount - 1,
-            liked: false,
+            likesCount: prevState.likesCount + -1 * extraPoint,
+            liked: extraPoint === -1,
           }));
-        } else {
-          // TODO: Will show the error message
         }
       })
-
-      .catch(err => console.log(err));
+      .catch(() =>
+        this.setState(prevState => ({
+          likesCount: prevState.likesCount + -1 * extraPoint,
+          liked: extraPoint === -1,
+        })),);
+  };
+  handleDescription = (e) => {
+    e.preventDefault();
+    this.setState(prevState => ({
+      openDescription: !prevState.openDescription,
+    }));
+  };
+  handleAuthorRedirect = (e) => {
+    e.preventDefault();
+    const { author } = this.props.post;
+    this.props.history.push(`/user/${author.username}`);
+  };
+  handlePostRedirect = (e) => {
+    e.preventDefault();
+    const { post } = this.props;
+    console.log(post);
+    const { _id: id } = post;
+    this.props.history.push(`/post/${id}`, { ...post });
   };
   render() {
-    console.log(this.props);
+    const { openDescription, liked, likesCount } = this.state;
     const {
-      author,
-      imgSrc,
       title,
       description,
+      author,
+      likes,
       comments,
-      createdAt,
+      imgSrc,
+      taggedUsers,
     } = this.props.post;
-    console.log(this.state);
-    const { likesCount, liked } = this.state;
-    const userImage =
-      'https://avatars0.githubusercontent.com/u/29652551?s=460&v=4';
+    console.log(author);
     return (
       <div className="card">
-        <div className="card--authorDetails">
-          <img
-            src={author.imgSrc || userImage}
-            alt="user"
-            onClick={this.handleRedirectUserProfile}
+        <div className="card--titleWrapper">
+          <span className="card--titleWrapper--title">{title}</span>
+          <FontAwesomeIcon
+            className="card--titleWrapper--icon"
+            icon="ellipsis-v"
           />
-          <h4
-            className="card--authorDetails--authorName"
-            onClick={this.handleRedirectUserProfile}
-          >
-            {author.username}
-          </h4>
         </div>
-        <img
-          onClick={this.handleRedirectPost}
-          className="card--postImage"
-          src={imgSrc || userImage}
-          alt="post"
-        />
-        <div className="card--postDetails">
-          <h4 className="card--postDetails--title">{title}</h4>
-          <p className="card--postDetails--description">{description}</p>
+        <span
+          className={
+            openDescription
+              ? 'card--description card--openDescription'
+              : 'card--description'
+          }
+          onClick={this.handleDescription}
+        >
+          {description}
+        </span>
+        <div className="card--tag">
+          {taggedUsers.map(taggedUser => (
+            <Tag name={taggedUser.username} key={taggedUser._id} />
+          ))}
         </div>
-        <div className="card--postStats">
-          <div className="card--postStats--icons">
-            <div className="card--postStats--icons--item">
+        <img className="card--image" src={imgSrc} alt="post" />
+        <div className="card--footer">
+          <div className="card--footer--stats">
+            <div className="card--footer--stats--item">
               <FontAwesomeIcon
-                icon={['far', 'comment']}
-                className="card--postStats--icons--item--icon"
-                onClick={this.handleRedirectPost}
-              />
-              <span className="card--postStats--icons--item--text">
-                {comments.length}
-              </span>
-            </div>
-            <div>
-              <FontAwesomeIcon
+                onClick={this.handleLikes}
                 icon={['fas', 'heart']}
-                className={`card--postStats--icons--item--icon ${liked && 'card--active'}`}
-                onClick={this.handleLikePost}
+                className={`card--footer--stats--item--icon ${liked &&
+                  'card--footer--stats--item--icon--liked'}`}
               />
-              <span className="card--postStats--icons--item--text">
+              <span className="card--footer--stats--item--text">
                 {likesCount}
               </span>
             </div>
+            <div className="card--footer--stats--item">
+              <FontAwesomeIcon
+                onClick={this.handlePostRedirect}
+                icon={['fas', 'comment']}
+                className="card--footer--stats--item--icon"
+              />
+              <span className="card--footer--stats--item--text">
+                {comments.length}
+              </span>
+            </div>
           </div>
-          <span>{createdAt || '15 min ago'}</span>
+          <div
+            className="card--footer--authorDetails"
+            onClick={this.handleAuthorRedirect}
+          >
+            <span className="card--footer--authorDetails--text">
+              {author.username}
+            </span>
+            <img
+              className="card--footer--authorDetails--image"
+              src={imgSrc}
+              alt="author"
+            />
+          </div>
         </div>
       </div>
     );
   }
 }
 
+Card.propTypes = {
+  post: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    description: PropTypes.string,
+    author: PropTypes.object.isRequired,
+    likes: PropTypes.array.isRequired,
+    comments: PropTypes.array.isRequired,
+    imgSrc: PropTypes.string.isRequired,
+    taggedUsers: PropTypes.array.isRequired,
+  }).isRequired,
+};
+
+Card.defaultProps = {
+  description: '',
+};
 export default withRouter(Card);

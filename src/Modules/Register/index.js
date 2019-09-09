@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { passwordValidator } from '../../helpers';
+import PumpkinLogo from '../../asset/pumpkin';
+import nameLogo from '../../asset/name';
 import './register.scss';
 
-class Register extends Component {
+class register extends Component {
   constructor() {
     super();
     this.state = {
@@ -34,9 +35,9 @@ class Register extends Component {
   handleRegister = (e) => {
     e.preventDefault();
     const {
-      username, email, password, passwordError,
-    } = this.state;
-    if (passwordError) return;
+ username, email, password, passwordError 
+} = this.state;
+    if (passwordError || username.length === 0 || email.length === 0) return;
     const url = 'https://calm-waters-47062.herokuapp.com/auth/register';
     axios({
       method: 'post',
@@ -77,86 +78,75 @@ class Register extends Component {
       emailError,
       passwordError,
     } = this.state;
-    const userImage =
-      'https://avatars0.githubusercontent.com/u/29652551?s=460&v=4';
     return (
       <div className="register">
-        <div className="register--logo">
-          <img src={userImage} alt="userProfile" />
-          <span className="register--logo--text"> CB-Candid </span>
+        <div className="register__logo">
+          <div className="register__logo__pumpkin">{PumpkinLogo}</div>
+          <div className="register__logo__name">{nameLogo}</div>
         </div>
-        <form className="register--form" onSubmit={this.handleRegister}>
-          <div className="register--form--items">
-            <div className="register--form--items--inputField">
-              <label>
-                <FontAwesomeIcon
-                  className="register--form--items--inputField--icon"
-                  icon="user"
-                />
-              </label>
+        <form className="register__form" onSubmit={this.handleRegister}>
+          <div className="register__form__wrapper">
+            <div className="register__form__wrapper__inputWrapper">
+              <label htmlFor="email">Username</label>
               <input
-                required
                 type="text"
-                placeholder="username"
                 name="username"
+                aria-label="Email"
+                placeholder="Enter your email"
                 value={username}
                 onChange={this.handleState}
               />
+              <span className="register__form__wrapper__inputWrapper__error">
+                {usernameError ? `* ${usernameError}` : '   '}
+              </span>
             </div>
-            <span className="register--form--items--error">
-              {usernameError ? `* ${usernameError}` : '   '}
-            </span>
-          </div>
-          <div className="register--form--items">
-            <div className="register--form--items--inputField">
-              <label>
-                <FontAwesomeIcon
-                  className="register--form--items--inputField--icon"
-                  icon="at"
-                />
-              </label>
+            <div className="register__form__wrapper__inputWrapper">
+              <label htmlFor="email">Email</label>
               <input
-                required
-                type="email"
-                placeholder="email"
+                type="text"
                 name="email"
+                aria-label="Email"
+                placeholder="Enter your email"
                 value={email}
                 onChange={this.handleState}
               />
+              <span className="register__form__wrapper__inputWrapper__error">
+                {emailError ? `* ${emailError}` : '   '}
+              </span>
             </div>
-            <span className="register--form--items--error">
-              {emailError ? `* ${emailError}` : '   '}
-            </span>
-          </div>
-          <div className="register--form--items">
-            <div className="register--form--items--inputField">
-              <label>
-                <FontAwesomeIcon
-                  className="register--form--items--inputField--icon"
-                  icon="unlock-alt"
-                />
-              </label>
+            <div className="register__form__wrapper__inputWrapper">
+              <label htmlFor="password">Password</label>
               <input
-                required
                 type="password"
-                placeholder="password"
                 name="password"
+                aria-label="passWord"
+                placeholder="Enter your password"
                 value={password}
                 onChange={this.handleState}
               />
+              <span className="register__form__wrapper__inputWrapper__error">
+                {passwordError && password.length > 0
+                  ? `* ${passwordError}`
+                  : '   '}
+              </span>
             </div>
-            <span className="register--form--items--error">
-              {passwordError && password.length > 0 ? `* ${passwordError}` : '   '}
-            </span>
           </div>
-          <button className="register--form--button">Register</button>
-          <Link to="/login" className="register--form--text">
-            Login!
-          </Link>
         </form>
+        <div className="register__footer">
+          <button
+            className="register__footer__button"
+            onClick={this.handleRegister}
+          >
+            {' '}
+            Sign Up
+          </button>
+          <Link to="/login" className="register__footer__registerText">
+            Already have an account? Sign In
+          </Link>
+        </div>
       </div>
     );
   }
 }
 
-export default Register;
+export default register;
