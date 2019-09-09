@@ -10,7 +10,7 @@
   &__logo {
     display: flex;
     flex-direction: column;
-    margin-top: 8rem;
+    margin-top: 5rem;
     &__pumpkin {
       width: 120px;
       margin: 0 auto;
@@ -81,6 +81,8 @@
       outline: none;
       box-shadow: 0 0 8px 0 rgba(17, 22, 26, 0.16),
         0 4px 8px 0 rgba(17, 22, 26, 0.08), 0 8px 16px 0 rgba(17, 22, 26, 0.08);
+      cursor: pointer;
+      margin-bottom: 1rem;
     }
     &__registerText {
       font-size: 1rem;
