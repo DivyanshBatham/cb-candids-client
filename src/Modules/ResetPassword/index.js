@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import { passwordValidator } from '../../helpers';
+import PumpkinLogo from '../../asset/pumpkin';
+import nameLogo from '../../asset/name';
 import './resetPassword.scss';
 
 class resetPassword extends Component {
@@ -18,6 +19,7 @@ class resetPassword extends Component {
   handleSubmitPassword = (e) => {
     e.preventDefault();
     const { token } = this.props.match.params;
+    console.log(this.state);
     const {
       password,
       confirmPassword,
@@ -27,9 +29,10 @@ class resetPassword extends Component {
     if (
       !passwordError &&
       !confirmPasswordError &&
-      !password.length > 0 &&
+      password.length > 0 &&
       password === confirmPassword
     ) {
+      console.log('in axios');
       axios({
         method: 'post',
         url: 'https://calm-waters-47062.herokuapp.com/auth/resetPassword',
@@ -74,76 +77,69 @@ class resetPassword extends Component {
     });
   };
   render() {
-    console.log(this.state);
     const {
       password,
       confirmPassword,
       passwordError,
       confirmPasswordError,
     } = this.state;
-    const userImage =
-      'https://avatars0.githubusercontent.com/u/29652551?s=460&v=4';
     return (
       <div className="resetPassword">
-        <div className="resetPassword--logo">
-          <img src={userImage} alt="userProfile" />
-          <span className="resetPassword--logo--text"> CB-Candid </span>
+        <div className="resetPassword__logo">
+          <div className="resetPassword__logo__pumpkin">{PumpkinLogo}</div>
+          <div className="resetPassword__logo__name">{nameLogo}</div>
         </div>
         <form
-          className="resetPassword--form"
+          className="resetPassword__form"
           onSubmit={this.handleSubmitPassword}
         >
-          <div className="resetPassword--form--items">
-            <div className="resetPassword--form--items--input">
-              <label>
-                <FontAwesomeIcon
-                  className="resetPassword--form--items--input--icon"
-                  icon="unlock-alt"
-                />
-              </label>
+          <div className="resetPassword__form__wrapper">
+            <div className="resetPassword__form__wrapper__inputWrapper">
+              <label htmlFor="new-password">New Password</label>
               <input
                 type="text"
                 required
-                placeholder="New Password"
+                placeholder="Enter your new password"
                 name="password"
                 value={password}
                 onChange={this.handleState}
               />
+              <span className="resetPassword__form__wrapper__inputWrapper__error">
+                {passwordError && password.length > 0
+                  ? `* ${passwordError}`
+                  : '   '}
+              </span>
             </div>
-            <span className="resetPassword--form--items--error">
-              {passwordError && password.length > 0
-                ? `* ${passwordError}`
-                : '   '}
-            </span>
-          </div>
-          <div className="resetPassword--form--items">
-            <div className="resetPassword--form--items--input">
-              <label>
-                <FontAwesomeIcon
-                  className="resetPassword--form--items--input--icon"
-                  icon="unlock-alt"
-                />
-              </label>
+            <div className="resetPassword__form__wrapper__inputWrapper">
+              <label htmlFor="confirm-password">Confirm Password</label>
               <input
                 type="text"
                 required
-                placeholder="Confirm Password"
+                placeholder="Enter your confirm password"
                 name="confirmPassword"
                 value={confirmPassword}
                 onChange={this.handleState}
               />
+              <span className="resetPassword__form__wrapper__inputWrapper__error">
+                {confirmPasswordError && confirmPassword.length > 0
+                  ? `* ${confirmPasswordError}`
+                  : '   '}
+              </span>
             </div>
-            <span className="resetPassword--form--items--error">
-              {confirmPasswordError && confirmPassword.length > 0
-                ? `* ${confirmPasswordError}`
-                : '   '}
-            </span>
           </div>
-          <button className="resetPassword--form--button">Submit</button>
-          <Link to="/login" className="resetPassword--form--text">
-            Login
-          </Link>
         </form>
+        <div className="resetPassword__footer">
+          <button
+            className="resetPassword__footer__button"
+            onClick={this.handleSubmitPassword}
+          >
+            {' '}
+            Reset Password
+          </button>
+          <Link to="/login" className="resetPassword__footer__registerText">
+            Already have an account? Sign In
+          </Link>
+        </div>
       </div>
     );
   }
