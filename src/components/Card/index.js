@@ -100,8 +100,8 @@ class Card extends Component {
           {description}
         </span>
         <div className="card--tag">
-          {taggedUsers.map(taggedUser => (
-            <Tag name={taggedUser.username} key={taggedUser._id} />
+          {taggedUsers.map((taggedUser, idx) => (
+            <Tag name={taggedUser.username} key={taggedUser._id} idx={idx} />
           ))}
         </div>
         <img className="card--image" src={imgSrc} alt="post" />

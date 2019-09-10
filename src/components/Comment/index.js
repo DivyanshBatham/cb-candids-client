@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { getBackgroundColor } from '../../helpers';
 import './comment.scss';
 
 class Comment extends Component {
@@ -10,14 +11,14 @@ class Comment extends Component {
       username: (props.commentItem && props.commentItem.author.username) || null
     };
   }
-  getBackgroundColor = () => {
-    const { idx } = this.props;
-    const availableColors = ['3FBF3E1', '#FAEEE1', '#F3F9EC', '#FDE8EF'];
-    const totalColors = availableColors.length;
-    return { backgroundColor: availableColors[idx % totalColors] };
-  };
+  // getBackgroundColor = () => {
+  //   const { idx } = this.props;
+  //   const availableColors = ['3FBF3E1', '#FAEEE1', '#F3F9EC', '#FDE8EF'];
+  //   const totalColors = availableColors.length;
+  //   return { backgroundColor: availableColors[idx % totalColors] };
+  // };
   render() {
-    const { comment, username } = this.state;
+    const { comment, username, idx } = this.state;
     const userImage =
       'https://avatars0.githubusercontent.com/u/29652551?s=460&v=4';
     const postedTime = '15 mins';
@@ -29,7 +30,7 @@ class Comment extends Component {
           src={userImage}
           alt="user"
         />
-        <div className="comment__content" style={this.getBackgroundColor()}>
+        <div className="comment__content" style={getBackgroundColor(idx)}>
           <div className="comment__content__header">
             <span className="comment__content__header__username">
               {username}
