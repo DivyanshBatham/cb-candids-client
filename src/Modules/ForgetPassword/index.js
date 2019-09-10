@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import PumpkinLogo from '../../asset/pumpkin';
-import nameLogo from '../../asset/name';
+import PumpkinLogo from '../../assets/pumpkin';
+import nameLogo from '../../assets/name';
 import './forgetPassword.scss';
 
 class Login extends Component {

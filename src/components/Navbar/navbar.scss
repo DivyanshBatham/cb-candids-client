@@ -1,4 +1,27 @@
+@import '../../variables.scss';
 .navbar {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
+    width: 100%;
+    background-color: $navbar;
+    align-content: center;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    &__logo{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+        &__pumpkin{
+            width: 2.3rem;
+            margin-right: 0.2rem;
+            margin-top: 4px;
+        }
+        &__name{
+            width: 5.1rem;
+            fill: white;
+            padding-top: 10px;
+        }
+    }
 }

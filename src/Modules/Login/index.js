@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import axios from 'axios';
 import { passwordValidator } from '../../helpers';
-import PumpkinLogo from '../../asset/pumpkin';
-import nameLogo from '../../asset/name';
+import PumpkinLogo from '../../assets/pumpkin';
+import nameLogo from '../../assets/name';
 import './login.scss';
 
 class Login extends Component {

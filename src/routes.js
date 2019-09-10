@@ -20,7 +20,7 @@ const Routes = (props) => {
   console.log(props);
   return (
     <Suspense fallback={<div>loading...</div>}>
-      {/* <Navbar /> */}
+      <Navbar />
       <Switch>
         <PrivateRoute path="/" component={Home} exact />
         <Route path="/dashboard" component={Dashboard} />
@@ -35,6 +35,7 @@ const Routes = (props) => {
         {/* Route for tesing */}
         <Route path="/card" component={Card} />
         <Route path="/comment" component={Comment} />
+        <Route path="/navbar" component={Navbar} />
       </Switch>
     </Suspense>
   );
