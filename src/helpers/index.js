@@ -12,4 +12,9 @@ const passwordValidator = (password) => {
   return message;
 };
 
-export { passwordValidator };
+const getBackgroundColor = (idx) => {
+  const availableColors = ['3FBF3E1', '#FAEEE1', '#F3F9EC', '#FDE8EF'];
+  const totalColors = availableColors.length;
+  return { backgroundColor: availableColors[idx % totalColors] };
+};
+export { passwordValidator, getBackgroundColor };

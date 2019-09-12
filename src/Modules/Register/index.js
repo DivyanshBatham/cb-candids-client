@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { passwordValidator } from '../../helpers';
-import PumpkinLogo from '../../asset/pumpkin';
-import nameLogo from '../../asset/name';
+import PumpkinLogo from '../../assets/pumpkin';
+import nameLogo from '../../assets/name';
 import './register.scss';
 
 class register extends Component {
@@ -35,8 +35,8 @@ class register extends Component {
   handleRegister = (e) => {
     e.preventDefault();
     const {
- username, email, password, passwordError 
-} = this.state;
+      username, email, password, passwordError,
+    } = this.state;
     if (passwordError || username.length === 0 || email.length === 0) return;
     const url = 'https://calm-waters-47062.herokuapp.com/auth/register';
     axios({

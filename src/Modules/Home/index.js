@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import CardRenderer from '../../components/CardRenderer';
+import './home.scss';
 
 class Home extends Component {
   constructor() {
@@ -24,7 +25,7 @@ class Home extends Component {
   }
   render() {
     const { posts } = this.state;
-    return <CardRenderer posts={posts} />;
+    return <span className="home"><CardRenderer posts={posts} /></span>;
   }
 }
 
