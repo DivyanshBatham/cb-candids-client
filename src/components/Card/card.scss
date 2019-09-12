@@ -1,0 +1,88 @@
+@import '../../variables.scss';
+
+.card{
+    display: flex;
+    flex-direction: column;
+    background-color: #FFFFFF;
+    border-radius: 0.5rem;
+    box-shadow: 
+        0 0 8px 0 rgba(17, 22, 26, 0.16),
+        0 4px 8px 0 rgba(17, 22, 26, 0.08), 
+        0 8px 16px 0 rgba(17, 22, 26, 0.08);
+    padding: 1rem;
+    &--titleWrapper{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 0.6rem;
+        &--title{
+            font-size: 1rem;
+            line-height: 25px;
+            color: $darkText;
+            font-weight: 600;
+        }
+        &--icon{
+            font-size:  1rem;
+        }
+    }
+    &--description{
+        font-size: 12px;
+        margin-bottom: 0.5rem;
+        
+    }
+    &--openDescription{
+        white-space: nowrap; 
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    &--tag{
+        margin-bottom: 1rem;
+    }
+    &--image{
+        border-radius: 0.5rem;
+        width: 100%;
+    }
+    &--footer{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 1rem;
+        &--stats{
+            display: flex;
+            &--item{
+                display: flex;
+                align-items: center;
+                margin-right: 1rem;
+                &--icon{
+                    font-size: 1.2rem;
+                    margin-right: 10px;
+                    &--liked{
+                        color: red;
+                    }
+                }
+                &--text{
+                    font-size: 12px;
+                }
+            }
+        }
+        &--authorDetails{
+            display: flex;
+            align-items: center;
+            &--text{
+                font-size: 12px;
+                margin-right: 10px;
+                &:hover{
+                    cursor: pointer;
+                }
+            }
+            &--image{
+                width: 1.5rem;
+                height: 1.5rem;
+                border-radius: 50%;
+                &:hover{
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}

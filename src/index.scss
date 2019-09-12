@@ -1,3 +1,20 @@
-.cb {
-  color: red;
+@import url('https://fonts.googleapis.com/css?family=Poppins:300,400|Roboto:500&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Pacifico&display=swap');
+@import './variables.scss';
+:root{
+  font-size: 16px;
+  font-family: 'Poppins', sans-serif;
+}
+body {
+  margin: 0;
+  background-color: $bgLight;
+}
+#index {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  // background-color: black;
+}
+.container{
+  padding: 1rem;
 }

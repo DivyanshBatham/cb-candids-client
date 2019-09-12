@@ -1,0 +1,33 @@
+@import '../../variables.scss';
+
+.commentBox {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 1rem;
+    background-color: #FFFFFF;
+    width: 100%;
+    box-shadow: 
+    0 0 8px 0 rgba(17, 22, 26, 0.16),
+    0 4px 8px 0 rgba(17, 22, 26, 0.08), 
+    0 8px 16px 0 rgba(17, 22, 26, 0.08);
+    &--image{
+        width: 1.5rem;
+        height: 1.5rem;
+        border-radius: 50%;
+        margin-right: 0.8rem;
+    }
+    &--input{
+        flex: 1;
+        border: none;
+        margin-right: 0.8rem;
+        font-size: 14px;
+        outline: none;
+    }
+    &--button{
+        font-size: 1rem;
+        color: $darkText;
+    }
+}
+::placeholder{
+    font-size: 14px;
+}
