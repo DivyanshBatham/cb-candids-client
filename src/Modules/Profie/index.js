@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import CardRenderer from '../../components/CardRenderer';
 import axios from 'axios';
+import CardRenderer from '../../components/CardRenderer';
 import './profile.scss';
 import Loader from '../../components/Loader';
 
@@ -52,10 +51,9 @@ class Profile extends Component {
             ) : (
               <div className="profile">
                 <div className="profile--user">
-                  <img
-                    src={user && user.imgSrc}
-                    alt="user"
-                    className="profile--user--image"
+                  <div
+                    className="profile--user--imageContainer"
+                    style={{ backgroundImage: `url(${user && user.imgSrc})` }}
                   />
                   <div className="profile--user--stats">
                     <div className="profile--user--stats--item">
@@ -83,11 +81,6 @@ class Profile extends Component {
                   <span className="profile--details--bio">
                     {user && user.bio}
                   </span>
-                </div>
-                <div className="profile--postHeader">
-                  <div className="profile--postHeader--border">
-                    <span>POSTS</span>
-                  </div>
                 </div>
                 {posts && posts.length > 0 ? (
                   <CardRenderer posts={posts} />

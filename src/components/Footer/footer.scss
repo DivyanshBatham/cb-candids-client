@@ -1,0 +1,44 @@
+@import '../../variables.scss';
+.footer{
+    width: 100%;
+    background-color: $navbar;
+    align-content: center;
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+    z-index: 10000000000;
+    &__items{
+        transition: all 2s ease-in-out;
+        display: flex;
+        justify-content: space-evenly;
+        margin: 0.7rem 0;
+        &__logo{
+            font-size: 1.2rem;
+            color: $white;
+            transition: all 1s ease-in-out;
+
+            // &--active {
+            //     font-size: 2rem;
+            // }
+        }
+    }
+
+    .test {
+        height: 24px;
+        width: 24px;
+        // border: 1px solid red;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: all 1s ease-in-out;
+
+        &--active {
+            height: 36px;
+            width: 36px;
+        
+            .footer__items__logo{
+                font-size: 2rem;
+            }
+        }
+    }
+}
