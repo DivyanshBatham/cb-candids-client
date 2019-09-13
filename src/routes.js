@@ -1,5 +1,5 @@
 import React, { lazy, Suspense } from 'react';
-import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
+import { Switch, Route, withRouter } from 'react-router-dom';
 import Card from './components/Card';
 import Comment from './components/Comment';
 import PrivateRoute from './PrivateRoute';

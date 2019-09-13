@@ -17,4 +17,10 @@ const getBackgroundColor = (idx) => {
   const totalColors = availableColors.length;
   return { backgroundColor: availableColors[idx % totalColors] };
 };
-export { passwordValidator, getBackgroundColor };
+
+const currentPage = (pathname) => {
+  console.log(pathname);
+  if (pathname.indexOf('/post') !== -1) return false;
+  return true;
+};
+export { passwordValidator, getBackgroundColor, currentPage };
