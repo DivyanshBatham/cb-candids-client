@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PumpkinLogo from '../../assets/pumpkin';
 import nameLogo from '../../assets/name';
@@ -10,20 +10,20 @@ class Navbar extends Component {
   constructor() {
     super();
     this.state = {
-      optionIconClicked: false,
+      optionIconClicked: false
     };
   }
-  findCurrentPage = (pathname) => {
+  findCurrentPage = pathname => {
     const currentPage = pathname === '/' ? 'home' : 'otherPage';
     // pathname.contains('post)  ---> post
     // pathname.contains('user) ---> user??
     return currentPage;
   };
-  handleGoBack = (e) => {
+  handleGoBack = e => {
     e.preventDefault();
     this.props.history.goBack();
   };
-  handleOptions = (e) => {
+  handleOptions = e => {
     e.preventDefault();
   };
   render() {
@@ -51,8 +51,10 @@ class Navbar extends Component {
           )}
         </div>
         <div className="navbar__logo">
-          <div className="navbar__logo__pumpkin">{PumpkinLogo}</div>
-          <div className="navbar__logo__name">{nameLogo}</div>
+          <Link to="/" className="navbar__logo__link">
+            <div className="navbar__logo__pumpkin">{PumpkinLogo}</div>
+            <div className="navbar__logo__name">{nameLogo}</div>
+          </Link>
         </div>
         <div className="navbar__optionLogo">
           {page !== 'home' ? (

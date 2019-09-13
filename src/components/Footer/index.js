@@ -10,9 +10,11 @@ class Footer extends Component {
     this.state = {
     };
   }
+
   render() {
-    const display = currentPage(window.location.pathname);
     const currentLoggedInUser = localStorage.getItem('cb-username');
+    const currentProfileUserPath = window.location.pathname;
+    const display = currentPage(currentLoggedInUser);
 
     console.log(display);
     return (
@@ -40,7 +42,7 @@ class Footer extends Component {
           </NavLink>
           <NavLink
             className="test"
-            to="/notification"
+            to="/notifications"
             activeClassName="test--active"
           >
             <FontAwesomeIcon

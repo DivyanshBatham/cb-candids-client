@@ -22,6 +22,7 @@ const Routes = (props) => {
   return (
     <Suspense fallback={<div>loading...</div>}>
       <Navbar />
+      <main>
       <Switch>
         <PrivateRoute path="/" component={Home} exact />
         <Route path="/dashboard" component={Dashboard} />
@@ -38,6 +39,7 @@ const Routes = (props) => {
         <Route path="/comment" component={Comment} />
         <Route path="/navbar" component={Navbar} />
       </Switch>
+      </main>
       <Footer />
     </Suspense>
   );
