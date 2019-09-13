@@ -31,8 +31,6 @@ class profileSetting extends Component {
   }
   render() {
     const { username, bio, pushNotification } = this.state;
-    const userImage =
-      'https://avatars0.githubusercontent.com/u/29652551?s=460&v=4';
     console.log(this.state);
     return (
       <div className="profileSetting">
