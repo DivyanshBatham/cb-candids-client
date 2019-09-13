@@ -10,20 +10,20 @@ class Navbar extends Component {
   constructor() {
     super();
     this.state = {
-      optionIconClicked: false,
+      optionIconClicked: false
     };
   }
-  findCurrentPage = (pathname) => {
+  findCurrentPage = pathname => {
     const currentPage = pathname === '/' ? 'home' : 'otherPage';
     // pathname.contains('post)  ---> post
     // pathname.contains('user) ---> user??
     return currentPage;
   };
-  handleGoBack = (e) => {
+  handleGoBack = e => {
     e.preventDefault();
     this.props.history.goBack();
   };
-  handleOptions = (e) => {
+  handleOptions = e => {
     e.preventDefault();
   };
   render() {
@@ -42,12 +42,21 @@ class Navbar extends Component {
           when '/post/:id' --> back button logo name verticleOption
           when '/user/:username'----> back button logo name verticleOption */}
         <div className="navbar__backLogo">
-          {page !== 'home' && showBackButton ? (
-            <FontAwesomeIcon
-              icon="angle-left"
-              className="navbar__backLogo__icon"
-              onClick={this.handleGoBack}
-            />
+          {page !== 'home' ? (
+            <span>
+              {!showBackButton ? (
+                <FontAwesomeIcon
+                  icon="angle-left"
+                  className="navbar__backLogo__icon navbar__backLogo__disableIcon"
+                />
+              ) : (
+                <FontAwesomeIcon
+                  icon="angle-left"
+                  className="navbar__backLogo__icon"
+                  onClick={this.handleGoBack}
+                />
+              )}
+            </span>
           ) : (
             ''
           )}
