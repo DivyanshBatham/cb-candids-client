@@ -30,4 +30,11 @@ const currentPage = (pathname) => {
   if (pathname.indexOf('/verifyEmail') !== -1) return false;
   return true;
 };
-export { passwordValidator, getBackgroundColor, currentPage };
+
+const compareUser = (pathname) => {
+  const currentLoggedInUser = localStorage.getItem('cb-username');
+  const currentUserProfile = pathname.split('/')[2];
+  return currentLoggedInUser === currentUserProfile;
+};
+
+export { passwordValidator, getBackgroundColor, currentPage, compareUser };

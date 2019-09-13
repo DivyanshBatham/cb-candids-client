@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { withRouter, NavLink } from 'react-router-dom';
-import { currentPage } from '../../helpers';
+import { currentPage, compareUser } from '../../helpers';
 import './footer.scss';
 
 class Footer extends Component {
@@ -12,13 +12,11 @@ class Footer extends Component {
   }
 
   render() {
-    const currentLoggedInUser = localStorage.getItem('cb-username');
     const currentProfileUserPath = window.location.pathname;
-    const display = currentPage(currentLoggedInUser);
-
-    console.log(display);
+    const display = currentPage(currentProfileUserPath);
+    const showFooter = compareUser(currentProfileUserPath);
     return (
-      <div className={`footer ${display ? '' : ' hide'}`}>
+      <div className={`footer ${display && !showFooter ? '' : ' hide'}`}>
         <span className="footer__items">
           <NavLink className="test" to="/" exact activeClassName="test--active">
             <FontAwesomeIcon
