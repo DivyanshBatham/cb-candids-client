@@ -1,5 +1,5 @@
 import React, { lazy, Suspense } from 'react';
-import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
+import { Switch, Route, withRouter } from 'react-router-dom';
 import Card from './components/Card';
 import Comment from './components/Comment';
 import PrivateRoute from './PrivateRoute';
@@ -9,6 +9,7 @@ const Home = lazy(() => import('./Modules/Home'));
 const Login = lazy(() => import('./Modules/Login'));
 const Register = lazy(() => import('./Modules/Register'));
 const Navbar = lazy(() => import('./components/Navbar'));
+const Footer = lazy(() => import('./components/Footer'));
 const ProfileSetting = lazy(() => import('./Modules/ProfileSetting'));
 const forgetPassword = lazy(() => import('./Modules/ForgetPassword'));
 const Profile = lazy(() => import('./Modules/Profie'));
@@ -37,6 +38,7 @@ const Routes = (props) => {
         <Route path="/comment" component={Comment} />
         <Route path="/navbar" component={Navbar} />
       </Switch>
+      <Footer />
     </Suspense>
   );
 };
