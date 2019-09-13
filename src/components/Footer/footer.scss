@@ -15,6 +15,7 @@
         &__logo{
             font-size: 1.2rem;
             color: $white;
+            opacity: 0.6;
             transition: all 1s ease-in-out;
             cursor: pointer;
 
@@ -34,11 +35,8 @@
         transition: all 1s ease-in-out;
 
         &--active {
-            height: 36px;
-            width: 36px;
-        
             .footer__items__logo{
-                font-size: 2rem;
+                opacity: 1;
             }
         }
     }

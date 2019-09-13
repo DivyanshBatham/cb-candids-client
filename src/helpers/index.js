@@ -21,6 +21,13 @@ const getBackgroundColor = (idx) => {
 const currentPage = (pathname) => {
   console.log(pathname);
   if (pathname.indexOf('/post') !== -1) return false;
+  if (pathname.indexOf('/login') !== -1) return false;
+  if (pathname.indexOf('/register') !== -1) return false;
+  if (pathname.indexOf('/verifyEmail') !== -1) return false;
+  if (pathname.indexOf('/forgetPassword') !== -1) return false;
+  if (pathname.indexOf('/resetPassword') !== -1) return false;
+  if (pathname.indexOf('/verifyEmail') !== -1) return false;
+  if (pathname.indexOf('/verifyEmail') !== -1) return false;
   return true;
 };
 export { passwordValidator, getBackgroundColor, currentPage };
