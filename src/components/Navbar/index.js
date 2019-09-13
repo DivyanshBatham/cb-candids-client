@@ -36,6 +36,7 @@ class Navbar extends Component {
     } else display = currentPage(window.location.pathname);
 
     const showBackButton = compareUser(pathname);
+    console.log('show back button-->',showBackButton);
     return (
       <div className={`navbar ${display ? '' : ' hide'}`}>
         {/* when '/'--> icon and name
