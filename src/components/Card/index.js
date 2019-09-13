@@ -138,7 +138,7 @@ class Card extends Component {
             </span>
             <img
               className="card--footer--authorDetails--image"
-              src={imgSrc}
+              src={author.imgSrc}
               alt="author"
             />
           </div>

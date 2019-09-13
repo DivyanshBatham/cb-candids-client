@@ -20,7 +20,7 @@ body {
   margin-bottom: 2rem;
 }
 .hide {
-display: none;
+display: none !important;
 }
 .hover{
   cursor: pointer;
