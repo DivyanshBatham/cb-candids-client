@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import axios from 'axios';
+import { connect } from 'react-redux';
+import { addLoginData } from '../../actions';
 import { passwordValidator } from '../../helpers';
 import PumpkinLogo from '../../assets/pumpkin';
 import nameLogo from '../../assets/name';
@@ -51,10 +53,12 @@ class Login extends Component {
       data,
     })
       .then((res) => {
-        console.log(res.data);
+        console.log('login data-->', res.data);
         const { success, token } = res.data;
         if (success) {
           const { user } = res.data.data;
+          const userData = { ...user };
+          this.props.addLoginData(userData);
           this.handleLocalStorage('cb-token', token);
           this.handleLocalStorage('cb-username', user.username);
           this.handleLocalStorage('cb-email', user.email);
@@ -71,8 +75,8 @@ class Login extends Component {
 
   render() {
     const {
-      email, password, loggedIn, emailError, passwordError,
-    } = this.state;
+ email, password, loggedIn, emailError, passwordError 
+} = this.state;
 
     // If it's not redirected from anywhere, after login send it to /
     const { from } = this.props.location.state || { from: { pathname: '/' } };
@@ -138,4 +142,7 @@ class Login extends Component {
   }
 }
 
-export default Login;
+export default connect(
+  null,
+  { addLoginData },
+)(Login);
