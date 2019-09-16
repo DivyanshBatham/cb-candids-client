@@ -53,7 +53,7 @@ class Login extends Component {
               <label htmlFor="email">Email</label>
               <input
                 type="email"
-                placeholder="Enter your email."
+                placeholder="Enter your email"
                 name="email"
                 value={email}
                 onChange={this.handleState}
