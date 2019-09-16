@@ -15,8 +15,10 @@ class CommentBox extends Component {
   }
   handleComment = (e) => {
     e.preventDefault();
+    const { value } = this.state;
     console.log('comment Submit');
-    // TODO: logic for handleComment
+    if (value.length === 0) return;
+    this.props.submitComment(value);
   };
 
   // handleKeyPress = (e) => {
