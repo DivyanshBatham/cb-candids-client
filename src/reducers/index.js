@@ -6,7 +6,7 @@ const reducerFucntion = (state = {}, action) => {
       console.log('from reducer addLoginData-->', action.payload);
       return { ...state, ...action.payload };
     default:
-      return 2;
+        return state;
   }
 };
 export default reducerFucntion;

@@ -6,7 +6,7 @@
     background-color: $navbar;
     align-content: center;
     align-items: center;
-    position: fixed;
+    position: sticky;
     top: 0;
     z-index: 10000000000;
     &__logo{

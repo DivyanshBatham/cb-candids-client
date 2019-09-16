@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import axios from 'axios';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import CommentBox from '../../components/CommentBox';
 import Card from '../../components/Card';
@@ -12,11 +13,13 @@ class PostDetails extends Component {
     super(props);
     this.state = {
       post: this.props.location.state,
+      comments: this.props.location.state && this.props.location.state.comments,
       errorMessage: null,
     };
   }
   componentDidMount() {
     if (this.props.location.state === undefined) {
+      console.log('---------------->');
       axios({
         method: 'get',
         url: `https://calm-waters-47062.herokuapp.com/posts/${this.props.match.params.postId}`,
@@ -27,27 +30,38 @@ class PostDetails extends Component {
         .then((res) => {
           console.warn('post data-->', res.data);
           if (res.data.success) {
-            this.setState({ post: res.data.data.post });
+            this.setState({
+              post: res.data.data.post,
+              comments: res.data.data.post.comments,
+            });
           }
         })
         .catch(err => this.setState({ errorMessage: 'Post Not Found!' }));
     }
   }
   isAuthorComment = (comment) => {
-    const currentUser = localStorage.getItem('cb-username');
+    console.log(this.props.stateData);
+    const currentUser = this.props.stateData.username || localStorage.getItem('cb-username');
     return comment.author.username === currentUser;
   };
 
   submitComment = (commentText) => {
     const { _id: submittedPostId } = this.state.post;
-    console.log('in submit comment--->',submittedPostId);
+    console.log('in submit comment--->', submittedPostId);
     console.log(commentText);
-    const tempCommnetObj  = {
-      author: localStorage.getItem('cb-username'),
+    const tempCommnetObj = {
+      author: {
+        username: this.props.stateData.username || localStorage.getItem('cb-username'),
+        imgSrc: this.props.stateData.imgSrc,
+      },
       comment: commentText,
       _id: 1,
-      likes:[],
-    }
+      likes: [],
+      userComment: true,
+    };
+    this.setState(prevState => ({
+      comments: [...prevState.comments, tempCommnetObj],
+    }));
     axios({
       method: 'post',
       url: `https://calm-waters-47062.herokuapp.com/posts/${submittedPostId}/comments`,
@@ -59,15 +73,17 @@ class PostDetails extends Component {
       },
     })
       .then((res) => {
-       
+        console.log('comment--->', res.data);
       })
       .catch(err => console.log(err));
   };
 
   render() {
-    console.log('post--->',this.state);
+    console.log('post--->', this.state);
     const { post } = this.state;
-    const comments = post && post.comments;
+    const comments = this.state && this.state.comments;
+    // const comments = post && post.comments;
+    console.log('poist--->', post);
     return (
       <div className="postDetails">
         <div className="container">
@@ -95,8 +111,24 @@ class PostDetails extends Component {
     );
   }
 }
+// const mapStateToProps = (state) => {
+//   const stateData = state;
+//   console.log(stateData);
+//   return stateData
+// };
+// function mapStateToProps (state) {
+//   console.warn('mapStateToProps', state);
+//   return {
+//     stateData: state,
+//   }
+// }
+const mapStateToProps = state => ({ stateData: state });
+
 PostDetails.propTypes = {
   location: PropTypes.oneOfType(Object).isRequired,
 };
 
-export default withRouter(PostDetails);
+export default connect(
+  mapStateToProps,
+  null,
+)(withRouter(PostDetails));
