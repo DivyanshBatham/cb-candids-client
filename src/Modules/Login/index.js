@@ -75,8 +75,8 @@ class Login extends Component {
 
   render() {
     const {
- email, password, loggedIn, emailError, passwordError 
-} = this.state;
+      email, password, loggedIn, emailError, passwordError,
+    } = this.state;
 
     // If it's not redirected from anywhere, after login send it to /
     const { from } = this.props.location.state || { from: { pathname: '/' } };

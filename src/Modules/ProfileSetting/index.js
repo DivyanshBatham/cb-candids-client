@@ -73,7 +73,7 @@ class profileSetting extends Component {
             onClick={this.handlePushNotificationState}
             className={`profileSetting--form--button profileSetting--form--button--${
               pushNotification ? 'enabled' : 'disabled'
-            }`}
+              }`}
           >
             {`${pushNotification ? 'Disable' : 'Enable'}-Push-notification`}
           </button>

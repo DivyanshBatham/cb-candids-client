@@ -1,9 +1,9 @@
-@import url('https://fonts.googleapis.com/css?family=Poppins:300,400|Roboto:500&display=swap');
-@import url('https://fonts.googleapis.com/css?family=Pacifico&display=swap');
-@import './variables.scss';
-:root{
+@import url("https://fonts.googleapis.com/css?family=Poppins:300,400|Roboto:500&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Pacifico&display=swap");
+@import "./variables.scss";
+:root {
   font-size: 16px;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 body {
   margin: 0;
@@ -15,17 +15,17 @@ body {
   min-height: 100vh;
   // background-color: black;
 }
-.container{
+.container {
   padding: 1rem;
   margin-bottom: 2rem;
 }
 .hide {
-display: none !important;
+  display: none !important;
 }
-.hover{
+.hover {
   cursor: pointer;
 }
-main{
+main {
   flex: 1;
   // margin-top: 3rem;
 }

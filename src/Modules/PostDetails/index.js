@@ -102,7 +102,7 @@ class PostDetails extends Component {
             </React.Fragment>
           ) : (
             <div>Loading</div>
-          )}
+            )}
         </div>
         <div className="postDetails--commentBox">
           <CommentBox submitComment={this.submitComment} />

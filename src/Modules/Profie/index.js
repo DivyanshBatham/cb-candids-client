@@ -58,49 +58,50 @@ class Profile extends Component {
           <React.Fragment>
             {errors ? (
               <div className="error">{errors}</div>
-            ) : (
-              <div className="profile">
-                <div className="profile--user">
-                  <div
-                    className="profile--user--imageContainer"
-                    style={{ backgroundImage: `url(${user && user.imgSrcLarge})` }}
-                  />
-                  <div className="profile--user--stats">
-                    <div className="profile--user--stats--item">
-                      <span className="profile--user--stats--item--number">
-                        {postCount}
+              ) :
+                (
+                  <div className="profile">
+                    <div className="profile--user">
+                      <div
+                        className="profile--user--imageContainer"
+                        style={{ backgroundImage: `url(${user && user.imgSrcLarge})` }}
+                      />
+                      <div className="profile--user--stats">
+                        <div className="profile--user--stats--item">
+                          <span className="profile--user--stats--item--number">
+                            {postCount}
+                          </span>
+                          <span className="profile--user--stats--item--text">
+                            POSTS
+                          </span>
+                        </div>
+                        <div className="profile--user--stats--item">
+                          <span className="profile--user--stats--item--number">
+                            {likeCount}
+                          </span>
+                          <span className="profile--user--stats--item--text">
+                            LIKES
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="profile--details">
+                      <span className="profile--details--username">
+                        {user && user.username}
                       </span>
-                      <span className="profile--user--stats--item--text">
-                        POSTS
+                      <span className="profile--details--bio">
+                        {user && user.bio}
                       </span>
                     </div>
-                    <div className="profile--user--stats--item">
-                      <span className="profile--user--stats--item--number">
-                        {likeCount}
-                      </span>
-                      <span className="profile--user--stats--item--text">
-                        LIKES
-                      </span>
-                    </div>
+                    {posts && posts.length > 0 ? (
+                      <CardRenderer posts={posts} />
+                    ) : (
+                      <div className="error">No post found</div>
+                      )}
                   </div>
-                </div>
-                <div className="profile--details">
-                  <span className="profile--details--username">
-                    {user && user.username}
-                  </span>
-                  <span className="profile--details--bio">
-                    {user && user.bio}
-                  </span>
-                </div>
-                {posts && posts.length > 0 ? (
-                  <CardRenderer posts={posts} />
-                ) : (
-                  <div className="error">No post found</div>
                 )}
-              </div>
-            )}
           </React.Fragment>
-        )}
+          )}
       </React.Fragment>
     );
   }

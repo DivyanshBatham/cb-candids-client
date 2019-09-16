@@ -23,22 +23,22 @@ const Routes = (props) => {
     <Suspense fallback={<div>loading...</div>}>
       <Navbar />
       <main>
-      <Switch>
-        <PrivateRoute path="/" component={Home} exact />
-        <Route path="/dashboard" component={Dashboard} />
-        <Route path="/login" component={Login} />
-        <Route path="/register" component={Register} />
-        <Route path="/verifyEmail/:token" component={VerifyEmail} />
-        <Route path="/forgetPassword" component={forgetPassword} />
-        <Route path="/resetPassword/:token" component={resetPassword} />
-        <PrivateRoute path="/setting" component={ProfileSetting} />
-        <PrivateRoute sensitive path="/user/:username" component={Profile} />
-        <PrivateRoute path="/post/:postId" component={PostDetails} />
-        {/* Route for tesing */}
-        <Route path="/card" component={Card} />
-        <Route path="/comment" component={Comment} />
-        <Route path="/navbar" component={Navbar} />
-      </Switch>
+        <Switch>
+          <PrivateRoute path="/" component={Home} exact />
+          <Route path="/dashboard" component={Dashboard} />
+          <Route path="/login" component={Login} />
+          <Route path="/register" component={Register} />
+          <Route path="/verifyEmail/:token" component={VerifyEmail} />
+          <Route path="/forgetPassword" component={forgetPassword} />
+          <Route path="/resetPassword/:token" component={resetPassword} />
+          <PrivateRoute path="/setting" component={ProfileSetting} />
+          <PrivateRoute sensitive path="/user/:username" component={Profile} />
+          <PrivateRoute path="/post/:postId" component={PostDetails} />
+          {/* Route for tesing */}
+          <Route path="/card" component={Card} />
+          <Route path="/comment" component={Comment} />
+          <Route path="/navbar" component={Navbar} />
+        </Switch>
       </main>
       <Footer />
     </Suspense>
