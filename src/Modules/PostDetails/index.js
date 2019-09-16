@@ -25,6 +25,7 @@ class PostDetails extends Component {
         },
       })
         .then((res) => {
+          console.warn('post data-->', res.data);
           if (res.data.success) {
             this.setState({ post: res.data.data.post });
           }
@@ -36,7 +37,35 @@ class PostDetails extends Component {
     const currentUser = localStorage.getItem('cb-username');
     return comment.author.username === currentUser;
   };
+
+  submitComment = (commentText) => {
+    const { _id: submittedPostId } = this.state.post;
+    console.log('in submit comment--->',submittedPostId);
+    console.log(commentText);
+    const tempCommnetObj  = {
+      author: localStorage.getItem('cb-username'),
+      comment: commentText,
+      _id: 1,
+      likes:[],
+    }
+    axios({
+      method: 'post',
+      url: `https://calm-waters-47062.herokuapp.com/posts/${submittedPostId}/comments`,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('cb-token')}`,
+      },
+      data: {
+        comment: commentText,
+      },
+    })
+      .then((res) => {
+       
+      })
+      .catch(err => console.log(err));
+  };
+
   render() {
+    console.log('post--->',this.state);
     const { post } = this.state;
     const comments = post && post.comments;
     return (
@@ -60,7 +89,7 @@ class PostDetails extends Component {
           )}
         </div>
         <div className="postDetails--commentBox">
-          <CommentBox />
+          <CommentBox submitComment={this.submitComment} />
         </div>
       </div>
     );
