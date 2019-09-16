@@ -14,8 +14,17 @@ class Profile extends Component {
     };
   }
   componentDidMount() {
-    const { username } = this.props.match.params;
+    this.fetchData();
     // this.setState({ loading: true });
+  }
+  componentDidUpdate(prevProps) {
+    const { username: currentUserName } = this.props.match.params;
+    const { username: previousUserName } = prevProps.match.params;
+    if (currentUserName !== previousUserName) this.fetchData();
+  }
+
+  fetchData = () => {
+    const { username } = this.props.match.params;
     axios({
       method: 'get',
       url: `https://calm-waters-47062.herokuapp.com/users/${username}`,
@@ -54,7 +63,7 @@ class Profile extends Component {
                 <div className="profile--user">
                   <div
                     className="profile--user--imageContainer"
-                    style={{ backgroundImage: `url(${user && user.imgSrc})` }}
+                    style={{ backgroundImage: `url(${user && user.imgSrcLarge})` }}
                   />
                   <div className="profile--user--stats">
                     <div className="profile--user--stats--item">

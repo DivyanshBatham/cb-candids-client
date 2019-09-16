@@ -16,7 +16,7 @@
             font-size: 1.2rem;
             color: $white;
             opacity: 0.6;
-            transition: all 1s ease-in-out;
+            transition: all 0.5s ease-in-out;
             cursor: pointer;
 
             // &--active {
@@ -32,7 +32,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        transition: all 1s ease-in-out;
+        transition: all 0.5s ease-in-out;
 
         &--active {
             .footer__items__logo{

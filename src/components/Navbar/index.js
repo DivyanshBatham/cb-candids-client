@@ -1,39 +1,42 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PumpkinLogo from '../../assets/pumpkin';
 import nameLogo from '../../assets/name';
-import { currentPage } from '../../helpers';
+import { currentPage, compareUser } from '../../helpers';
 import './navbar.scss';
 
 class Navbar extends Component {
   constructor() {
     super();
     this.state = {
-      optionIconClicked: false,
+      optionIconClicked: false
     };
   }
-  findCurrentPage = (pathname) => {
+  findCurrentPage = pathname => {
     const currentPage = pathname === '/' ? 'home' : 'otherPage';
     // pathname.contains('post)  ---> post
     // pathname.contains('user) ---> user??
     return currentPage;
   };
-  handleGoBack = (e) => {
+  handleGoBack = e => {
     e.preventDefault();
     this.props.history.goBack();
   };
-  handleOptions = (e) => {
+  handleOptions = e => {
     e.preventDefault();
   };
   render() {
     console.log('props is-->', this.props.location.pathname);
+    let display;
     const { pathname } = this.props.location;
     const page = this.findCurrentPage(pathname);
-    let display;
     if (window.location.pathname.indexOf('/post') !== -1) {
       display = true;
     } else display = currentPage(window.location.pathname);
+
+    const showBackButton = compareUser(pathname);
+    console.log('show back button-->',showBackButton);
     return (
       <div className={`navbar ${display ? '' : ' hide'}`}>
         {/* when '/'--> icon and name
@@ -41,18 +44,29 @@ class Navbar extends Component {
           when '/user/:username'----> back button logo name verticleOption */}
         <div className="navbar__backLogo">
           {page !== 'home' ? (
-            <FontAwesomeIcon
-              icon="angle-left"
-              className="navbar__backLogo__icon"
-              onClick={this.handleGoBack}
-            />
+            <span>
+              {!showBackButton ? (
+                <FontAwesomeIcon
+                  icon="angle-left"
+                  className="navbar__backLogo__icon navbar__backLogo__disableIcon"
+                />
+              ) : (
+                <FontAwesomeIcon
+                  icon="angle-left"
+                  className="navbar__backLogo__icon"
+                  onClick={this.handleGoBack}
+                />
+              )}
+            </span>
           ) : (
             ''
           )}
         </div>
         <div className="navbar__logo">
-          <div className="navbar__logo__pumpkin">{PumpkinLogo}</div>
-          <div className="navbar__logo__name">{nameLogo}</div>
+          <Link to="/" className="navbar__logo__link">
+            <div className="navbar__logo__pumpkin">{PumpkinLogo}</div>
+            <div className="navbar__logo__name">{nameLogo}</div>
+          </Link>
         </div>
         <div className="navbar__optionLogo">
           {page !== 'home' ? (
