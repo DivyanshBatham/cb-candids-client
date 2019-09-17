@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PumpkinLogo from '../../assets/pumpkin';
-import nameLogo from '../../assets/name';
+import NameLogo from '../../assets/name';
 import { currentPage, compareUser } from '../../helpers';
 import './navbar.scss';
 
@@ -10,24 +10,26 @@ class Navbar extends Component {
   constructor() {
     super();
     this.state = {
-      optionIconClicked: false
+      optionIconClicked: false,
     };
   }
-  findCurrentPage = pathname => {
+  findCurrentPage = (pathname) => {
     const currentPage = pathname === '/' ? 'home' : 'otherPage';
     // pathname.contains('post)  ---> post
     // pathname.contains('user) ---> user??
     return currentPage;
   };
-  handleGoBack = e => {
+  handleGoBack = (e) => {
     e.preventDefault();
     this.props.history.goBack();
   };
-  handleOptions = e => {
+  handleOptions = (e) => {
     e.preventDefault();
   };
   render() {
     console.log('props is-->', this.props.location.pathname);
+    console.log('history--->', this.props.history);
+
     let display;
     const { pathname } = this.props.location;
     const page = this.findCurrentPage(pathname);
@@ -36,9 +38,9 @@ class Navbar extends Component {
     } else display = currentPage(window.location.pathname);
 
     const showBackButton = compareUser(pathname);
-    console.log('show back button-->',showBackButton);
+    console.log('show back button-->', showBackButton);
     return (
-      <div className={`navbar ${display ? '' : ' hide'}`}>
+      <div className={display ? 'navbar' : 'hide'}>
         {/* when '/'--> icon and name
           when '/post/:id' --> back button logo name verticleOption
           when '/user/:username'----> back button logo name verticleOption */}
@@ -65,18 +67,16 @@ class Navbar extends Component {
         <div className="navbar__logo">
           <Link to="/" className="navbar__logo__link">
             <div className="navbar__logo__pumpkin">{PumpkinLogo}</div>
-            <div className="navbar__logo__name">{nameLogo}</div>
+            <div className="navbar__logo__name"><NameLogo id={1} /></div>
           </Link>
         </div>
         <div className="navbar__optionLogo">
-          {page !== 'home' ? (
+          {page !== 'home' && (
             <FontAwesomeIcon
               icon="ellipsis-v"
               className="navbar__optionLogo__icon"
               onClick={this.handleOptions}
             />
-          ) : (
-            ''
           )}
         </div>
       </div>
