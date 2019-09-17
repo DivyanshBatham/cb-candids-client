@@ -16,7 +16,7 @@ class Footer extends Component {
     const display = currentPage(currentProfileUserPath);
     const showFooter = compareUser(currentProfileUserPath);
     return (
-      <div className={`footer ${display && !showFooter ? '' : ' hide'}`}>
+      <div className={display && !showFooter ? 'footer' : ' hide'}>
         <span className="footer__items">
           <NavLink className="test" to="/" exact activeClassName="test--active">
             <FontAwesomeIcon

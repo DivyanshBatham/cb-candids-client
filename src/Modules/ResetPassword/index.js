@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { passwordValidator } from '../../helpers';
 import PumpkinLogo from '../../assets/pumpkin';
-import nameLogo from '../../assets/name';
+import NameLogo from '../../assets/name';
 import './resetPassword.scss';
 
 class resetPassword extends Component {
@@ -83,7 +83,7 @@ class resetPassword extends Component {
       <div className="resetPassword">
         <div className="resetPassword__logo">
           <div className="resetPassword__logo__pumpkin">{PumpkinLogo}</div>
-          <div className="resetPassword__logo__name">{nameLogo}</div>
+          <div className="resetPassword__logo__name"><NameLogo id={4} /></div>
         </div>
         <form
           className="resetPassword__form"

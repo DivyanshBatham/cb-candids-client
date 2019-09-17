@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import PumpkinLogo from '../../assets/pumpkin';
-import nameLogo from '../../assets/name';
+import NameLogo from '../../assets/name';
 import './forgetPassword.scss';
 
 class Login extends Component {
@@ -45,7 +45,7 @@ class Login extends Component {
       <div className="forgetPassword">
         <div className="forgetPassword__logo">
           <div className="forgetPassword__logo__pumpkin">{PumpkinLogo}</div>
-          <div className="forgetPassword__logo__name">{nameLogo}</div>
+          <div className="forgetPassword__logo__name"><NameLogo id={5} /></div>
         </div>
         <form className="forgetPassword__form" onSubmit={this.handleForgetPassword}>
           <div className="forgetPassword__form__wrapper">
