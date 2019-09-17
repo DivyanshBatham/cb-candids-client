@@ -41,7 +41,7 @@ class PostDetails extends Component {
   }
   isAuthorComment = (comment) => {
     console.log(this.props.stateData);
-    const currentUser = this.props.stateData.username || localStorage.getItem('cb-username');
+    const currentUser = this.props.stateData.username;
     return comment.author.username === currentUser;
   };
 
@@ -51,7 +51,7 @@ class PostDetails extends Component {
     console.log(commentText);
     const tempCommnetObj = {
       author: {
-        username: this.props.stateData.username || localStorage.getItem('cb-username'),
+        username: this.props.stateData.username,
         imgSrc: this.props.stateData.imgSrc,
       },
       comment: commentText,

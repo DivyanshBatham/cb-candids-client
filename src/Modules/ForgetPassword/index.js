@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import PumpkinLogo from '../../assets/pumpkin';
-import nameLogo from '../../assets/name';
+import NameLogo from '../../assets/name';
 import './forgetPassword.scss';
 
 class Login extends Component {
@@ -13,7 +13,7 @@ class Login extends Component {
       emailError: null,
     };
   }
-  handleSubmitPassword = (e) => {
+  handleForgetPassword = (e) => {
     e.preventDefault();
     const { email } = this.state;
     axios({
@@ -45,15 +45,15 @@ class Login extends Component {
       <div className="forgetPassword">
         <div className="forgetPassword__logo">
           <div className="forgetPassword__logo__pumpkin">{PumpkinLogo}</div>
-          <div className="forgetPassword__logo__name">{nameLogo}</div>
+          <div className="forgetPassword__logo__name"><NameLogo id={5} /></div>
         </div>
-        <form className="forgetPassword__form" onSubmit={this.handleLogin}>
+        <form className="forgetPassword__form" onSubmit={this.handleForgetPassword}>
           <div className="forgetPassword__form__wrapper">
             <div className="forgetPassword__form__wrapper__inputWrapper">
               <label htmlFor="email">Email</label>
               <input
                 type="email"
-                placeholder="Enter your email."
+                placeholder="Enter your email"
                 name="email"
                 value={email}
                 onChange={this.handleState}
@@ -67,9 +67,8 @@ class Login extends Component {
         <div className="forgetPassword__footer">
           <button
             className="forgetPassword__footer__button"
-            onClick={this.handleLogin}
+            onClick={this.handleForgetPassword}
           >
-            {' '}
             Request Link
           </button>
           <Link to="/login" className="forgetPassword__footer__registerText">

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { passwordValidator } from '../../helpers';
 import PumpkinLogo from '../../assets/pumpkin';
-import nameLogo from '../../assets/name';
+import NameLogo from '../../assets/name';
 import './resetPassword.scss';
 
 class resetPassword extends Component {
@@ -19,7 +19,6 @@ class resetPassword extends Component {
   handleSubmitPassword = (e) => {
     e.preventDefault();
     const { token } = this.props.match.params;
-    console.log(this.state);
     const {
       password,
       confirmPassword,
@@ -32,7 +31,6 @@ class resetPassword extends Component {
       password.length > 0 &&
       password === confirmPassword
     ) {
-      console.log('in axios');
       axios({
         method: 'post',
         url: 'https://calm-waters-47062.herokuapp.com/auth/resetPassword',
@@ -43,7 +41,6 @@ class resetPassword extends Component {
       })
         .then((res) => {
           const { success } = res.data;
-          console.log(success);
           if (success) {
             const { token } = res.data;
             localStorage.setItem('cb-token', token);
@@ -57,7 +54,7 @@ class resetPassword extends Component {
   };
   handleState = (e) => {
     e.preventDefault();
-    const { password, confirmPassword } = this.state;
+    const { password } = this.state;
     // if it is password then show the password message
     if (e.target.name === 'password') {
       const response = passwordValidator(e.target.value);
@@ -65,7 +62,6 @@ class resetPassword extends Component {
         passwordError: response.length < 3 ? null : `Must contain ${response}`,
       });
     } else if (e.target.name === 'confirmPassword') {
-      console.log(password, confirmPassword);
       this.setState({
         confirmPasswordError:
           password === e.target.value ? null : 'Password must be same!',
@@ -87,7 +83,7 @@ class resetPassword extends Component {
       <div className="resetPassword">
         <div className="resetPassword__logo">
           <div className="resetPassword__logo__pumpkin">{PumpkinLogo}</div>
-          <div className="resetPassword__logo__name">{nameLogo}</div>
+          <div className="resetPassword__logo__name"><NameLogo id={4} /></div>
         </div>
         <form
           className="resetPassword__form"
@@ -97,7 +93,8 @@ class resetPassword extends Component {
             <div className="resetPassword__form__wrapper__inputWrapper">
               <label htmlFor="new-password">New Password</label>
               <input
-                type="text"
+                id="new-password"
+                type="password"
                 required
                 placeholder="Enter your new password"
                 name="password"
@@ -113,7 +110,8 @@ class resetPassword extends Component {
             <div className="resetPassword__form__wrapper__inputWrapper">
               <label htmlFor="confirm-password">Confirm Password</label>
               <input
-                type="text"
+                id="confirm-password"
+                type="password"
                 required
                 placeholder="Enter your confirm password"
                 name="confirmPassword"
