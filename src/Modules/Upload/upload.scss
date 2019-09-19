@@ -1,14 +1,28 @@
 @import "../../variables.scss";
 
 .inputWrapper {
+  input {
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    border: solid 1px $bgDark;
+    padding: 0.2rem 0.5rem;
+    font-family: "Poppins", sans-serif;
+  }
+}
 
-    input {
-        width: 100%;
-        box-sizing: border-box;
-        margin-bottom: 1rem;
-        border-radius: 8px;
-        border: solid 1px $bgDark;
-        padding: 0.2rem 0.5rem;
-        font-family: "Poppins", sans-serif;
-    }
+.imageContainer {
+  border-radius: 8px;
+  background-size: cover;
+  position: relative;
+
+  .image {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    border-radius: 8px;
+    background-size: cover,
+  }
 }

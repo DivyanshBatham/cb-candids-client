@@ -71,50 +71,40 @@ class Upload extends Component {
     const img = new Image();
     img.onload = () => {
       orientation(file, (base64img, value) => {
-        const imageContainerStyle = {
-          borderRadius: '8px',
-          backgroundSize: 'cover',
-          position: 'relative',
-        };
         let imageStyle = {};
+        let imageContainerStyle = {};
 
+        alert(`${rotation[value]} ${value}`);
         // TODO: Check condition for rotation:
         if (value === 1 || value === 0) {
           // No Rotation:
-          imageContainerStyle.paddingTop = `${img.height / img.width * 100}%`; // Good for Landscape Images
-          // Option 1: But different approach:
-          // imageContainerStyle.backgroundImage = `url(${base64img})`;
+          const ratio = (img.height / img.width) * 100;
 
-          // Option 2: Similar approach:
-          const ratio = img.height / img.width * 100;
+          imageContainerStyle = {
+            paddingTop: `${ratio}%`, // Good for Landscape Images
+          };
+
           imageStyle = {
-            position: 'absolute',
-            width: '100%',
-            top: 0,
-            left: 0,
             paddingTop: `${ratio}%`,
-            borderRadius: '8px',
             backgroundImage: `url(${base64img})`,
-            backgroundSize: 'cover',
           };
         } else {
           // Image has to be Rotated:
-          imageContainerStyle.paddingTop = `${img.width / img.height * 100}%`; // Good for Portrait Images
+          const ratio = (img.height / img.width) * 100;
 
-          const ratio = img.height / img.width * 100;
+          imageContainerStyle = {
+            paddingTop: `${(img.width / img.height) * 100}%`, // Good for Portrait Images
+          };
+
           imageStyle = {
-            position: 'absolute',
-            width: '100%',
-            top: 0,
-            left: 0,
-            // paddingTop: '75%',
             paddingTop: `${ratio}%`,
-            borderRadius: '8px',
-            transformOrigin: 'top left',
-            // transform: 'translate(100%) rotate(90deg) scale(calc(100/75))s',
-            transform: `translate(100%) rotate(90deg) scale(${100 / ratio}`,
             backgroundImage: `url(${base64img})`,
-            backgroundSize: 'cover',
+            transformOrigin: 'top left',
+            // transform: `translate(100%) rotate(90deg) scale(${100 / ratio}`,
+            // Works for 90deg and 0deg only
+            // Fails for 180deg
+            transform: `translate(100%) ${rotation[value]} scale(${100 / ratio}`,
+
           };
         }
 
@@ -208,11 +198,8 @@ class Upload extends Component {
               imgSrc ?
                 (
                   <div
-                    className="imgContainer"
-                    style={{
-                      ...imageContainerStyle,
-
-                    }}
+                    className="imageContainer"
+                    style={imageContainerStyle}
                   >
                     {/* TODO: Add Options: */}
                     {/* <button>Edit</button> */}
