@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 import React, { Component } from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -21,15 +22,14 @@ class Navbar extends Component {
   };
   handleGoBack = (e) => {
     e.preventDefault();
-    this.props.history.goBack();
+    this.props.history.length <= 2
+      ? this.props.history.push('/')
+      : this.props.history.goBack();
   };
   handleOptions = (e) => {
     e.preventDefault();
   };
   render() {
-    console.log('props is-->', this.props.location.pathname);
-    console.log('history--->', this.props.history);
-
     let display;
     const { pathname } = this.props.location;
     const page = this.findCurrentPage(pathname);
@@ -38,7 +38,6 @@ class Navbar extends Component {
     } else display = currentPage(window.location.pathname);
 
     const showBackButton = compareUser(pathname);
-    console.log('show back button-->', showBackButton);
     return (
       <div className={display ? 'navbar' : 'hide'}>
         {/* when '/'--> icon and name
@@ -67,7 +66,9 @@ class Navbar extends Component {
         <div className="navbar__logo">
           <Link to="/" className="navbar__logo__link">
             <div className="navbar__logo__pumpkin">{PumpkinLogo}</div>
-            <div className="navbar__logo__name"><NameLogo id={1} /></div>
+            <div className="navbar__logo__name">
+              <NameLogo id={1} />
+            </div>
           </Link>
         </div>
         <div className="navbar__optionLogo">
