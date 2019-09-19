@@ -1,0 +1,18 @@
+@import "../../variables.scss";
+
+.dropzoneContainer {
+  border-radius: 8px;
+  border: solid 1px $bgDark;
+  padding-top: 100%;
+  position: relative;
+
+  .dropzone {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
