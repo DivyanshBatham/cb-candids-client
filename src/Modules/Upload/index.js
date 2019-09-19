@@ -49,21 +49,21 @@ class Upload extends Component {
   // }
 
 
-  handleFileChange = (e) => {
-    const file = e.target.files[0];
-    console.log(file);
-    if (file) {
-      orientation(file, (base64img, value) => {
-        this.setState({
-          imgSrcDisplay: base64img,
-          imgSrc: file,
-          style: {
-            transform: rotation[value],
-          },
-        });
-      });
-    }
-  }
+  // handleFileChange = (e) => {
+  //   const file = e.target.files[0];
+  //   console.log(file);
+  //   if (file) {
+  //     orientation(file, (base64img, value) => {
+  //       this.setState({
+  //         imgSrcDisplay: base64img,
+  //         imgSrc: file,
+  //         style: {
+  //           transform: rotation[value],
+  //         },
+  //       });
+  //     });
+  //   }
+  // }
 
   handleFileDrop = (files) => {
     const file = files[0];
@@ -71,15 +71,17 @@ class Upload extends Component {
     const img = new Image();
     img.onload = () => {
       orientation(file, (base64img, value) => {
+        const ratio = (img.height / img.width) * 100;
+
         let imageStyle = {};
         let imageContainerStyle = {};
 
+
         alert(`${rotation[value]} ${value}`);
         // TODO: Check condition for rotation:
-        if (value === 1 || value === 0) {
-          // No Rotation:
-          const ratio = (img.height / img.width) * 100;
-
+        if (value === 1 || value === 0 || value === 3) {
+          console.warn('rotate(0deg) or rotate(180deg)');
+          // No Rotation: rotate(0deg) or unknown
           imageContainerStyle = {
             paddingTop: `${ratio}%`, // Good for Landscape Images
           };
@@ -87,11 +89,11 @@ class Upload extends Component {
           imageStyle = {
             paddingTop: `${ratio}%`,
             backgroundImage: `url(${base64img})`,
+            transform: `${rotation[value]}`,
           };
-        } else {
-          // Image has to be Rotated:
-          const ratio = (img.height / img.width) * 100;
-
+        } else if (value === 6) {
+          console.warn('rotate(90deg)');
+          // Image has to be Rotated: rotate(90deg)
           imageContainerStyle = {
             paddingTop: `${(img.width / img.height) * 100}%`, // Good for Portrait Images
           };
@@ -100,11 +102,7 @@ class Upload extends Component {
             paddingTop: `${ratio}%`,
             backgroundImage: `url(${base64img})`,
             transformOrigin: 'top left',
-            // transform: `translate(100%) rotate(90deg) scale(${100 / ratio}`,
-            // Works for 90deg and 0deg only
-            // Fails for 180deg
             transform: `translate(100%) ${rotation[value]} scale(${100 / ratio}`,
-
           };
         }
 
