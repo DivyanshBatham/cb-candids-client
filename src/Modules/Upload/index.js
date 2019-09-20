@@ -1,69 +1,16 @@
 import React, { Component } from 'react';
-// import ReactCrop from 'react-image-crop';
 import axios from 'axios';
-import Dropzone from 'react-dropzone';
 import MyDropzone from '../MyDropzone';
-// import CardRenderer from '../../components/CardRenderer';
-import './upload.scss';
-// import Loader from '../../components/Loader';
 import { rotation, orientation } from './orientation';
+import './upload.scss';
 
 class Upload extends Component {
   constructor() {
     super();
     this.state = {
-      isCropping: true,
       errors: {},
-      // crop: {
-      //   unit: '%',
-      //   width: 30,
-      //   aspect: 16 / 9,
-      // },
     };
   }
-
-  // handleChange = (event) => {
-
-  //   this.setState({
-  //     src: URL.createObjectURL(event.target.files[0]),
-  //   });
-
-
-  //   const file = event.target.files[0];
-  //   if (file) {
-  //     orientation(file, (base64img, value) => {
-  //       console.log(base64img, value);
-  //       console.log(rotation[value]);
-  //       this.setState({
-  //         src: base64img,
-  //         style: {
-  //           transform: rotation[value],
-  //         },
-  //       });
-  //       // const rotated = $('#placeholder2').attr('src', base64img);
-  //       // if (value) {
-  //       //   rotated.css('transform', rotation[value]);
-  //       // }
-  //     });
-  //   }
-  // }
-
-
-  // handleFileChange = (e) => {
-  //   const file = e.target.files[0];
-  //   console.log(file);
-  //   if (file) {
-  //     orientation(file, (base64img, value) => {
-  //       this.setState({
-  //         imgSrcDisplay: base64img,
-  //         imgSrc: file,
-  //         style: {
-  //           transform: rotation[value],
-  //         },
-  //       });
-  //     });
-  //   }
-  // }
 
   handleFileDrop = (files) => {
     const file = files[0];
@@ -77,32 +24,39 @@ class Upload extends Component {
         let imageContainerStyle = {};
 
 
-        alert(`${rotation[value]} ${value}`);
         // TODO: Check condition for rotation:
-        if (value === 1 || value === 0 || value === 3) {
-          console.warn('rotate(0deg) or rotate(180deg)');
-          // No Rotation: rotate(0deg) or unknown
+        if (value === 3) {
+          // Image has to be Rotated: rotate(180deg)
           imageContainerStyle = {
-            paddingTop: `${ratio}%`, // Good for Landscape Images
+            paddingTop: `${ratio}%`,
           };
 
           imageStyle = {
             paddingTop: `${ratio}%`,
-            backgroundImage: `url(${base64img})`,
+            backgroundImage: `url(${img.src})`,
             transform: `${rotation[value]}`,
           };
         } else if (value === 6) {
-          console.warn('rotate(90deg)');
           // Image has to be Rotated: rotate(90deg)
           imageContainerStyle = {
-            paddingTop: `${(img.width / img.height) * 100}%`, // Good for Portrait Images
+            paddingTop: `${(img.width / img.height) * 100}%`,
           };
 
           imageStyle = {
             paddingTop: `${ratio}%`,
-            backgroundImage: `url(${base64img})`,
+            backgroundImage: `url(${img.src})`,
             transformOrigin: 'top left',
             transform: `translate(100%) ${rotation[value]} scale(${100 / ratio}`,
+          };
+        } else {
+          // No Rotation: rotate(0deg) or unknown
+          imageContainerStyle = {
+            paddingTop: `${ratio}%`,
+          };
+
+          imageStyle = {
+            paddingTop: `${ratio}%`,
+            backgroundImage: `url(${img.src})`,
           };
         }
 
@@ -147,7 +101,7 @@ class Upload extends Component {
 
   render() {
     const {
-      imgSrc, imgSrcDisplay, imageContainerStyle, isCropping, title, description, taggedUsers, imgHeight, imgWidth, imageStyle,
+      imgSrc, imageContainerStyle, title, description, taggedUsers, imageStyle,
     } = this.state;
 
 
