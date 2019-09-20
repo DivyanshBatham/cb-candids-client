@@ -109,7 +109,7 @@ class Upload extends Component {
       <div className="container">
         <div className="upload">
 
-          <h1>Upload</h1>
+          <h2 className="sectionHeading">Share Candid:</h2>
           <form className="card" onSubmit={this.handleSubmit}>
 
             <div className="inputWrapper" data-error={this.state.errors.title}>
