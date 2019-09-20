@@ -6,6 +6,7 @@ import { addLoginData } from './actions';
 import Card from './components/Card';
 import Comment from './components/Comment';
 import PrivateRoute from './PrivateRoute';
+import ConfirmationModal from './components/ConfirmationModal';
 
 const Dashboard = lazy(() => import('./components/Dashboard'));
 const Home = lazy(() => import('./Modules/Home'));
@@ -67,6 +68,7 @@ class Routes extends React.Component {
             <Route path="/card" component={Card} />
             <Route path="/comment" component={Comment} />
             <Route path="/navbar" component={Navbar} />
+            <Route path="/modal" component={ConfirmationModal} />
           </Switch>
         </main>
         <Footer />

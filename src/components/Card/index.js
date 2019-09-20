@@ -7,6 +7,7 @@ import { shareLink } from '../../helpers';
 import './card.scss';
 import Tag from '../Tag';
 import Options from '../DropdownOptions';
+import ConfirmationModal from '../ConfirmationModal';
 
 class Card extends Component {
   constructor(props) {
@@ -15,6 +16,7 @@ class Card extends Component {
       openDescription: false,
       likesCount: props.post.likes.length,
       liked: this.isLiked(),
+      showConfirmationModal: false,
     };
   }
 
@@ -52,7 +54,7 @@ class Card extends Component {
         this.setState(prevState => ({
           likesCount: prevState.likesCount + -1 * extraPoint,
           liked: extraPoint === -1,
-        })));
+        })),);
   };
   handleDescription = (e) => {
     e.preventDefault();
@@ -82,12 +84,22 @@ class Card extends Component {
     const { _id: id } = post;
     this.props.history.push(`/editPost/${id}`, { ...post });
   };
-  handleDeletePost = () => {
-    console.log('handleDeletePost...');
+  handleShowConfirmation = () => {
+    this.setState(prevState => ({
+      showConfirmationModal: !prevState.showConfirmationModal,
+    }));
+  };
+  handleDeletePost = (e) => {
+    e.preventDefault();
+    // TODO: API call for delete the post
   };
   render() {
     const {
-      openDescription, liked, likesCount, showOption,
+      openDescription,
+      liked,
+      likesCount,
+      showOption,
+      showConfirmationModal,
     } = this.state;
     const {
       title,
@@ -99,6 +111,16 @@ class Card extends Component {
     } = this.props.post;
     return (
       <div className="card">
+        {showConfirmationModal && (
+          <ConfirmationModal
+            headerText="Delete Candid?"
+            description="You will lost a good moment !"
+            dangerButtonText="Yes, Delete Candid"
+            cancelButtonText="No, Keep Candid"
+            dangerButtonHandler={this.handleDeletePost}
+            cancelButtonHandler={this.handleShowConfirmation}
+          />
+        )}
         <div className="card--titleWrapper">
           <span className="card--titleWrapper--title">{title}</span>
           <Options
@@ -110,7 +132,7 @@ class Card extends Component {
               },
               {
                 title: 'Delete Candid',
-                handleClick: this.handleDeletePost,
+                handleClick: this.handleShowConfirmation,
               },
               {
                 title: 'Share Candid',
