@@ -3,8 +3,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import { shareLink } from '../../helpers';
 import './card.scss';
 import Tag from '../Tag';
+import Options from '../DropdownOptions';
 
 class Card extends Component {
   constructor(props) {
@@ -19,7 +21,9 @@ class Card extends Component {
   isLiked = () => {
     const currentUser = localStorage.getItem('cb-username');
     const likedArray = this.props.post.likes;
-    return likedArray.filter(item => currentUser === item.username).length > 0;
+    return (
+      likedArray.filter(item => currentUser === item.username).length > 0
+    );
   };
   handleLikes = (e) => {
     e.preventDefault();
@@ -48,7 +52,7 @@ class Card extends Component {
         this.setState(prevState => ({
           likesCount: prevState.likesCount + -1 * extraPoint,
           liked: extraPoint === -1,
-        })),);
+        })));
   };
   handleDescription = (e) => {
     e.preventDefault();
@@ -64,29 +68,55 @@ class Card extends Component {
   handlePostRedirect = (e) => {
     e.preventDefault();
     const { post } = this.props;
-    console.log(post);
     const { _id: id } = post;
     this.props.history.push(`/post/${id}`, { ...post });
   };
+  handleShowOption = (e) => {
+    e.preventDefault();
+    this.setState(prevState => ({
+      showOption: !prevState.showOption,
+    }));
+  };
+  handleEditPost = () => {
+    const { post } = this.props;
+    const { _id: id } = post;
+    this.props.history.push(`/editPost/${id}`, { ...post });
+  };
+  handleDeletePost = () => {
+    console.log('handleDeletePost...');
+  };
   render() {
-    const { openDescription, liked, likesCount } = this.state;
+    const {
+      openDescription, liked, likesCount, showOption,
+    } = this.state;
     const {
       title,
       description,
       author,
-      likes,
       comments,
       imgSrc,
       taggedUsers,
     } = this.props.post;
-    console.log(author);
     return (
       <div className="card">
         <div className="card--titleWrapper">
           <span className="card--titleWrapper--title">{title}</span>
-          <FontAwesomeIcon
-            className="card--titleWrapper--icon"
-            icon="ellipsis-v"
+          <Options
+            iconProps={{ fontSize: '1rem' }}
+            options={[
+              {
+                title: 'Edit Candid',
+                handleClick: this.handleEditPost,
+              },
+              {
+                title: 'Delete Candid',
+                handleClick: this.handleDeletePost,
+              },
+              {
+                title: 'Share Candid',
+                handleClick: shareLink,
+              },
+            ]}
           />
         </div>
         <span
@@ -95,6 +125,9 @@ class Card extends Component {
               ? 'card--description card--openDescription'
               : 'card--description'
           }
+          role="button"
+          tabIndex={0}
+          onKeyDown={this.handleDescription}
           onClick={this.handleDescription}
         >
           {description}
@@ -132,6 +165,9 @@ class Card extends Component {
           <div
             className="card--footer--authorDetails"
             onClick={this.handleAuthorRedirect}
+            role="button"
+            tabIndex={-1}
+            onKeyDown={this.handleAuthorRedirect}
           >
             <span className="card--footer--authorDetails--text">
               {author.username}
@@ -157,6 +193,7 @@ Card.propTypes = {
     comments: PropTypes.array.isRequired,
     imgSrc: PropTypes.string.isRequired,
     taggedUsers: PropTypes.array.isRequired,
+    history: PropTypes.oneOfType(Object),
   }).isRequired,
 };
 

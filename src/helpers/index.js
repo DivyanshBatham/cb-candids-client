@@ -41,4 +41,9 @@ const compareUser = (pathname) => {
   );
 };
 
-export { passwordValidator, getBackgroundColor, currentPage, compareUser };
+const shareLink = () => {
+  // TODO: implement logic for sharing in local messaging app.
+  console.log('in link share');
+};
+
+export { passwordValidator, getBackgroundColor, currentPage, compareUser, shareLink };
