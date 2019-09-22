@@ -27,8 +27,9 @@
         }
     }
     &--description{
-        font-size: 12px;
+        font-size: 0.9rem;
         margin-bottom: 0.5rem;
+        font-weight: 300;
         
     }
     &--openDescription{
@@ -62,7 +63,7 @@
                     }
                 }
                 &--text{
-                    font-size: 12px;
+                    font-size: 0.8rem;
                 }
             }
         }
@@ -70,7 +71,7 @@
             display: flex;
             align-items: center;
             &--text{
-                font-size: 12px;
+                font-size: 0.8rem;
                 margin-right: 10px;
                 &:hover{
                     cursor: pointer;
