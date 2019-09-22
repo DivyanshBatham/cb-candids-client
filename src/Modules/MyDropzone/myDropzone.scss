@@ -1,11 +1,9 @@
 @import "../../variables.scss";
 
 .dropzoneContainer {
-  border-radius: 8px;
-  border: solid 1px $bgDark;
   padding-top: 100%;
   position: relative;
-
+  
   .dropzone {
     position: absolute;
     top: 0;
@@ -14,5 +12,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    border: dashed 2px $bgDark;
+    box-sizing: border-box;
+    border-radius: 8px;
+    color: $lightPlaceholder;
+
+    &:focus {
+      outline: 0;
+      border-color: $lightPlaceholder;
+    }
   }
 }

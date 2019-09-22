@@ -1,8 +1,26 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import AsyncSelect from 'react-select/async';
 import MyDropzone from '../MyDropzone';
 import { rotation, orientation } from './orientation';
 import './upload.scss';
+
+
+const colourOptions = [
+  {
+    value: 'ocean', label: 'Ocean', color: '#00B8D9', isFixed: true,
+  },
+  { value: 'purple', label: 'Purple', color: '#5243AA' },
+  {
+    value: 'red', label: 'Red', color: '#FF5630', isFixed: true,
+  },
+  { value: 'orange', label: 'Orange', color: '#FF8B00' },
+  { value: 'yellow', label: 'Yellow', color: '#FFC400' },
+  { value: 'green', label: 'Green', color: '#36B37E' },
+  { value: 'forest', label: 'Forest', color: '#00875A' },
+  { value: 'slate', label: 'Slate', color: '#253858' },
+  { value: 'silver', label: 'Silver', color: '#666666' },
+];
 
 class Upload extends Component {
   constructor() {
@@ -98,12 +116,92 @@ class Upload extends Component {
       });
   };
 
+  promiseOptions = inputValue =>
+    new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(this.filterColors(inputValue));
+      }, 1000);
+    });
+
+
+  filterColors = inputValue => colourOptions.filter(i =>
+    i.label.toLowerCase().includes(inputValue.toLowerCase()));
+
 
   render() {
     const {
       imgSrc, imageContainerStyle, title, description, taggedUsers, imageStyle,
     } = this.state;
 
+    const customStyles = {
+      option: (styles, {
+        data, isDisabled, isFocused, isSelected,
+      }) => {
+        // const color = chroma(data.color);
+        const { color } = data;
+        return ({
+          ...styles,
+          fontSize: '0.9rem',
+          color: '#2F2525',
+          background: isFocused ? '#F4F4F4' : styles.background,
+        });
+      },
+      input: styles => ({
+        ...styles,
+        fontSize: '0.9rem',
+        // border: '1px solid red',
+        // width: '2rem',
+        // padding: '2px 6px',
+      }),
+      placeholder: styles => ({
+        ...styles,
+        fontSize: '0.9rem',
+      }),
+      valueContainer: styles => ({
+        ...styles,
+        padding: '0.3rem 0.5rem',
+        // background: 'red',
+      }),
+      control: (styles, { isFocused }) => ({
+        ...styles,
+        fontSize: '0.9rem',
+        border: 'solid 1px #E2E0DD', // TEST
+        // border: 'none',
+        boxShadow: isFocused ? '0 0 0 1px #888888' : 'none',
+        ':hover': {
+          border: 'solid 1px #E2E0DD',
+          boxShadow: isFocused ? '0 0 0 1px #888888' : 'none',
+        },
+      }),
+      multiValue: (styles, { data }) =>
+        ({
+          ...styles,
+          backgroundColor: data.color,
+          borderRadius: '500px',
+          marginRight: '6px',
+        }),
+      multiValueLabel: styles => ({
+        ...styles,
+        color: 'white',
+        paddingLeft: '1rem',
+      }),
+      multiValueRemove: (styles, { data }) => ({
+        ...styles,
+        color: 'white',
+        marginRight: '0.4rem',
+        ':hover': {
+
+        },
+      }),
+      // multiValueRemove: (styles, { data }) => ({
+      //   ...styles,
+      //   color: data.color,
+      //   ':hover': {
+      //     backgroundColor: data.color,
+      //     color: 'white',
+      //   },
+      // }),
+    };
 
     return (
       <div className="container">
@@ -116,6 +214,7 @@ class Upload extends Component {
               <input
                 type="text"
                 id="title"
+                name="title"
                 aria-label="Title"
                 placeholder="Title"
                 value={title}
@@ -123,25 +222,29 @@ class Upload extends Component {
               />
             </div>
 
-            <div className="inputWrapper" data-error={this.state.errors.description}>
-              <input
-                type="text"
+            <div className="inputWrapper">
+              <textarea
                 id="description"
+                rows="3"
+                name="description"
                 aria-label="Description"
-                placeholder="Description"
+                placeholder="Description (Optional)"
                 value={description}
                 onChange={this.handleChange}
               />
             </div>
 
-            <div className="inputWrapper" data-error={this.state.errors.taggedUsers}>
-              <input
-                type="text"
-                id="taggedUsers"
-                aria-label="TaggedUsers"
-                placeholder="TaggedUsers"
-                value={taggedUsers}
-                onChange={this.handleChange}
+            <div className="inputWrapper">
+              <AsyncSelect
+                placeholder="Tag Users (Optional)"
+                isMulti
+                className="react-select-container"
+                classNamePrefix="react-select"
+                cacheOptions
+                defaultOptions
+                loadOptions={this.promiseOptions}
+                styles={customStyles}
+                isClearable={false}
               />
             </div>
 
