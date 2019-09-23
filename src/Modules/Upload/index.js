@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import AsyncSelect from 'react-select/async';
+import debounce from 'debounce-promise';
 import MyDropzone from '../MyDropzone';
 import { rotation, orientation } from './orientation';
 import RandomColor from '../../helpers/RandomColor';
@@ -78,6 +79,37 @@ class Upload extends Component {
       errors: {},
     };
   }
+
+  // With Debounce:
+  getOptions = debounce(
+    inputValue => new Promise(resolve => axios.get('http://192.168.1.9:4500/users', {
+      params: {
+        search: inputValue,
+      },
+    }).then((res) => {
+      resolve(res.data.data.options);
+    }).catch((err) => {
+      console.error(err);
+      resolve([]);
+    }))
+    , 500,
+  );
+
+  // Without Debounce:
+  // getOptions = inputValue => new Promise((resolve) => {
+  //   console.warn('HITTING AXIOS: ', inputValue);
+  //   return axios.get('http://192.168.1.9:4500/users', {
+  //     params: {
+  //       search: inputValue,
+  //     },
+  //   }).then((res) => {
+  //     console.warn('OPTIONS: ', res.data.data.options);
+  //     resolve(res.data.data.options);
+  //   }).catch((err) => {
+  //     console.log('err =>>>', err);
+  //     resolve(null);
+  //   });
+  // })
 
   handleFileDrop = (files) => {
     const file = files[0];
@@ -165,18 +197,21 @@ class Upload extends Component {
       });
   };
 
-  // this promise function should return a list of options:
-  promiseOptions = inputValue =>
-    new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(this.filterColors(inputValue));
-      }, 1000);
+
+  tagUser = (user, actionMeta) => {
+    console.log(user, actionMeta);
+    this.setState({
+      user,
     });
-
-
-  filterColors = inputValue => colourOptions.filter(i =>
-    i.label.toLowerCase().includes(inputValue.toLowerCase()));
-
+    // Live errors:
+    // this.setState(prevState => ({
+    //   time: time,
+    //   errors: {
+    //     ...prevState.errors,
+    //     time: ""
+    //   }
+    // }));
+  };
 
   render() {
     const {
@@ -218,13 +253,12 @@ class Upload extends Component {
               <AsyncSelect
                 placeholder="Tag Users (Optional)"
                 isMulti
-                className="react-select-container"
-                classNamePrefix="react-select"
-                cacheOptions
+                // cacheOptions
                 defaultOptions
-                loadOptions={this.promiseOptions}
+                loadOptions={this.getOptions}
                 styles={customStyles}
                 isClearable={false}
+                onChange={this.tagUser}
               />
             </div>
 
