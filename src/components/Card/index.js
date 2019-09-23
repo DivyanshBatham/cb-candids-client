@@ -3,7 +3,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import { connect } from 'react-redux';
 import { shareLink } from '../../helpers';
+import { deletePost } from '../../actions/postActions';
 import './card.scss';
 import Tag from '../Tag';
 import Options from '../DropdownOptions';
@@ -55,7 +57,7 @@ class Card extends Component {
         this.setState(prevState => ({
           likesCount: prevState.likesCount + -1 * extraPoint,
           liked: extraPoint === -1,
-        })) );
+        })));
   };
   handleDescription = (e) => {
     e.preventDefault();
@@ -92,22 +94,9 @@ class Card extends Component {
   };
   handleDeletePost = (e) => {
     e.preventDefault();
-    this.setState({ showLoader: true });
-    axios({
-      method: 'delete',
-      url: `https://calm-waters-47062.herokuapp.com/posts/${this.props.post._id}`,
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('cb-token')}`,
-      },
-    })
-      .then((res) => {
-        if (res.data.success) {
-          // TODO: a handler from prop to delete the item
-        } else {
-          this.setState({ showLoader: false });
-        }
-      })
-      .catch(err => this.setState({ showLoader: false }));
+    // TODO: ADD some logic for card to disable the buttons
+    const { _id: postId } = this.props.post;
+    this.props.deletePost(postId);
   };
   render() {
     const {
@@ -233,9 +222,10 @@ Card.propTypes = {
     taggedUsers: PropTypes.array.isRequired,
     history: PropTypes.oneOfType(Object),
   }).isRequired,
+  deletePost: PropTypes.func.isRequired,
 };
 
 Card.defaultProps = {
   description: '',
 };
-export default withRouter(Card);
+export default connect(null, { deletePost })(withRouter(Card));
