@@ -98,6 +98,10 @@ class Card extends Component {
     const { _id: postId } = this.props.post;
     this.props.deletePost(postId);
   };
+  checkLoginAuthor = () => {
+    const { author } = this.props.post;
+    return this.props.stateData.user.username === author.username;
+  }
   render() {
     const {
       openDescription,
@@ -132,11 +136,11 @@ class Card extends Component {
             iconProps={{ fontSize: '1rem' }}
             options={[
               {
-                title: 'Edit Candid',
+                title: this.checkLoginAuthor() ? 'Edit Candid' : null,
                 handleClick: this.handleEditPost,
               },
               {
-                title: 'Delete Candid',
+                title: this.checkLoginAuthor() ? 'Delete Candid' : null,
                 handleClick: this.handleShowConfirmation,
               },
               {
@@ -228,4 +232,7 @@ Card.propTypes = {
 Card.defaultProps = {
   description: '',
 };
-export default connect(null, { deletePost })(withRouter(Card));
+
+const mapStateToProps = state => ({ stateData: state });
+
+export default connect(mapStateToProps, { deletePost })(withRouter(Card));

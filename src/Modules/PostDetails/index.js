@@ -41,7 +41,7 @@ class PostDetails extends Component {
   }
   isAuthorComment = (comment) => {
     console.log(this.props.stateData);
-    const currentUser = this.props.stateData.username;
+    const currentUser = this.props.stateData.user.username;
     return comment.author.username === currentUser;
   };
 
@@ -79,7 +79,7 @@ class PostDetails extends Component {
   };
 
   render() {
-    console.log('post--->', this.state);
+    console.log('stateData--->', this.props.stateData);
     const { post } = this.state;
     const comments = this.state && this.state.comments;
     // const comments = post && post.comments;
