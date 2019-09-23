@@ -3,23 +3,72 @@ import axios from 'axios';
 import AsyncSelect from 'react-select/async';
 import MyDropzone from '../MyDropzone';
 import { rotation, orientation } from './orientation';
+import RandomColor from '../../helpers/RandomColor';
 import './upload.scss';
 
+const customStyles = {
+  option: (styles, { isFocused }) => ({
+    ...styles,
+    fontSize: '0.9rem',
+    color: '#2F2525',
+    background: isFocused ? '#F4F4F4' : styles.background,
+  }),
+  input: styles => ({
+    ...styles,
+    fontSize: '0.9rem',
+  }),
+  placeholder: styles => ({
+    ...styles,
+    fontSize: '0.9rem',
+  }),
+  valueContainer: styles => ({
+    ...styles,
+    padding: '0.3rem 0.5rem',
+  }),
+  control: (styles, { isFocused }) => ({
+    ...styles,
+    fontSize: '0.9rem',
+    border: 'solid 1px #E2E0DD',
+    boxShadow: isFocused ? '0 0 0 1px #888888' : 'none',
+    ':hover': {
+      border: 'solid 1px #E2E0DD',
+      boxShadow: isFocused ? '0 0 0 1px #888888' : 'none',
+    },
+  }),
+  multiValue: (styles, { data }) => ({
+    ...styles,
+    backgroundColor: data.color,
+    // backgroundColor: RandomColor.getColorGuaranteed(),
+    borderRadius: '500px',
+    marginRight: '6px',
+  }),
+  multiValueLabel: styles => ({
+    ...styles,
+    color: 'white',
+    paddingLeft: '1rem',
+  }),
+  multiValueRemove: styles => ({
+    ...styles,
+    color: 'white',
+    marginRight: '0.4rem',
+    ':hover': {},
+  }),
+};
 
 const colourOptions = [
   {
-    value: 'ocean', label: 'Ocean', color: '#00B8D9', isFixed: true,
+    value: 'ocean', label: 'Ocean', color: RandomColor.getColorGuaranteed(),
   },
-  { value: 'purple', label: 'Purple', color: '#5243AA' },
+  { value: 'purple', label: 'Purple', color: RandomColor.getColorGuaranteed() },
   {
-    value: 'red', label: 'Red', color: '#FF5630', isFixed: true,
+    value: 'red', label: 'Red', color: RandomColor.getColorGuaranteed(),
   },
-  { value: 'orange', label: 'Orange', color: '#FF8B00' },
-  { value: 'yellow', label: 'Yellow', color: '#FFC400' },
-  { value: 'green', label: 'Green', color: '#36B37E' },
-  { value: 'forest', label: 'Forest', color: '#00875A' },
-  { value: 'slate', label: 'Slate', color: '#253858' },
-  { value: 'silver', label: 'Silver', color: '#666666' },
+  { value: 'orange', label: 'Orange', color: RandomColor.getColorGuaranteed() },
+  { value: 'yellow', label: 'Yellow', color: RandomColor.getColorGuaranteed() },
+  { value: 'green', label: 'Green', color: RandomColor.getColorGuaranteed() },
+  { value: 'forest', label: 'Forest', color: RandomColor.getColorGuaranteed() },
+  { value: 'slate', label: 'Slate', color: RandomColor.getColorGuaranteed() },
+  { value: 'silver', label: 'Silver', color: RandomColor.getColorGuaranteed() },
 ];
 
 class Upload extends Component {
@@ -116,6 +165,7 @@ class Upload extends Component {
       });
   };
 
+  // this promise function should return a list of options:
   promiseOptions = inputValue =>
     new Promise((resolve) => {
       setTimeout(() => {
@@ -132,76 +182,6 @@ class Upload extends Component {
     const {
       imgSrc, imageContainerStyle, title, description, taggedUsers, imageStyle,
     } = this.state;
-
-    const customStyles = {
-      option: (styles, {
-        data, isDisabled, isFocused, isSelected,
-      }) => {
-        // const color = chroma(data.color);
-        const { color } = data;
-        return ({
-          ...styles,
-          fontSize: '0.9rem',
-          color: '#2F2525',
-          background: isFocused ? '#F4F4F4' : styles.background,
-        });
-      },
-      input: styles => ({
-        ...styles,
-        fontSize: '0.9rem',
-        // border: '1px solid red',
-        // width: '2rem',
-        // padding: '2px 6px',
-      }),
-      placeholder: styles => ({
-        ...styles,
-        fontSize: '0.9rem',
-      }),
-      valueContainer: styles => ({
-        ...styles,
-        padding: '0.3rem 0.5rem',
-        // background: 'red',
-      }),
-      control: (styles, { isFocused }) => ({
-        ...styles,
-        fontSize: '0.9rem',
-        border: 'solid 1px #E2E0DD', // TEST
-        // border: 'none',
-        boxShadow: isFocused ? '0 0 0 1px #888888' : 'none',
-        ':hover': {
-          border: 'solid 1px #E2E0DD',
-          boxShadow: isFocused ? '0 0 0 1px #888888' : 'none',
-        },
-      }),
-      multiValue: (styles, { data }) =>
-        ({
-          ...styles,
-          backgroundColor: data.color,
-          borderRadius: '500px',
-          marginRight: '6px',
-        }),
-      multiValueLabel: styles => ({
-        ...styles,
-        color: 'white',
-        paddingLeft: '1rem',
-      }),
-      multiValueRemove: (styles, { data }) => ({
-        ...styles,
-        color: 'white',
-        marginRight: '0.4rem',
-        ':hover': {
-
-        },
-      }),
-      // multiValueRemove: (styles, { data }) => ({
-      //   ...styles,
-      //   color: data.color,
-      //   ':hover': {
-      //     backgroundColor: data.color,
-      //     color: 'white',
-      //   },
-      // }),
-    };
 
     return (
       <div className="container">
