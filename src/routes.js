@@ -1,8 +1,7 @@
 import React, { lazy, Suspense } from 'react';
 import { Switch, Route, withRouter } from 'react-router-dom';
-import axios from 'axios';
 import { connect } from 'react-redux';
-import { addLoginData } from './actions';
+import { addAuthData } from './actions/authActions';
 import Card from './components/Card';
 import Comment from './components/Comment';
 import PrivateRoute from './PrivateRoute';
@@ -28,20 +27,9 @@ class Routes extends React.Component {
   }
   componentDidMount() {
     const token = localStorage.getItem('cb-token');
-    const username = localStorage.getItem('cb-username');
     const { stateData } = this.props;
-    if (JSON.stringify(stateData) === '{}' && token) {
-      axios({
-        method: 'get',
-        url: `https://calm-waters-47062.herokuapp.com/users/${username}`,
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('cb-token')}`,
-        },
-      }).then((res) => {
-        if (res.data.success) {
-          this.props.addLoginData(res.data.data.user);
-        }
-      });
+    if (!stateData.username && token) {
+      this.props.addAuthData();
     }
   }
   render() {
@@ -64,11 +52,6 @@ class Routes extends React.Component {
               component={Profile}
             />
             <PrivateRoute path="/post/:postId" component={PostDetails} />
-            {/* Route for tesing */}
-            <Route path="/card" component={Card} />
-            <Route path="/comment" component={Comment} />
-            <Route path="/navbar" component={Navbar} />
-            <Route path="/modal" component={ConfirmationModal} />
           </Switch>
         </main>
         <Footer />
@@ -81,4 +64,4 @@ function mapStateToProps(state) {
     stateData: state,
   };
 }
-export default connect(mapStateToProps, { addLoginData })(withRouter(Routes));
+export default connect(mapStateToProps, { addAuthData })(withRouter(Routes));

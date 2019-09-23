@@ -17,6 +17,7 @@ class Card extends Component {
       likesCount: props.post.likes.length,
       liked: this.isLiked(),
       showConfirmationModal: false,
+      showLoader: false,
     };
   }
 
@@ -54,7 +55,7 @@ class Card extends Component {
         this.setState(prevState => ({
           likesCount: prevState.likesCount + -1 * extraPoint,
           liked: extraPoint === -1,
-        })),);
+        })) );
   };
   handleDescription = (e) => {
     e.preventDefault();
@@ -91,7 +92,22 @@ class Card extends Component {
   };
   handleDeletePost = (e) => {
     e.preventDefault();
-    // TODO: API call for delete the post
+    this.setState({ showLoader: true });
+    axios({
+      method: 'delete',
+      url: `https://calm-waters-47062.herokuapp.com/posts/${this.props.post._id}`,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('cb-token')}`,
+      },
+    })
+      .then((res) => {
+        if (res.data.success) {
+          // TODO: a handler from prop to delete the item
+        } else {
+          this.setState({ showLoader: false });
+        }
+      })
+      .catch(err => this.setState({ showLoader: false }));
   };
   render() {
     const {

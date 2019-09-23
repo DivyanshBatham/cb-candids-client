@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import { connect } from 'react-redux';
+import { fetchAllPosts } from '../../actions/postActions';
 import CardRenderer from '../../components/CardRenderer';
 import './home.scss';
 
@@ -11,22 +12,19 @@ class Home extends Component {
     };
   }
   componentDidMount() {
-    axios({
-      method: 'get',
-      url: 'https://calm-waters-47062.herokuapp.com/posts',
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('cb-token')}`,
-      },
-    }).then((res) => {
-      if (res.data.success) {
-        this.setState({ posts: res.data.data.posts });
-      }
-    }).catch(err => console.log(err));
+    this.props.fetchAllPosts();
   }
   render() {
-    const { posts } = this.state;
+    const { posts } = this.props.stateData;
+    console.log('in home redux store-->', this.props.stateData);
     return <span className="home"><CardRenderer posts={posts} /></span>;
   }
 }
 
-export default Home;
+function mapStateToProps(state) {
+  return {
+    stateData: state,
+  };
+}
+
+export default connect(mapStateToProps, { fetchAllPosts })(Home);
