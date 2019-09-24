@@ -46,8 +46,8 @@ class PostDetails extends Component {
     const { _id: submittedPostId } = this.state.post;
     const tempCommnetObj = {
       author: {
-        username: this.props.stateData.username,
-        imgSrc: this.props.stateData.imgSrc,
+        username: this.props.stateData.user.username,
+        imgSrc: this.props.stateData.user.imgSrc,
       },
       comment: commentText,
       _id: 1,
