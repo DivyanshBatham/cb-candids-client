@@ -45,7 +45,6 @@ class Card extends Component {
       },
     })
       .then((res) => {
-        console.log(res.data);
         if (!res.data.success) {
           this.setState(prevState => ({
             likesCount: prevState.likesCount + -1 * extraPoint,

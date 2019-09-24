@@ -12,8 +12,6 @@ class VerifyEmail extends Component {
   }
   componentDidMount() {
     const { token } = this.props.match.params;
-    // console.log(token);
-    // console.log(this.props);
     const url = 'https://calm-waters-47062.herokuapp.com/auth/verifyEmail';
     axios({
       method: 'post',
@@ -23,7 +21,6 @@ class VerifyEmail extends Component {
       },
     })
       .then((res) => {
-        console.log(res.data);
         const { success } = res.data;
         if (success) {
           localStorage.setItem('cb-token', res.data.token);

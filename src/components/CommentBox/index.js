@@ -16,7 +16,6 @@ class CommentBox extends Component {
   handleComment = (e) => {
     e.preventDefault();
     const { value } = this.state;
-    console.log('comment Submit');
     if (value.length === 0) return;
     this.props.submitComment(value);
   };
@@ -54,7 +53,6 @@ class CommentBox extends Component {
   };
 
   render() {
-    console.log(this.state.value);
     const userImage =
       'https://avatars0.githubusercontent.com/u/29652551?s=460&v=4';
     const { rows, value } = this.state;

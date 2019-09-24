@@ -8,7 +8,7 @@ class Comment extends Component {
     super(props);
     this.state = {
       comment: (props.commentItem && props.commentItem.comment) || null,
-      username: (props.commentItem && props.commentItem.author.username) || null
+      username: (props.commentItem && props.commentItem.author.username) || null,
     };
   }
   // getBackgroundColor = () => {
@@ -22,7 +22,6 @@ class Comment extends Component {
     const userImage =
       'https://avatars0.githubusercontent.com/u/29652551?s=460&v=4';
     const postedTime = '15 mins';
-    console.log('props in comment-->', this.props);
     const { userComment } = this.props;
     return (
       <div className={userComment ? 'comment comment--self' : 'comment'}>

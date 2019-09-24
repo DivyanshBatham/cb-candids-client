@@ -53,7 +53,6 @@ class Login extends Component {
       data,
     })
       .then((res) => {
-        console.log('login data-->', res.data);
         const { success, token } = res.data;
         if (success) {
           const { user } = res.data.data;

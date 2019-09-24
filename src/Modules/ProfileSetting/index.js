@@ -13,7 +13,6 @@ class profileSetting extends Component {
   }
   componentDidMount() {
     // TODO:here we will fetch inital data
-    console.log('will fetch initial data');
   }
   handleState = (e) => {
     e.preventDefault();
@@ -27,7 +26,6 @@ class profileSetting extends Component {
   };
   handleUpdateProfile = (e) => {
     e.preventDefault();
-    console.log(this.state);
   }
   render() {
     const { username, bio, pushNotification } = this.state;
