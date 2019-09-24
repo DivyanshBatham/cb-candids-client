@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { fetchAllPosts } from '../../actions/postActions';
+import { fetchAllPosts, updateNewPostInState } from '../../actions/postActions';
 import CardRenderer from '../../components/CardRenderer';
 import './home.scss';
 
@@ -12,27 +12,35 @@ class Home extends Component {
     };
   }
   componentDidMount() {
-    // if there is posts in the state then show it fetch it in the background.
-    if (this.props.stateData.posts.length < 1) {
-      this.props.fetchAllPosts();
-    }
+    this.props.fetchAllPosts();
+  }
+  handleNewPostData = (e) => {
+    e.preventDefault();
+    this.props.updateNewPostInState();
   }
   render() {
-    const { posts } = this.props.stateData;
-    return <span className="home"><CardRenderer posts={posts} /></span>;
+    const { posts, newDataAvailable } = this.props.postsData;
+    return (
+      <span className="home">
+        {newDataAvailable && <button onClick={this.handleNewPostData} className="home__button" >new posts</button>}
+        <CardRenderer posts={posts} />
+      </span>
+    );
   }
 }
 
 function mapStateToProps(state) {
   return {
-    stateData: state,
+    postsData: state.posts,
   };
 }
 Home.propTypes = {
-  stateData: PropTypes.shape({
-    posts: PropTypes.array.isRequired,
+  postsData: PropTypes.shape({
+    posts: PropTypes.object.isRequired,
+    newDataAvailable: PropTypes.bool.isRequired,
   }).isRequired,
   fetchAllPosts: PropTypes.func.isRequired,
+  updateNewPostInState: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps, { fetchAllPosts })(Home);
+export default connect(mapStateToProps, { fetchAllPosts, updateNewPostInState })(Home);

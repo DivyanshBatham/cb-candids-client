@@ -1,17 +1,8 @@
 /* eslint-disable import/prefer-default-export */
 import axios from 'axios';
-import { ADD_POSTS, DELETE_POST } from '../constant';
+import { ADD_POSTS, DELETE_POST, NEW_POSTS, UPDATE_NEW_POSTS } from '../constant';
 
-const addPostsToState = (posts) => {
-  const action = {
-    type: ADD_POSTS,
-    payload: posts,
-  };
-  return action;
-};
-
-
-export const fetchAllPosts = () => (dispatch) => {
+export const fetchAllPosts = () => (dispatch, getState) => {
   axios({
     method: 'get',
     url: 'https://calm-waters-47062.herokuapp.com/posts',
@@ -20,7 +11,19 @@ export const fetchAllPosts = () => (dispatch) => {
     },
   }).then((res) => {
     if (res.data.success) {
-      dispatch(addPostsToState(res.data.data.posts));
+      const newPosts = res.data.data.posts;
+      const currentPosts = getState().posts.posts;
+      if (currentPosts.length === 0) {
+        dispatch({
+          type: ADD_POSTS,
+          payload: newPosts,
+        });
+      } else if (JSON.stringify(newPosts) !== JSON.stringify(currentPosts)) {
+        dispatch({
+          type: NEW_POSTS,
+          payload: newPosts,
+        });
+      }
     }
   }).catch(err => console.log(err));
 };
@@ -31,6 +34,13 @@ const deletePostFromStore = (postId) => {
     payload: {
       postId,
     },
+  };
+  return action;
+};
+
+export const updateNewPostInState = () => {
+  const action = {
+    type: UPDATE_NEW_POSTS,
   };
   return action;
 };
