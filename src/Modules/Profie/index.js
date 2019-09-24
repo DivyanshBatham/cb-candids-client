@@ -33,7 +33,6 @@ class Profile extends Component {
       },
     })
       .then((res) => {
-        console.log('in profile page-->', res.data.data);
         if (res.data.success) {
           this.setState({ data: res.data.data, loading: false });
         }

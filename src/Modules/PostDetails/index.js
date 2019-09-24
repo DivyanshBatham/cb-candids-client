@@ -19,7 +19,6 @@ class PostDetails extends Component {
   }
   componentDidMount() {
     if (this.props.location.state === undefined) {
-      console.log('---------------->');
       axios({
         method: 'get',
         url: `https://calm-waters-47062.herokuapp.com/posts/${this.props.match.params.postId}`,
@@ -28,7 +27,6 @@ class PostDetails extends Component {
         },
       })
         .then((res) => {
-          console.warn('post data-->', res.data);
           if (res.data.success) {
             this.setState({
               post: res.data.data.post,
@@ -40,19 +38,16 @@ class PostDetails extends Component {
     }
   }
   isAuthorComment = (comment) => {
-    console.log(this.props.stateData);
-    const currentUser = this.props.stateData.username;
+    const currentUser = this.props.stateData.user.username;
     return comment.author.username === currentUser;
   };
 
   submitComment = (commentText) => {
     const { _id: submittedPostId } = this.state.post;
-    console.log('in submit comment--->', submittedPostId);
-    console.log(commentText);
     const tempCommnetObj = {
       author: {
-        username: this.props.stateData.username,
-        imgSrc: this.props.stateData.imgSrc,
+        username: this.props.stateData.user.username,
+        imgSrc: this.props.stateData.user.imgSrc,
       },
       comment: commentText,
       _id: 1,
@@ -73,17 +68,14 @@ class PostDetails extends Component {
       },
     })
       .then((res) => {
-        console.log('comment--->', res.data);
+        // console.log('comment--->', res.data);
       })
       .catch(err => console.log(err));
   };
 
   render() {
-    console.log('post--->', this.state);
     const { post } = this.state;
     const comments = this.state && this.state.comments;
-    // const comments = post && post.comments;
-    console.log('poist--->', post);
     return (
       <div className="postDetails">
         <div className="container">

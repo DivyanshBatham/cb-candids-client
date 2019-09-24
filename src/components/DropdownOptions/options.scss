@@ -1,0 +1,42 @@
+@import '../../variables.scss';
+.dropdownOption {
+  cursor: pointer;
+  position: relative;
+  &__triangle {
+    position: absolute;
+    width: 0.8rem;
+    height: 0.8rem;
+    background-color: #ffffff;
+    transform: rotate(45deg);
+    // top: -6px;
+    right: -4px;
+    box-shadow: 0 0 8px 0 rgba(17, 22, 26, 0.16),
+      0 4px 8px 0 rgba(17, 22, 26, 0.08), 0 8px 16px 0 rgba(17, 22, 26, 0.08);
+    z-index: 1;
+
+    &--noShadow {
+      box-shadow: none;
+      z-index: 3;
+    }
+  }
+}
+.options {
+  width: 140px;
+  position: absolute;
+  top: 1.8rem;
+  right: -10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  background-color: #ffffff;
+  box-shadow: 0 0 8px 0 rgba(17, 22, 26, 0.16),
+    0 4px 8px 0 rgba(17, 22, 26, 0.08), 0 8px 16px 0 rgba(17, 22, 26, 0.08);
+  border-radius: 0.5rem;
+  padding: 0.2rem 0;
+  z-index: 2;
+  &__option {
+    margin: 0;
+    padding: 0.5rem;
+    cursor: pointer;
+  }
+}

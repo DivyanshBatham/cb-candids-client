@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import { addLoginData } from '../../actions';
+import { addAuthDataToState } from '../../actions/authActions';
 import { passwordValidator } from '../../helpers';
 import PumpkinLogo from '../../assets/pumpkin';
 import NameLogo from '../../assets/name';
@@ -53,12 +53,11 @@ class Login extends Component {
       data,
     })
       .then((res) => {
-        console.log('login data-->', res.data);
         const { success, token } = res.data;
         if (success) {
           const { user } = res.data.data;
           const userData = { ...user };
-          this.props.addLoginData(userData);
+          this.props.addAuthDataToState(userData);
           this.handleLocalStorage('cb-token', token);
           this.handleLocalStorage('cb-username', user.username);
           this.handleLocalStorage('cb-email', user.email);
@@ -144,5 +143,5 @@ class Login extends Component {
 
 export default connect(
   null,
-  { addLoginData },
+  { addAuthDataToState },
 )(Login);
