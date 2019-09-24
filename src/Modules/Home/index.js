@@ -12,7 +12,10 @@ class Home extends Component {
     };
   }
   componentDidMount() {
-    this.props.fetchAllPosts();
+    // if there is posts in the state then show it fetch it in the background.
+    if (this.props.stateData.posts.length < 1) {
+      this.props.fetchAllPosts();
+    }
   }
   render() {
     const { posts } = this.props.stateData;
@@ -26,7 +29,9 @@ function mapStateToProps(state) {
   };
 }
 Home.propTypes = {
-  stateData: PropTypes.oneOfType(Object).isRequired,
+  stateData: PropTypes.shape({
+    posts: PropTypes.array.isRequired,
+  }).isRequired,
   fetchAllPosts: PropTypes.func.isRequired,
 };
 

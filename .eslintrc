@@ -16,7 +16,8 @@
       "required": {
         "some": [ "nesting", "id"  ]
       }
-    }]
+    }],
+  "import/no-extraneous-dependencies": ["error", {"devDependencies": true}],
   },
   "parserOptions": {
     "ecmaFeatures": {
@@ -28,5 +29,5 @@
   ],
   "env": {
     "browser": true
-  }
+  },
 }
