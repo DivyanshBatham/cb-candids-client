@@ -73,7 +73,9 @@ class PostDetails extends Component {
       },
     })
       .then((res) => {
-        // console.log('comment--->', res.data);
+        if (res.data.success) {
+          this.setState({ comments: res.data.data.comments });
+        }
       })
       .catch(err => console.log(err));
   };
