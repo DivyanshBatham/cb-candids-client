@@ -38,16 +38,21 @@ class PostDetails extends Component {
     }
   }
   isAuthorComment = (comment) => {
-    const currentUser = this.props.stateData.user.username;
+    const currentUser = this.props.userData.username;
     return comment.author.username === currentUser;
   };
+  removeCommentFromState = (id) => {
+    const { comments } = this.state;
+    const commentsAfterDeletedComment = comments.filter(comment => comment._id !== id);
+    this.setState({ comments: commentsAfterDeletedComment });
+  }
 
   submitComment = (commentText) => {
     const { _id: submittedPostId } = this.state.post;
     const tempCommnetObj = {
       author: {
-        username: this.props.stateData.user.username,
-        imgSrc: this.props.stateData.user.imgSrc,
+        username: this.props.userData.username,
+        imgSrc: this.props.userData.imgSrc,
       },
       comment: commentText,
       _id: 1,
@@ -75,7 +80,7 @@ class PostDetails extends Component {
 
   render() {
     const { post } = this.state;
-    const comments = this.state && this.state.comments;
+    const { comments } = this.state;
     return (
       <div className="postDetails">
         <div className="container">
@@ -88,6 +93,8 @@ class PostDetails extends Component {
                     idx={idx}
                     commentItem={comment}
                     userComment={this.isAuthorComment(comment)}
+                    handleRemoveComment={this.removeCommentFromState}
+                    postId={post._id}
                   />
                 ))}
               </div>
@@ -103,18 +110,7 @@ class PostDetails extends Component {
     );
   }
 }
-// const mapStateToProps = (state) => {
-//   const stateData = state;
-//   console.log(stateData);
-//   return stateData
-// };
-// function mapStateToProps (state) {
-//   console.warn('mapStateToProps', state);
-//   return {
-//     stateData: state,
-//   }
-// }
-const mapStateToProps = state => ({ stateData: state });
+const mapStateToProps = state => ({ userData: state.user });
 
 PostDetails.propTypes = {
   location: PropTypes.oneOfType(Object).isRequired,

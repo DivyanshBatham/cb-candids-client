@@ -8,7 +8,7 @@ import { shareLink } from '../../helpers';
 import { deletePost } from '../../actions/postActions';
 import './card.scss';
 import Tag from '../Tag';
-import Options from '../DropdownOptions';
+import DropdownOptions from '../DropdownOptions';
 import ConfirmationModal from '../ConfirmationModal';
 
 class Card extends Component {
@@ -131,7 +131,7 @@ class Card extends Component {
         )}
         <div className="card--titleWrapper">
           <span className="card--titleWrapper--title">{title}</span>
-          <Options
+          <DropdownOptions
             iconProps={{ fontSize: '1rem' }}
             options={[
               {
