@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
+import TextareaAutosize from 'react-textarea-autosize';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import DropdownOptions from '../DropdownOptions';
 import ConfirmationModal from '../ConfirmationModal';
@@ -18,7 +19,6 @@ class Comment extends Component {
     };
   }
   componentDidMount() {
-    console.log('component mounted');
     this.setState({ commentText: this.props.commentItem.comment });
   }
 
@@ -56,7 +56,7 @@ class Comment extends Component {
     this.setState(prevState => ({
       showCommentBox: !prevState.showCommentBox,
     }));
-    // this.nameInput.focus();
+    this.textarea.focus();
   };
 
   handleShowConfirmation = () => {
@@ -96,6 +96,7 @@ class Comment extends Component {
       }
     }).catch(err => console.log(err));
   }
+
   render() {
     const { showConfirmationModal, showCommentBox, commentText } = this.state;
     const postedTime = '15 mins';
@@ -152,8 +153,7 @@ class Comment extends Component {
                     handleClick: this.handleCopyComment,
                   },
                   {
-                    // title: commentItem.isAuthor ? 'Edit' : null,
-                    title: 'Edit',
+                    title: commentItem.isAuthor ? 'Edit' : null,
                     handleClick: this.handleShowCommentBox,
                   },
                   {
@@ -164,14 +164,12 @@ class Comment extends Component {
               />
             )}
           </div>
-          {/* <span className="comment__content__text">{commentItem.comment}</span> */}
-          <input
+          <TextareaAutosize
             className="comment__content__input"
             onChange={this.handleCommentText}
-            style={randomColorValue}
             value={commentText}
-            disabled={!showCommentBox}
-            ref={input => input && input.focus()}
+            readOnly={!showCommentBox}
+            inputRef={tag => (this.textarea = tag)}
           />
           <span className="comment__content__time">{postedTime} ago</span>
         </div>

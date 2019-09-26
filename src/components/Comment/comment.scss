@@ -57,9 +57,14 @@
       font-size: 12px;
       color: $darkText;
       line-height: 18px;
+      margin: 0;
       margin-bottom: 0.5rem;
       outline: none;
       border: none;
+      background: transparent;
+      // 
+      resize: none;
+      // overflow: hidden;
     }
     &__time {
       font-size: 10px;
