@@ -35,7 +35,7 @@ class Routes extends React.Component {
   render() {
     return (
       <Suspense fallback={<div>loading...</div>}>
-        <Navbar />
+        {/* <Navbar /> */}
         <main>
           <Switch>
             <PrivateRoute path="/" component={Home} exact />

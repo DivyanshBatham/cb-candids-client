@@ -3,6 +3,7 @@ import axios from 'axios';
 import CardRenderer from '../../components/CardRenderer';
 import './profile.scss';
 import Loader from '../../components/Loader';
+import Navbar from '../../components/Navbar';
 
 class Profile extends Component {
   constructor() {
@@ -51,6 +52,7 @@ class Profile extends Component {
     } = this.state.data;
     return (
       <React.Fragment>
+        <Navbar />
         {loading ? (
           <Loader />
         ) : (

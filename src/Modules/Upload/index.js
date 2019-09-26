@@ -6,6 +6,7 @@ import MyDropzone from '../MyDropzone';
 import { rotation, orientation } from './orientation';
 import RandomColor from '../../helpers/RandomColor';
 import './upload.scss';
+import Navbar from '../../components/Navbar';
 
 const customStyles = {
   option: (styles, { isFocused }) => ({
@@ -229,78 +230,81 @@ class Upload extends Component {
     } = this.state;
 
     return (
-      <div className="container">
-        <div className="upload">
+      <React.Fragment>
+        <Navbar />
+        <div className="container">
+          <div className="upload">
 
-          <h2 className="sectionHeading">Share Candid:</h2>
-          <form className="card" onSubmit={this.handleSubmit}>
+            <h2 className="sectionHeading">Share Candid:</h2>
+            <form className="card" onSubmit={this.handleSubmit}>
 
-            <div className={errors.title ? 'inputWrapper inputWrapper--error' : 'inputWrapper'} data-error={errors.title}>
-              <input
-                type="text"
-                id="title"
-                name="title"
-                aria-label="Title"
-                placeholder="Title"
-                value={title}
-                onChange={this.handleTitleChange}
-              />
-            </div>
+              <div className={errors.title ? 'inputWrapper inputWrapper--error' : 'inputWrapper'} data-error={errors.title}>
+                <input
+                  type="text"
+                  id="title"
+                  name="title"
+                  aria-label="Title"
+                  placeholder="Title"
+                  value={title}
+                  onChange={this.handleTitleChange}
+                />
+              </div>
 
-            <div className="inputWrapper">
-              <textarea
-                id="description"
-                rows="3"
-                name="description"
-                aria-label="Description"
-                placeholder="Description (Optional)"
-                value={description}
-                onChange={this.handleDescriptionChange}
-              />
-            </div>
+              <div className="inputWrapper">
+                <textarea
+                  id="description"
+                  rows="3"
+                  name="description"
+                  aria-label="Description"
+                  placeholder="Description (Optional)"
+                  value={description}
+                  onChange={this.handleDescriptionChange}
+                />
+              </div>
 
-            <div className="inputWrapper">
-              <AsyncSelect
-                placeholder="Tag Users (Optional)"
-                isMulti
-                // cacheOptions
-                defaultOptions
-                loadOptions={this.getOptions}
-                styles={customStyles}
-                isClearable={false}
-                onChange={this.tagUser}
-              />
-            </div>
+              <div className="inputWrapper">
+                <AsyncSelect
+                  placeholder="Tag Users (Optional)"
+                  isMulti
+                  // cacheOptions
+                  defaultOptions
+                  loadOptions={this.getOptions}
+                  styles={customStyles}
+                  isClearable={false}
+                  onChange={this.tagUser}
+                />
+              </div>
 
 
-            {
-              imgSrc ?
-                (
-                  <div
-                    className="imageContainer"
-                    style={imageContainerStyle}
-                  >
-                    {/* TODO: Add Options: */}
-                    {/* <button>Edit</button> */}
-                    {/* <button>Remove</button> */}
-                    <div className="image" style={imageStyle} />
-                  </div>
+              {
+                imgSrc ?
+                  (
+                    <div
+                      className="imageContainer"
+                      style={imageContainerStyle}
+                    >
+                      {/* TODO: Add Options: */}
+                      {/* <button>Edit</button> */}
+                      {/* <button>Remove</button> */}
+                      <div className="image" style={imageStyle} />
+                    </div>
 
-                ) :
-                (
-                  // TODO: Maybe Move every file handling code to MyDropzone only
-                  <MyDropzone
-                    handleOnDrop={this.handleFileDrop}
-                    error={this.state.errors.imgSrc}
-                  />
-                )
-            }
+                  ) :
+                  (
+                    // TODO: Maybe Move every file handling code to MyDropzone only
+                    <MyDropzone
+                      handleOnDrop={this.handleFileDrop}
+                      error={this.state.errors.imgSrc}
+                    />
+                  )
+              }
 
-          </form>
-          <button onClick={this.handleSubmit}>Upload</button>
+            </form>
+            <button onClick={this.handleSubmit}>Upload</button>
 
+          </div>
         </div>
-      </div>
+      </React.Fragment>
     );
   }
 }
