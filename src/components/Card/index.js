@@ -73,7 +73,8 @@ class Card extends Component {
     e.preventDefault();
     const { post } = this.props;
     const { _id: id } = post;
-    this.props.history.push(`/post/${id}`, { ...post });
+    // this.props.history.push(`/post/${id}`, { ...post });
+    this.props.history.push(`/post/${id}`);
   };
   handleShowOption = (e) => {
     e.preventDefault();

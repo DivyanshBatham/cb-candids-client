@@ -12,14 +12,19 @@ import './postDetails.scss';
 class PostDetails extends Component {
   constructor(props) {
     super(props);
+    const findPostFromState = () => {
+      const id = this.props.match.params.postId;
+      const matchedPost = this.props.postsData.posts.filter(post => post._id === id);
+      return { ...matchedPost[0] };
+    };
     this.state = {
-      post: this.props.location.state,
-      comments: this.props.location.state && this.props.location.state.comments,
+      post: findPostFromState(),
+      comments: findPostFromState().comments,
       errorMessage: null,
     };
   }
   componentDidMount() {
-    if (this.props.location.state === undefined) {
+    if (this.props.postsData.posts.length === 0) {
       // alert('fetching individual post');
       axios({
         method: 'get',
@@ -93,15 +98,14 @@ class PostDetails extends Component {
   render() {
     const { post } = this.state;
     const { comments } = this.state;
-    console.log(comments);
     return (
       <div className="postDetails">
         <div className="container">
-          {post ? (
+          {Object.entries(post).length !== 0 ? (
             <React.Fragment>
               <Card post={post} />
               <div className="postDetails--commets">
-                {comments.map((comment, idx) => (
+                {comments && comments.map((comment, idx) => (
                   <Comment
                     idx={idx}
                     commentItem={comment}
@@ -123,7 +127,10 @@ class PostDetails extends Component {
     );
   }
 }
-const mapStateToProps = state => ({ userData: state.user });
+const mapStateToProps = state => ({
+  userData: state.user,
+  postsData: state.posts,
+});
 
 PostDetails.propTypes = {
   location: PropTypes.oneOfType(Object).isRequired,
