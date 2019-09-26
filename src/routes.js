@@ -12,7 +12,6 @@ const Login = lazy(() => import('./Modules/Login'));
 const Register = lazy(() => import('./Modules/Register'));
 const Navbar = lazy(() => import('./components/Navbar'));
 const Footer = lazy(() => import('./components/Footer'));
-const ProfileSetting = lazy(() => import('./Modules/ProfileSetting'));
 const forgetPassword = lazy(() => import('./Modules/ForgetPassword'));
 const Profile = lazy(() => import('./Modules/Profie'));
 const VerifyEmail = lazy(() => import('./Modules/VerifyEmail'));
@@ -44,7 +43,6 @@ class Routes extends React.Component {
             <Route path="/verifyEmail/:token" component={VerifyEmail} />
             <Route path="/forgetPassword" component={forgetPassword} />
             <Route path="/resetPassword/:token" component={resetPassword} />
-            <PrivateRoute path="/setting" component={ProfileSetting} />
             <PrivateRoute path="/upload" component={Upload} />
             <PrivateRoute
               sensitive
