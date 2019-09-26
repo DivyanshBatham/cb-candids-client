@@ -24,7 +24,6 @@ class Login extends Component {
       },
     })
       .then((res) => {
-        console.log(res.data);
         this.props.history.push('/login');
         // TODO: Toast for the success
       })

@@ -49,7 +49,6 @@ class register extends Component {
       },
     })
       .then((res) => {
-        console.log(res);
         const { success } = res.data;
         if (success) {
           const { token } = res.data;
@@ -61,7 +60,6 @@ class register extends Component {
         }
       })
       .catch((err) => {
-        console.log(err.response);
         this.setState({
           usernameError: err.response.data.errors.username || null,
           emailError: err.response.data.errors.email || null,

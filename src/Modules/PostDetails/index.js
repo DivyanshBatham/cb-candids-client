@@ -19,7 +19,6 @@ class PostDetails extends Component {
   }
   componentDidMount() {
     if (this.props.location.state === undefined) {
-      console.log('---------------->');
       axios({
         method: 'get',
         url: `https://calm-waters-47062.herokuapp.com/posts/${this.props.match.params.postId}`,
@@ -28,7 +27,6 @@ class PostDetails extends Component {
         },
       })
         .then((res) => {
-          console.warn('post data-->', res.data);
           if (res.data.success) {
             this.setState({
               post: res.data.data.post,
@@ -40,19 +38,21 @@ class PostDetails extends Component {
     }
   }
   isAuthorComment = (comment) => {
-    console.log(this.props.stateData);
-    const currentUser = this.props.stateData.username;
+    const currentUser = this.props.userData.username;
     return comment.author.username === currentUser;
   };
+  removeCommentFromState = (id) => {
+    const { comments } = this.state;
+    const commentsAfterDeletedComment = comments.filter(comment => comment._id !== id);
+    this.setState({ comments: commentsAfterDeletedComment });
+  }
 
   submitComment = (commentText) => {
     const { _id: submittedPostId } = this.state.post;
-    console.log('in submit comment--->', submittedPostId);
-    console.log(commentText);
     const tempCommnetObj = {
       author: {
-        username: this.props.stateData.username,
-        imgSrc: this.props.stateData.imgSrc,
+        username: this.props.userData.username,
+        imgSrc: this.props.userData.imgSrc,
       },
       comment: commentText,
       _id: 1,
@@ -73,17 +73,14 @@ class PostDetails extends Component {
       },
     })
       .then((res) => {
-        console.log('comment--->', res.data);
+        // console.log('comment--->', res.data);
       })
       .catch(err => console.log(err));
   };
 
   render() {
-    console.log('post--->', this.state);
     const { post } = this.state;
-    const comments = this.state && this.state.comments;
-    // const comments = post && post.comments;
-    console.log('poist--->', post);
+    const { comments } = this.state;
     return (
       <div className="postDetails">
         <div className="container">
@@ -97,6 +94,8 @@ class PostDetails extends Component {
                     idx={idx}
                     commentItem={comment}
                     userComment={this.isAuthorComment(comment)}
+                    handleRemoveComment={this.removeCommentFromState}
+                    postId={post._id}
                   />
                 ))}
               </div>
@@ -112,18 +111,7 @@ class PostDetails extends Component {
     );
   }
 }
-// const mapStateToProps = (state) => {
-//   const stateData = state;
-//   console.log(stateData);
-//   return stateData
-// };
-// function mapStateToProps (state) {
-//   console.warn('mapStateToProps', state);
-//   return {
-//     stateData: state,
-//   }
-// }
-const mapStateToProps = state => ({ stateData: state });
+const mapStateToProps = state => ({ userData: state.user });
 
 PostDetails.propTypes = {
   location: PropTypes.oneOfType(Object).isRequired,
