@@ -39,7 +39,7 @@ class Navbar extends Component {
 
     const showBackButton = compareUser(pathname);
     return (
-      <div className={display ? 'navbar' : 'hide'}>
+      <nav className={display ? 'navbar' : 'hide'}>
         {/* when '/'--> icon and name
           when '/post/:id' --> back button logo name verticleOption
           when '/user/:username'----> back button logo name verticleOption */}
@@ -80,7 +80,7 @@ class Navbar extends Component {
             />
           )}
         </div>
-      </div>
+      </nav>
     );
   }
 }
