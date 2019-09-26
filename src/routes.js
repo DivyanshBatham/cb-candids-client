@@ -7,7 +7,6 @@ import Comment from './components/Comment';
 import PrivateRoute from './PrivateRoute';
 import ConfirmationModal from './components/ConfirmationModal';
 
-const Dashboard = lazy(() => import('./components/Dashboard'));
 const Home = lazy(() => import('./Modules/Home'));
 const Login = lazy(() => import('./Modules/Login'));
 const Register = lazy(() => import('./Modules/Register'));
@@ -40,7 +39,6 @@ class Routes extends React.Component {
         <main>
           <Switch>
             <PrivateRoute path="/" component={Home} exact />
-            <Route path="/dashboard" component={Dashboard} />
             <Route path="/login" component={Login} />
             <Route path="/register" component={Register} />
             <Route path="/verifyEmail/:token" component={VerifyEmail} />
