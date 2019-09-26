@@ -38,8 +38,8 @@ const customStyles = {
   }),
   multiValue: (styles, { data }) => ({
     ...styles,
-    backgroundColor: data.color,
-    // backgroundColor: RandomColor.getColorGuaranteed(),
+    // backgroundColor: data.color,
+    backgroundColor: RandomColor.getColorGuaranteed(),
     borderRadius: '500px',
     marginRight: '6px',
   }),
@@ -56,27 +56,19 @@ const customStyles = {
   }),
 };
 
-const colourOptions = [
-  {
-    value: 'ocean', label: 'Ocean', color: RandomColor.getColorGuaranteed(),
-  },
-  { value: 'purple', label: 'Purple', color: RandomColor.getColorGuaranteed() },
-  {
-    value: 'red', label: 'Red', color: RandomColor.getColorGuaranteed(),
-  },
-  { value: 'orange', label: 'Orange', color: RandomColor.getColorGuaranteed() },
-  { value: 'yellow', label: 'Yellow', color: RandomColor.getColorGuaranteed() },
-  { value: 'green', label: 'Green', color: RandomColor.getColorGuaranteed() },
-  { value: 'forest', label: 'Forest', color: RandomColor.getColorGuaranteed() },
-  { value: 'slate', label: 'Slate', color: RandomColor.getColorGuaranteed() },
-  { value: 'silver', label: 'Silver', color: RandomColor.getColorGuaranteed() },
-];
-
 class Upload extends Component {
   constructor() {
     super();
     this.state = {
-      errors: {},
+      errors: {
+        // title: '* Title is required',
+        // imgSrc: '* Image is required',
+        // imgSrc: 'Oops! Candid Not Selected',
+      },
+      taggedUsers: [],
+      title: '',
+      description: '',
+      imgSrc: null,
     };
   }
 
@@ -94,22 +86,6 @@ class Upload extends Component {
     }))
     , 500,
   );
-
-  // Without Debounce:
-  // getOptions = inputValue => new Promise((resolve) => {
-  //   console.warn('HITTING AXIOS: ', inputValue);
-  //   return axios.get('http://192.168.1.9:4500/users', {
-  //     params: {
-  //       search: inputValue,
-  //     },
-  //   }).then((res) => {
-  //     console.warn('OPTIONS: ', res.data.data.options);
-  //     resolve(res.data.data.options);
-  //   }).catch((err) => {
-  //     console.log('err =>>>', err);
-  //     resolve(null);
-  //   });
-  // })
 
   handleFileDrop = (files) => {
     const file = files[0];
@@ -169,53 +145,87 @@ class Upload extends Component {
     img.src = URL.createObjectURL(file);
   };
 
-  handleChange = (e) => {
+  handleTitleChange = (e) => {
+    const { title: titleError } = this.state.errors;
+    const { value } = e.target;
+    if (titleError !== undefined) {
+      this.setState(prevState => ({
+        title: value,
+        errors: {
+          ...prevState.errors,
+          title: value.length > 0 ? '' : '* Title is required',
+        },
+      }));
+    } else {
+      this.setState({
+        title: value,
+      });
+    }
+  }
+
+  handleDescriptionChange = (e) => {
     this.setState({
-      [e.target.name]: e.target.value,
+      description: e.target.value,
     });
   }
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const { imgSrc } = this.state;
-    const data = new FormData();
-    data.append('imgSrc', imgSrc);
+    const {
+      title, description, taggedUsers, imgSrc,
+    } = this.state;
+    const errors = {};
 
-    axios.post(
-      'http://192.168.1.9:4500/users/upload',
-      data,
-      {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      },
-    ).then((res) => {
-      console.log(res);
-      alert('File Uploaded: ', res.data.changes.imgSrc);
-    })
-      .catch((err) => {
-        console.log(err);
-        alert('File Upload Error');
+    if (title === '') {
+      errors.title = '* Title is required';
+    }
+
+    if (!imgSrc) {
+      errors.imgSrc = 'Image is required';
+    }
+
+    if (Object.entries(errors).length === 0 && errors.constructor === Object) {
+      // No errors:
+      const data = new FormData();
+      data.append('imgSrc', imgSrc);
+      data.append('title', title);
+      data.append('description', description);
+      data.append('taggedUsers', JSON.stringify(taggedUsers));
+
+      axios({
+        method: 'post',
+        url: 'https://calm-waters-47062.herokuapp.com/posts',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('cb-token')}`,
+          'Content-Type': 'multipart/form-data',
+        },
+        data,
+      })
+        .then((res) => {
+          console.log(res);
+          // alert('File Uploaded: ', res.data.changes.imgSrc);
+        })
+        .catch((err) => {
+          console.log(err);
+          // alert('File Upload Error');
+        });
+    } else {
+      this.setState({
+        errors,
       });
+    }
   };
 
 
-  tagUser = (user, actionMeta) => {
-    console.log(user, actionMeta);
+  tagUser = (selectedOptions) => {
     this.setState({
-      user,
+      taggedUsers: selectedOptions.map(option => option.value),
     });
-    // Live errors:
-    // this.setState(prevState => ({
-    //   time: time,
-    //   errors: {
-    //     ...prevState.errors,
-    //     time: ""
-    //   }
-    // }));
   };
 
   render() {
     const {
-      imgSrc, imageContainerStyle, title, description, taggedUsers, imageStyle,
+      imgSrc, imageContainerStyle, title, description, imageStyle, errors,
     } = this.state;
 
     return (
@@ -225,7 +235,7 @@ class Upload extends Component {
           <h2 className="sectionHeading">Share Candid:</h2>
           <form className="card" onSubmit={this.handleSubmit}>
 
-            <div className="inputWrapper" data-error={this.state.errors.title}>
+            <div className={errors.title ? 'inputWrapper inputWrapper--error' : 'inputWrapper'} data-error={errors.title}>
               <input
                 type="text"
                 id="title"
@@ -233,7 +243,7 @@ class Upload extends Component {
                 aria-label="Title"
                 placeholder="Title"
                 value={title}
-                onChange={this.handleChange}
+                onChange={this.handleTitleChange}
               />
             </div>
 
@@ -245,7 +255,7 @@ class Upload extends Component {
                 aria-label="Description"
                 placeholder="Description (Optional)"
                 value={description}
-                onChange={this.handleChange}
+                onChange={this.handleDescriptionChange}
               />
             </div>
 
@@ -281,6 +291,7 @@ class Upload extends Component {
                   // TODO: Maybe Move every file handling code to MyDropzone only
                   <MyDropzone
                     handleOnDrop={this.handleFileDrop}
+                    error={this.state.errors.imgSrc}
                   />
                 )
             }

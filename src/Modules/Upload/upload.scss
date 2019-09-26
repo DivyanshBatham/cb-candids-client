@@ -1,8 +1,9 @@
 @import "../../variables.scss";
 
 .inputWrapper {
-  margin-bottom: 1rem;
-  
+  margin-bottom: 1.5rem;
+  position: relative;
+
   >input, >textarea {
     width: 100%;
     box-sizing: border-box;
@@ -24,21 +25,30 @@
     resize: none;
     font-size: 0.9rem;
   }
+
+  &::after {
+    content: attr(data-error);
+    // color: ;
+    font-size: 0.8rem;
+    font-weight: 500;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 0.2rem;
+    color: $primaryPink;
+  }
+  
+  &--error {
+    input{
+      border-color: $primaryPink;
+
+      &:focus {
+        outline: none;
+        box-shadow: 0 0 0 1px $lightPink;
+      }
+    }
+  }
 }
-
-// .react-select {
-//   &-container {
-//     font-size: 0.9rem;
-//   }
-
-//   // &__control {
-//   //   // &--is-focused {
-//   //   //   // border-color: red !important; 
-//   //   // }
-//   // }
-
-// }
-
 
 
 .imageContainer {

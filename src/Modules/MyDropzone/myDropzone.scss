@@ -10,6 +10,7 @@
     width: 100%;
     height: 100%;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     border: dashed 2px $bgDark;
@@ -20,6 +21,11 @@
     &:focus {
       outline: 0;
       border-color: $lightPlaceholder;
+    }
+
+    &--error {
+      color: $primaryPink;
+      border-color: $primaryPink;
     }
   }
 }

@@ -28,10 +28,14 @@ export default function MyDropzone(props) {
   // ));
 
   return (
-    <section className="dropzoneContainer">
-      <div {...getRootProps({ className: 'dropzone' })}>
+    <div className="dropzoneContainer" data-error={props.error}>
+      <div {...getRootProps({ className: props.error ? 'dropzone dropzone--error' : 'dropzone' })}>
         <input {...getInputProps()} />
-        <span>Upload a Candid</span>
+        {props.error ?
+          <span>{props.error}</span>
+          :
+          <span>Upload a Candid</span>
+        }
         {/* <em>(Only *.jpeg and *.png images will be accepted)</em> */}
       </div>
       {/* <aside>
@@ -41,6 +45,6 @@ export default function MyDropzone(props) {
         </ul>
         {rejectedFilesItems}
       </aside> */}
-    </section >
+    </div >
   );
 }
