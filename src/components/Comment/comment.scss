@@ -53,10 +53,30 @@
       line-height: 18px;
       margin-bottom: 0.5rem;
     }
+    &__input {
+      font-size: 12px;
+      color: $darkText;
+      line-height: 18px;
+      margin: 0;
+      margin-bottom: 0.5rem;
+      outline: none;
+      border: none;
+      background: transparent;
+      // 
+      resize: none;
+      // overflow: hidden;
+    }
     &__time {
       font-size: 10px;
       display: flex;
       justify-content: flex-end;
+    }
+    &__icons{
+      display: flex;
+      justify-content: space-between;
+      &__iconContainer{
+        margin-left: 2rem;
+      }
     }
   }
 }

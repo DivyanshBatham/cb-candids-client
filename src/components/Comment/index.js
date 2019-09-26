@@ -1,23 +1,26 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import axios from 'axios';
 import PropTypes from 'prop-types';
+import TextareaAutosize from 'react-textarea-autosize';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import DropdownOptions from '../DropdownOptions';
 import ConfirmationModal from '../ConfirmationModal';
 import { getBackgroundColor } from '../../helpers';
 import './comment.scss';
+import CommentBox from '../CommentBox';
 
 class Comment extends Component {
   constructor(props) {
     super(props);
     this.state = {
       showConfirmationModal: false,
+      showCommentBox: false,
+      commentText: '',
     };
   }
-  checkLoginAuthor = () => {
-    const { authorDetails, commentItem } = this.props;
-    return commentItem.author.username === authorDetails.username;
-  };
+  componentDidMount() {
+    this.setState({ commentText: this.props.commentItem.comment });
+  }
 
   handleCopyComment = (e) => {
     e.preventDefault();
@@ -48,9 +51,12 @@ class Comment extends Component {
       .catch(err => console.log(err));
   };
 
-  handleEditComment = (e) => {
+  handleShowCommentBox = (e) => {
     e.preventDefault();
-    // TODO: do something for edit the comment
+    this.setState(prevState => ({
+      showCommentBox: !prevState.showCommentBox,
+    }));
+    this.textarea.focus();
   };
 
   handleShowConfirmation = () => {
@@ -58,13 +64,48 @@ class Comment extends Component {
       showConfirmationModal: !prevState.showConfirmationModal,
     }));
   };
+  handleCommentText = (e) => {
+    e.preventDefault();
+    this.setState({ commentText: e.target.value });
+  }
+  handleCancleComment = (e) => {
+    e.preventDefault();
+    this.handleShowCommentBox(e);
+    this.setState({ commentText: this.props.commentItem.comment });
+  }
+  handleEditComment = (e) => {
+    e.preventDefault();
+    const {
+      postId, commentItem, handleUpdateComment, idx,
+    } = this.props;
+    const { commentText } = this.state;
+    if (commentText === commentItem.comment) return;
+    this.handleShowCommentBox(e);
+    axios({
+      method: 'patch',
+      url: `https://calm-waters-47062.herokuapp.com/posts/${postId}/comments/${commentItem._id}`,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('cb-token')}`,
+      },
+      data: {
+        comment: commentText,
+      },
+    }).then((res) => {
+      if (res.data.success) {
+        handleUpdateComment(idx, commentItem._id, commentText);
+      }
+    }).catch(err => console.log(err));
+  }
 
   render() {
-    const { showConfirmationModal } = this.state;
+    const { showConfirmationModal, showCommentBox, commentText } = this.state;
     const postedTime = '15 mins';
-    const { userComment, idx, commentItem } = this.props;
+    const { idx, commentItem } = this.props;
+    const randomColorValue = getBackgroundColor(idx);
     return (
-      <div className={userComment ? 'comment comment--self' : 'comment'}>
+      <div
+        className={commentItem.isAuthor ? 'comment comment--self' : 'comment'}
+      >
         {showConfirmationModal && (
           <ConfirmationModal
             headerText="Delete Comment?"
@@ -77,36 +118,59 @@ class Comment extends Component {
         )}
         <img
           className={
-            userComment
+            commentItem.isAuthor
               ? 'comment__image comment__image--self'
               : 'comment__image'
           }
           src={commentItem.author.imgSrc}
           alt="user"
         />
-        <div className="comment__content" style={getBackgroundColor(idx)}>
+        <div className="comment__content" style={randomColorValue}>
           <div className="comment__content__header">
             <span className="comment__content__header__username">
-              {commentItem.author.username}
+              {showCommentBox ? 'Edit Comment' : commentItem.author.username}
             </span>
-            <DropdownOptions
-              options={[
-                {
-                  title: 'Copy',
-                  handleClick: this.handleCopyComment,
-                },
-                {
-                  title: this.checkLoginAuthor() ? 'Edit' : null,
-                  handleClick: this.handleEditComment,
-                },
-                {
-                  title: this.checkLoginAuthor() ? 'Delete' : null,
-                  handleClick: this.handleShowConfirmation,
-                },
-              ]}
-            />
+            {showCommentBox ? (
+              <span className="comment__content__icons">
+                <div className="comment__content__icons__iconContainer iconContainer">
+                  <FontAwesomeIcon
+                    icon="times"
+                    onClick={this.handleCancleComment}
+                  />
+                </div>
+                <div className="comment__content__icons__iconContainer iconContainer">
+                  <FontAwesomeIcon
+                    icon="check"
+                    onClick={this.handleEditComment}
+                  />
+                </div>
+              </span>
+            ) : (
+              <DropdownOptions
+                options={[
+                  {
+                    title: 'Copy',
+                    handleClick: this.handleCopyComment,
+                  },
+                  {
+                    title: commentItem.isAuthor ? 'Edit' : null,
+                    handleClick: this.handleShowCommentBox,
+                  },
+                  {
+                    title: commentItem.isAuthor ? 'Delete' : null,
+                    handleClick: this.handleShowConfirmation,
+                  },
+                ]}
+              />
+            )}
           </div>
-          <span className="comment__content__text">{commentItem.comment}</span>
+          <TextareaAutosize
+            className="comment__content__input"
+            onChange={this.handleCommentText}
+            value={commentText}
+            readOnly={!showCommentBox}
+            inputRef={tag => (this.textarea = tag)}
+          />
           <span className="comment__content__time">{postedTime} ago</span>
         </div>
       </div>
@@ -114,17 +178,11 @@ class Comment extends Component {
   }
 }
 
-const mapStateToProps = state => ({ authorDetails: state.user });
-
 Comment.propTypes = {
-  userComment: PropTypes.bool.isRequired,
   idx: PropTypes.number.isRequired,
   commentItem: PropTypes.shape({}).isRequired,
   postId: PropTypes.string.isRequired,
-  authorDetails: PropTypes.shape({}).isRequired,
   handleRemoveComment: PropTypes.func.isRequired,
+  handleUpdateComment: PropTypes.func.isRequired,
 };
-export default connect(
-  mapStateToProps,
-  null,
-)(Comment);
+export default Comment;

@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import axios from 'axios';
@@ -11,14 +12,20 @@ import './postDetails.scss';
 class PostDetails extends Component {
   constructor(props) {
     super(props);
+    const findPostFromState = () => {
+      const id = this.props.match.params.postId;
+      const matchedPost = this.props.postsData.posts.filter(post => post._id === id);
+      return { ...matchedPost[0] };
+    };
     this.state = {
-      post: this.props.location.state,
-      comments: this.props.location.state && this.props.location.state.comments,
+      post: findPostFromState(),
+      comments: findPostFromState().comments,
       errorMessage: null,
     };
   }
   componentDidMount() {
-    if (this.props.location.state === undefined) {
+    if (this.props.postsData.posts.length === 0) {
+      // alert('fetching individual post');
       axios({
         method: 'get',
         url: `https://calm-waters-47062.herokuapp.com/posts/${this.props.match.params.postId}`,
@@ -37,14 +44,22 @@ class PostDetails extends Component {
         .catch(err => this.setState({ errorMessage: 'Post Not Found!' }));
     }
   }
-  isAuthorComment = (comment) => {
-    const currentUser = this.props.userData.username;
-    return comment.author.username === currentUser;
-  };
+
   removeCommentFromState = (id) => {
     const { comments } = this.state;
     const commentsAfterDeletedComment = comments.filter(comment => comment._id !== id);
     this.setState({ comments: commentsAfterDeletedComment });
+  }
+
+  updateCommentText = (idx, commentId, commentText) => {
+    const { comments } = this.state;
+    const tempComment = [...comments];
+    let index = idx;
+    if (tempComment[index]._id !== commentId) {
+      index = tempComment.findIndex(commentObj => commentObj._id === commentId);
+    }
+    tempComment[index].comment = commentText;
+    this.setState({ comments: tempComment });
   }
 
   submitComment = (commentText) => {
@@ -73,7 +88,9 @@ class PostDetails extends Component {
       },
     })
       .then((res) => {
-        // console.log('comment--->', res.data);
+        if (res.data.success) {
+          this.setState({ comments: res.data.data.comments });
+        }
       })
       .catch(err => console.log(err));
   };
@@ -84,17 +101,17 @@ class PostDetails extends Component {
     return (
       <div className="postDetails">
         <div className="container">
-          {post ? (
+          {Object.entries(post).length !== 0 ? (
             <React.Fragment>
               <Card post={post} />
               <h2 className="sectionHeading">Conversation:</h2>
               <div className="postDetails--commets">
-                {comments.map((comment, idx) => (
+                {comments && comments.map((comment, idx) => (
                   <Comment
                     idx={idx}
                     commentItem={comment}
-                    userComment={this.isAuthorComment(comment)}
                     handleRemoveComment={this.removeCommentFromState}
+                    handleUpdateComment={this.updateCommentText}
                     postId={post._id}
                   />
                 ))}
@@ -111,7 +128,10 @@ class PostDetails extends Component {
     );
   }
 }
-const mapStateToProps = state => ({ userData: state.user });
+const mapStateToProps = state => ({
+  userData: state.user,
+  postsData: state.posts,
+});
 
 PostDetails.propTypes = {
   location: PropTypes.oneOfType(Object).isRequired,
