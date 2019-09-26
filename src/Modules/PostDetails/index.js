@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import axios from 'axios';
@@ -19,6 +20,7 @@ class PostDetails extends Component {
   }
   componentDidMount() {
     if (this.props.location.state === undefined) {
+      // alert('fetching individual post');
       axios({
         method: 'get',
         url: `https://calm-waters-47062.herokuapp.com/posts/${this.props.match.params.postId}`,
@@ -37,14 +39,22 @@ class PostDetails extends Component {
         .catch(err => this.setState({ errorMessage: 'Post Not Found!' }));
     }
   }
-  isAuthorComment = (comment) => {
-    const currentUser = this.props.userData.username;
-    return comment.author.username === currentUser;
-  };
+
   removeCommentFromState = (id) => {
     const { comments } = this.state;
     const commentsAfterDeletedComment = comments.filter(comment => comment._id !== id);
     this.setState({ comments: commentsAfterDeletedComment });
+  }
+
+  updateCommentText = (idx, commentId, commentText) => {
+    const { comments } = this.state;
+    const tempComment = [...comments];
+    let index = idx;
+    if (tempComment[index]._id !== commentId) {
+      index = tempComment.findIndex(commentObj => commentObj._id === commentId);
+    }
+    tempComment[index].comment = commentText;
+    this.setState({ comments: tempComment });
   }
 
   submitComment = (commentText) => {
@@ -83,6 +93,7 @@ class PostDetails extends Component {
   render() {
     const { post } = this.state;
     const { comments } = this.state;
+    console.log(comments);
     return (
       <div className="postDetails">
         <div className="container">
@@ -94,8 +105,8 @@ class PostDetails extends Component {
                   <Comment
                     idx={idx}
                     commentItem={comment}
-                    userComment={this.isAuthorComment(comment)}
                     handleRemoveComment={this.removeCommentFromState}
+                    handleUpdateComment={this.updateCommentText}
                     postId={post._id}
                   />
                 ))}
