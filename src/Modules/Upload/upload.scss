@@ -1,0 +1,57 @@
+@import "../../variables.scss";
+
+.inputWrapper {
+  margin-bottom: 1rem;
+  
+  >input, >textarea {
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 8px;
+    border: solid 1px $bgDark; // TEST
+    // border: none;
+    padding: 0.3rem 0.5rem;
+    font-family: "Poppins", sans-serif;
+    font-size: 1rem;
+    color: $darkText;
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 1px $lightPlaceholder;
+    }
+  }
+
+  textarea {
+    resize: none;
+    font-size: 0.9rem;
+  }
+}
+
+// .react-select {
+//   &-container {
+//     font-size: 0.9rem;
+//   }
+
+//   // &__control {
+//   //   // &--is-focused {
+//   //   //   // border-color: red !important; 
+//   //   // }
+//   // }
+
+// }
+
+
+
+.imageContainer {
+  border-radius: 8px;
+  background-size: cover;
+  position: relative;
+
+  .image {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    border-radius: 8px;
+    background-size: cover,
+  }
+}

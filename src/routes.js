@@ -19,6 +19,7 @@ const Profile = lazy(() => import('./Modules/Profie'));
 const VerifyEmail = lazy(() => import('./Modules/VerifyEmail'));
 const resetPassword = lazy(() => import('./Modules/ResetPassword'));
 const PostDetails = lazy(() => import('./Modules/PostDetails'));
+const Upload = lazy(() => import('./Modules/Upload'));
 
 class Routes extends React.Component {
   constructor() {
@@ -46,6 +47,7 @@ class Routes extends React.Component {
             <Route path="/forgetPassword" component={forgetPassword} />
             <Route path="/resetPassword/:token" component={resetPassword} />
             <PrivateRoute path="/setting" component={ProfileSetting} />
+            <PrivateRoute path="/upload" component={Upload} />
             <PrivateRoute
               sensitive
               path="/user/:username"

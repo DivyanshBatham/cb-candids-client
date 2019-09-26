@@ -87,6 +87,7 @@ class PostDetails extends Component {
           {post ? (
             <React.Fragment>
               <Card post={post} />
+              <h2 className="sectionHeading">Conversation:</h2>
               <div className="postDetails--commets">
                 {comments.map((comment, idx) => (
                   <Comment

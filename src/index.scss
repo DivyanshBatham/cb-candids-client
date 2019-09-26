@@ -30,6 +30,12 @@ main {
   flex: 1;
   // margin-top: 3rem;
 }
+.sectionHeading {
+  font-family: 'Pacifico', cursive;
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: $navbar;
+}
 .icon{
   cursor: pointer;
   position: relative;
