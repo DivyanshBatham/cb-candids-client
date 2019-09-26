@@ -104,6 +104,7 @@ class PostDetails extends Component {
           {Object.entries(post).length !== 0 ? (
             <React.Fragment>
               <Card post={post} />
+              <h2 className="sectionHeading">Conversation:</h2>
               <div className="postDetails--commets">
                 {comments && comments.map((comment, idx) => (
                   <Comment

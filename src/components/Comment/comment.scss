@@ -39,7 +39,7 @@
       align-items: center;
       margin-bottom: 0.6rem;
       &__username {
-        font-size: 14px;
+        font-size: 0.9rem;
         font-weight: 600;
       }
       &__icon {
@@ -48,7 +48,7 @@
       }
     }
     &__text {
-      font-size: 12px;
+      font-size: 0.8rem;
       color: $darkText;
       line-height: 18px;
       margin-bottom: 0.5rem;
