@@ -16,10 +16,14 @@ class Comment extends Component {
       showConfirmationModal: false,
       showCommentBox: false,
       commentText: '',
+      isLiked: null,
     };
   }
   componentDidMount() {
-    this.setState({ commentText: this.props.commentItem.comment });
+    this.setState({
+      commentText: this.props.commentItem.comment,
+      isLiked: this.props.commentItem.isLiked,
+    });
   }
 
   handleCopyComment = (e) => {
@@ -67,12 +71,12 @@ class Comment extends Component {
   handleCommentText = (e) => {
     e.preventDefault();
     this.setState({ commentText: e.target.value });
-  }
+  };
   handleCancleComment = (e) => {
     e.preventDefault();
     this.handleShowCommentBox(e);
     this.setState({ commentText: this.props.commentItem.comment });
-  }
+  };
   handleEditComment = (e) => {
     e.preventDefault();
     const {
@@ -90,18 +94,43 @@ class Comment extends Component {
       data: {
         comment: commentText,
       },
+    })
+      .then((res) => {
+        if (res.data.success) {
+          handleUpdateComment(idx, commentItem._id, commentText);
+        }
+      })
+      .catch(err => console.log(err));
+  };
+  handleCommentLike = (e) => {
+    const { isLiked: currentLikedState } = this.state;
+    e.preventDefault();
+    const {
+      postId, commentItem,
+    } = this.props;
+    this.setState(prevState => ({
+      isLiked: !prevState.isLiked,
+    }));
+    axios({
+      method: 'post',
+      url: `https://calm-waters-47062.herokuapp.com/posts/${postId}/comments/${commentItem._id}/likes`,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('cb-token')}`,
+      },
     }).then((res) => {
       if (res.data.success) {
-        handleUpdateComment(idx, commentItem._id, commentText);
+        this.setState({ isLiked: res.data.message === 'liked' });
       }
-    }).catch(err => console.log(err));
-  }
-
+    }).catch(() => this.setState({ isLiked: currentLikedState }));
+  };
   render() {
-    const { showConfirmationModal, showCommentBox, commentText } = this.state;
+    const {
+      showConfirmationModal, showCommentBox, commentText, isLiked,
+    } = this.state;
     const postedTime = '15 mins';
     const { idx, commentItem } = this.props;
     const randomColorValue = getBackgroundColor(idx);
+    console.log(commentItem);
     return (
       <div
         className={commentItem.isAuthor ? 'comment comment--self' : 'comment'}
@@ -146,22 +175,39 @@ class Comment extends Component {
                 </div>
               </span>
             ) : (
-              <DropdownOptions
-                options={[
-                  {
-                    title: 'Copy',
-                    handleClick: this.handleCopyComment,
-                  },
-                  {
-                    title: commentItem.isAuthor ? 'Edit' : null,
-                    handleClick: this.handleShowCommentBox,
-                  },
-                  {
-                    title: commentItem.isAuthor ? 'Delete' : null,
-                    handleClick: this.handleShowConfirmation,
-                  },
-                ]}
-              />
+              <div className="comment__content__header__iconWrapper">
+                {!showCommentBox && (
+                  <div
+                    className={`comment__content__header__iconWrapper__likeIcon iconContainer ${
+                      isLiked
+                        ? 'comment__content__header__iconWrapper__likeIcon__liked'
+                        : ''
+                    }`}
+                  >
+                    <FontAwesomeIcon
+                      icon="heart"
+                      onClick={this.handleCommentLike}
+                    />
+                    {/* <span>{commentItem.likes.length}</span> */}
+                  </div>
+                )}
+                <DropdownOptions
+                  options={[
+                    {
+                      title: 'Copy',
+                      handleClick: this.handleCopyComment,
+                    },
+                    {
+                      title: commentItem.isAuthor ? 'Edit' : null,
+                      handleClick: this.handleShowCommentBox,
+                    },
+                    {
+                      title: commentItem.isAuthor ? 'Delete' : null,
+                      handleClick: this.handleShowConfirmation,
+                    },
+                  ]}
+                />
+              </div>
             )}
           </div>
           <TextareaAutosize

@@ -28,10 +28,8 @@
     border-radius: 1rem;
     background-color: $lightYellow;
     // box-shadow: 10px $lightPlaceholder;
-    box-shadow: 
-        0 0 8px 0 rgba(17, 22, 26, 0.16),
-        0 4px 8px 0 rgba(17, 22, 26, 0.08), 
-        0 8px 16px 0 rgba(17, 22, 26, 0.08);
+    box-shadow: 0 0 8px 0 rgba(17, 22, 26, 0.16),
+      0 4px 8px 0 rgba(17, 22, 26, 0.08), 0 8px 16px 0 rgba(17, 22, 26, 0.08);
     padding: 1rem;
     &__header {
       display: flex;
@@ -45,6 +43,15 @@
       &__icon {
         font-size: 1rem;
         font-weight: light;
+      }
+      &__iconWrapper {
+        display: flex;
+        &__likeIcon {
+          margin-right: 2rem;
+          &__liked{
+          color: $primaryPink;            
+          }
+        }
       }
     }
     &__text {
@@ -62,7 +69,7 @@
       outline: none;
       border: none;
       background: transparent;
-      // 
+      //
       resize: none;
       // overflow: hidden;
     }
@@ -71,10 +78,10 @@
       display: flex;
       justify-content: flex-end;
     }
-    &__icons{
+    &__icons {
       display: flex;
       justify-content: space-between;
-      &__iconContainer{
+      &__iconContainer {
         margin-left: 2rem;
       }
     }
