@@ -2,15 +2,11 @@ import React, { lazy, Suspense } from 'react';
 import { Switch, Route, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { addAuthData } from './actions/authActions';
-import Card from './components/Card';
-import Comment from './components/Comment';
 import PrivateRoute from './PrivateRoute';
-import ConfirmationModal from './components/ConfirmationModal';
 
 const Home = lazy(() => import('./Modules/Home'));
 const Login = lazy(() => import('./Modules/Login'));
 const Register = lazy(() => import('./Modules/Register'));
-const Navbar = lazy(() => import('./components/Navbar'));
 const Footer = lazy(() => import('./components/Footer'));
 const forgetPassword = lazy(() => import('./Modules/ForgetPassword'));
 const Profile = lazy(() => import('./Modules/Profie'));
@@ -34,7 +30,6 @@ class Routes extends React.Component {
   render() {
     return (
       <Suspense fallback={<div>loading...</div>}>
-        {/* <Navbar /> */}
         <main>
           <Switch>
             <PrivateRoute path="/" component={Home} exact />
