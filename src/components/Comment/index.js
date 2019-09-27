@@ -80,7 +80,7 @@ class Comment extends Component {
   handleEditComment = (e) => {
     e.preventDefault();
     const {
-      postId, commentItem, handleUpdateComment, idx,
+      postId, commentItem, handleUpdateCommentOrLike, idx,
     } = this.props;
     const { commentText } = this.state;
     if (commentText === commentItem.comment) return;
@@ -97,7 +97,7 @@ class Comment extends Component {
     })
       .then((res) => {
         if (res.data.success) {
-          handleUpdateComment(idx, commentItem._id, commentText);
+          handleUpdateCommentOrLike(idx, commentItem._id, { type: 'comment', value: commentText });
         }
       })
       .catch(err => console.log(err));
@@ -106,7 +106,7 @@ class Comment extends Component {
     const { isLiked: currentLikedState } = this.state;
     e.preventDefault();
     const {
-      postId, commentItem,
+      postId, commentItem, handleUpdateCommentOrLike, idx,
     } = this.props;
     this.setState(prevState => ({
       isLiked: !prevState.isLiked,
@@ -119,7 +119,9 @@ class Comment extends Component {
       },
     }).then((res) => {
       if (res.data.success) {
-        this.setState({ isLiked: res.data.message === 'liked' });
+        this.setState({ isLiked: res.data.message === 'liked' }, () => {
+          handleUpdateCommentOrLike(idx, commentItem._id, { type: 'like', value: this.state.isLiked });
+        });
       }
     }).catch(() => this.setState({ isLiked: currentLikedState }));
   };
@@ -130,7 +132,6 @@ class Comment extends Component {
     const postedTime = '15 mins';
     const { idx, commentItem } = this.props;
     const randomColorValue = getBackgroundColor(idx);
-    console.log(commentItem);
     return (
       <div
         className={commentItem.isAuthor ? 'comment comment--self' : 'comment'}
@@ -229,6 +230,6 @@ Comment.propTypes = {
   commentItem: PropTypes.shape({}).isRequired,
   postId: PropTypes.string.isRequired,
   handleRemoveComment: PropTypes.func.isRequired,
-  handleUpdateComment: PropTypes.func.isRequired,
+  handleUpdateCommentOrLike: PropTypes.func.isRequired,
 };
 export default Comment;
