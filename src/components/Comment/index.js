@@ -17,6 +17,7 @@ class Comment extends Component {
       showCommentBox: false,
       commentText: '',
       isLiked: null,
+      currentBackgroundColor: RandomColor.getLightColorGuaranteed(),
     };
   }
   componentDidMount() {
@@ -144,6 +145,7 @@ class Comment extends Component {
       showCommentBox,
       commentText,
       isLiked,
+      currentBackgroundColor,
     } = this.state;
     const postedTime = '15 mins';
     const { commentItem } = this.props;
@@ -174,7 +176,7 @@ class Comment extends Component {
           onKeyDown={this.handleAuthorRedirect}
           onClick={this.handleAuthorRedirect}
         />
-        <div className="comment__content" style={{ backgroundColor: `${RandomColor.getLightColorGuaranteed()}` }}>
+        <div className="comment__content" style={{ backgroundColor: `${currentBackgroundColor}` }}>
           <div className="comment__content__header">
             <span className="comment__content__header__username">
               {showCommentBox ? 'Edit Comment' : commentItem.author.username}
