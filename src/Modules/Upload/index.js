@@ -231,12 +231,17 @@ class Upload extends Component {
 
     return (
       <React.Fragment>
-        <Navbar />
+        <Navbar
+          showCrossIcon
+          handleCancel={() => alert('Reset Form')}
+          showCheckIcon
+          handleSubmit={this.handleSubmit}
+        />
         <div className="container">
           <div className="upload">
 
             <h2 className="sectionHeading">Share Candid:</h2>
-            <form className="card" onSubmit={this.handleSubmit}>
+            <form className="uploadCard" onSubmit={this.handleSubmit}>
 
               <div className={errors.title ? 'inputWrapper inputWrapper--error' : 'inputWrapper'} data-error={errors.title}>
                 <input
@@ -300,7 +305,6 @@ class Upload extends Component {
               }
 
             </form>
-            <button onClick={this.handleSubmit}>Upload</button>
 
           </div>
         </div>
