@@ -15,6 +15,8 @@ import {
   faSearch,
   faPlusCircle,
   faBell,
+  faCheck,
+  faTimes,
 } from '@fortawesome/free-solid-svg-icons';
 // import { faComment } from '@fortawesome/free-regular-svg-icons';
 
@@ -33,4 +35,6 @@ library.add(
   faSearch,
   faPlusCircle,
   faBell,
+  faCheck,
+  faTimes,
 );
