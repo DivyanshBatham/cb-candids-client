@@ -81,8 +81,8 @@ class Comment extends Component {
   handleEditComment = (e) => {
     e.preventDefault();
     const {
- postId, commentItem, handleUpdateCommentOrLike, idx 
-} = this.props;
+      postId, commentItem, handleUpdateCommentOrLike, idx,
+    } = this.props;
     const { commentText } = this.state;
     if (commentText === commentItem.comment) return;
     this.handleShowCommentBox(e);
@@ -110,8 +110,8 @@ class Comment extends Component {
     const { isLiked: currentLikedState } = this.state;
     e.preventDefault();
     const {
- postId, commentItem, handleUpdateCommentOrLike, idx 
-} = this.props;
+      postId, commentItem, handleUpdateCommentOrLike, idx,
+    } = this.props;
     this.setState(prevState => ({
       isLiked: !prevState.isLiked,
     }));
@@ -172,7 +172,7 @@ class Comment extends Component {
           alt="user"
           role="button"
           tabIndex={0}
-          onKeyDown={this.handleDescription}
+          onKeyDown={this.handleAuthorRedirect}
           onClick={this.handleAuthorRedirect}
         />
         <div className="comment__content" style={randomColorValue}>
