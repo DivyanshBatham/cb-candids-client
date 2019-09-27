@@ -39,8 +39,8 @@ const customStyles = {
   }),
   multiValue: (styles, { data }) => ({
     ...styles,
-    // backgroundColor: data.color,
-    backgroundColor: RandomColor.getColorGuaranteed(),
+    backgroundColor: data.color,
+    // backgroundColor: RandomColor.getColorGuaranteed(),
     borderRadius: '500px',
     marginRight: '6px',
   }),
@@ -170,6 +170,16 @@ class Upload extends Component {
     });
   }
 
+  resetForm = () => {
+    this.setState({
+      errors: { },
+      taggedUsers: [],
+      title: '',
+      description: '',
+      imgSrc: null,
+    });
+  }
+
   handleSubmit = (e) => {
     e.preventDefault();
     const {
@@ -191,7 +201,7 @@ class Upload extends Component {
       data.append('imgSrc', imgSrc);
       data.append('title', title);
       data.append('description', description);
-      data.append('taggedUsers', JSON.stringify(taggedUsers));
+      data.append('taggedUsers', JSON.stringify(taggedUsers.map(option => option.value)));
 
       axios({
         method: 'post',
@@ -220,20 +230,20 @@ class Upload extends Component {
 
   tagUser = (selectedOptions) => {
     this.setState({
-      taggedUsers: selectedOptions.map(option => option.value),
+      taggedUsers: selectedOptions,
     });
   };
 
   render() {
     const {
-      imgSrc, imageContainerStyle, title, description, imageStyle, errors,
+      imgSrc, imageContainerStyle, title, description, imageStyle, errors, taggedUsers,
     } = this.state;
 
     return (
       <React.Fragment>
         <Navbar
           showCrossIcon
-          handleCancel={() => alert('Reset Form')}
+          handleCancel={this.resetForm}
           showCheckIcon
           handleSubmit={this.handleSubmit}
         />
@@ -277,6 +287,7 @@ class Upload extends Component {
                   styles={customStyles}
                   isClearable={false}
                   onChange={this.tagUser}
+                  value={taggedUsers}
                 />
               </div>
 
