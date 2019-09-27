@@ -186,7 +186,7 @@ class Comment extends Component {
                     }`}
                   >
                     <FontAwesomeIcon
-                      icon="heart"
+                      icon={[`${isLiked ? 'fas' : 'far'}`, 'heart']}
                       onClick={this.handleCommentLike}
                     />
                     {/* <span>{commentItem.likes.length}</span> */}

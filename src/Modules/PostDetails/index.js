@@ -64,7 +64,6 @@ class PostDetails extends Component {
     } else if (requestType.type === 'like') {
       tempComment[index].isLiked = requestType.value;
     }
-    console.log(tempComment);
     this.setState({ comments: tempComment });
   };
 
