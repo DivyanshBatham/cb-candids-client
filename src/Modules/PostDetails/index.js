@@ -49,18 +49,23 @@ class PostDetails extends Component {
     const { comments } = this.state;
     const commentsAfterDeletedComment = comments.filter(comment => comment._id !== id);
     this.setState({ comments: commentsAfterDeletedComment });
-  }
+  };
 
-  updateCommentText = (idx, commentId, commentText) => {
+  updateCommentOrLikeStatus = (idx, commentId, requestType) => {
+    // here Type is an Object ---> requestType:{name:'comment or like', value:'...'}
     const { comments } = this.state;
     const tempComment = [...comments];
     let index = idx;
     if (tempComment[index]._id !== commentId) {
       index = tempComment.findIndex(commentObj => commentObj._id === commentId);
     }
-    tempComment[index].comment = commentText;
+    if (requestType.type === 'comment') {
+      tempComment[index].comment = requestType.value;
+    } else if (requestType.type === 'like') {
+      tempComment[index].isLiked = requestType.value;
+    }
     this.setState({ comments: tempComment });
-  }
+  };
 
   submitComment = (commentText) => {
     const { _id: submittedPostId } = this.state.post;
@@ -106,20 +111,21 @@ class PostDetails extends Component {
               <Card post={post} />
               <h2 className="sectionHeading">Conversation:</h2>
               <div className="postDetails--commets">
-                {comments && comments.map((comment, idx) => (
-                  <Comment
-                    idx={idx}
-                    commentItem={comment}
-                    handleRemoveComment={this.removeCommentFromState}
-                    handleUpdateComment={this.updateCommentText}
-                    postId={post._id}
-                  />
-                ))}
+                {comments &&
+                  comments.map((comment, idx) => (
+                    <Comment
+                      idx={idx}
+                      commentItem={comment}
+                      handleRemoveComment={this.removeCommentFromState}
+                      handleUpdateCommentOrLike={this.updateCommentOrLikeStatus}
+                      postId={post._id}
+                    />
+                  ))}
               </div>
             </React.Fragment>
           ) : (
             <div>Loading</div>
-            )}
+          )}
         </div>
         <div className="postDetails--commentBox">
           <CommentBox submitComment={this.submitComment} />
