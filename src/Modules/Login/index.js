@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { addAuthDataToState } from '../../actions/authActions';
 import { passwordValidator } from '../../helpers';
 import PumpkinLogo from '../../assets/pumpkin';
+import Candids from '../../assets/candids';
 import './login.scss';
 
 class Login extends Component {
@@ -87,7 +88,7 @@ class Login extends Component {
       <div className="login">
         <div className="login__logo">
           <div className="login__logo__pumpkin">{PumpkinLogo}</div>
-          <div className="login__logo__name"><NameLogo id={2} /></div>
+          <div className="login__logo__name"><Candids /></div>
         </div>
         <form className="login__form" onSubmit={this.handleLogin}>
           <div className="login__form__wrapper">

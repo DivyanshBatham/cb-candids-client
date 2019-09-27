@@ -35,8 +35,10 @@ class Routes extends React.Component {
             <PrivateRoute path="/" component={Home} exact />
             <Route path="/login" component={Login} />
             <Route path="/register" component={Register} />
+            {/* TODO: Handle /verifyEmail i.e. without any subroute */}
             <Route path="/verifyEmail/:token" component={VerifyEmail} />
             <Route path="/forgetPassword" component={forgetPassword} />
+            {/* TODO: Handle /resetPassword i.e. without any subroute */}
             <Route path="/resetPassword/:token" component={resetPassword} />
             <PrivateRoute path="/upload" component={Upload} />
             <PrivateRoute
