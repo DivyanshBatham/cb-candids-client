@@ -82,8 +82,8 @@ Navbar.propTypes = {
 Navbar.defaultProps = {
   showBackIcon: false,
   showOptionsIcon: false,
-  showCrossIcon: true,
-  showCheckIcon: true,
+  showCrossIcon: false,
+  showCheckIcon: false,
   handleCancel: () => { },
   handleSubmit: () => { },
   handleOptions: () => { },
