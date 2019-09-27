@@ -75,7 +75,7 @@ class Upload extends Component {
 
   // With Debounce:
   getOptions = debounce(
-    inputValue => new Promise(resolve => axios.get('https://calm-waters-47062.herokuapp.com/users', {
+    inputValue => new Promise(resolve => axios.get('https://calm-waters-47062.herokuapp.com/users/options', {
       params: {
         search: inputValue,
       },
