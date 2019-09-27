@@ -84,7 +84,7 @@ class PostDetails extends Component {
     const { comments } = this.state;
     return (
       <React.Fragment>
-        <Navbar />
+        <Navbar showBackIcon />
         <div className="postDetails">
           <div className="container">
             {post ? (
