@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { addAuthDataToState } from '../../actions/authActions';
 import { passwordValidator } from '../../helpers';
 import PumpkinLogo from '../../assets/pumpkin';
-import NameLogo from '../../assets/name';
 import './login.scss';
 
 class Login extends Component {

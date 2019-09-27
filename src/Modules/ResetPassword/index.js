@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { passwordValidator } from '../../helpers';
 import PumpkinLogo from '../../assets/pumpkin';
-import NameLogo from '../../assets/name';
 import './resetPassword.scss';
 
 class resetPassword extends Component {
