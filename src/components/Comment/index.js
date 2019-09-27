@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { withRouter } from 'react-router-dom';
 import DropdownOptions from '../DropdownOptions';
 import ConfirmationModal from '../ConfirmationModal';
-import { getBackgroundColor } from '../../helpers';
+import RandomColor from '../../helpers/RandomColor';
 import './comment.scss';
 
 class Comment extends Component {
@@ -146,8 +146,7 @@ class Comment extends Component {
       isLiked,
     } = this.state;
     const postedTime = '15 mins';
-    const { idx, commentItem } = this.props;
-    const randomColorValue = getBackgroundColor(idx);
+    const { commentItem } = this.props;
     return (
       <div
         className={commentItem.isAuthor ? 'comment comment--self' : 'comment'}
@@ -175,7 +174,7 @@ class Comment extends Component {
           onKeyDown={this.handleAuthorRedirect}
           onClick={this.handleAuthorRedirect}
         />
-        <div className="comment__content" style={randomColorValue}>
+        <div className="comment__content" style={{ backgroundColor: `${RandomColor.getLightColorGuaranteed()}` }}>
           <div className="comment__content__header">
             <span className="comment__content__header__username">
               {showCommentBox ? 'Edit Comment' : commentItem.author.username}
