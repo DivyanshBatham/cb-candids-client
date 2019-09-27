@@ -3,11 +3,11 @@ import axios from 'axios';
 import PropTypes from 'prop-types';
 import TextareaAutosize from 'react-textarea-autosize';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { withRouter } from 'react-router-dom';
 import DropdownOptions from '../DropdownOptions';
 import ConfirmationModal from '../ConfirmationModal';
 import { getBackgroundColor } from '../../helpers';
 import './comment.scss';
-import CommentBox from '../CommentBox';
 
 class Comment extends Component {
   constructor(props) {
@@ -28,9 +28,10 @@ class Comment extends Component {
 
   handleCopyComment = (e) => {
     e.preventDefault();
-    const { commentItem } = this.props;
+    const { commentText } = this.state;
+    // TODO: copy is not working
     navigator.clipboard
-      .writeText(commentItem.comment)
+      .writeText(commentText)
       .then(() => {
         // TODO: show something for text copied
       })
@@ -80,8 +81,8 @@ class Comment extends Component {
   handleEditComment = (e) => {
     e.preventDefault();
     const {
-      postId, commentItem, handleUpdateCommentOrLike, idx,
-    } = this.props;
+ postId, commentItem, handleUpdateCommentOrLike, idx 
+} = this.props;
     const { commentText } = this.state;
     if (commentText === commentItem.comment) return;
     this.handleShowCommentBox(e);
@@ -97,7 +98,10 @@ class Comment extends Component {
     })
       .then((res) => {
         if (res.data.success) {
-          handleUpdateCommentOrLike(idx, commentItem._id, { type: 'comment', value: commentText });
+          handleUpdateCommentOrLike(idx, commentItem._id, {
+            type: 'comment',
+            value: commentText,
+          });
         }
       })
       .catch(err => console.log(err));
@@ -106,8 +110,8 @@ class Comment extends Component {
     const { isLiked: currentLikedState } = this.state;
     e.preventDefault();
     const {
-      postId, commentItem, handleUpdateCommentOrLike, idx,
-    } = this.props;
+ postId, commentItem, handleUpdateCommentOrLike, idx 
+} = this.props;
     this.setState(prevState => ({
       isLiked: !prevState.isLiked,
     }));
@@ -117,17 +121,29 @@ class Comment extends Component {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('cb-token')}`,
       },
-    }).then((res) => {
-      if (res.data.success) {
-        this.setState({ isLiked: res.data.message === 'liked' }, () => {
-          handleUpdateCommentOrLike(idx, commentItem._id, { type: 'like', value: this.state.isLiked });
-        });
-      }
-    }).catch(() => this.setState({ isLiked: currentLikedState }));
+    })
+      .then((res) => {
+        if (res.data.success) {
+          this.setState({ isLiked: res.data.message === 'liked' }, () => {
+            handleUpdateCommentOrLike(idx, commentItem._id, {
+              type: 'like',
+              value: this.state.isLiked,
+            });
+          });
+        }
+      })
+      .catch(() => this.setState({ isLiked: currentLikedState }));
+  };
+  handleAuthorRedirect = (e) => {
+    e.preventDefault();
+    this.props.history.push(`/user/${this.props.commentItem.author.username}`);
   };
   render() {
     const {
-      showConfirmationModal, showCommentBox, commentText, isLiked,
+      showConfirmationModal,
+      showCommentBox,
+      commentText,
+      isLiked,
     } = this.state;
     const postedTime = '15 mins';
     const { idx, commentItem } = this.props;
@@ -154,6 +170,10 @@ class Comment extends Component {
           }
           src={commentItem.author.imgSrc}
           alt="user"
+          role="button"
+          tabIndex={0}
+          onKeyDown={this.handleDescription}
+          onClick={this.handleAuthorRedirect}
         />
         <div className="comment__content" style={randomColorValue}>
           <div className="comment__content__header">
@@ -232,4 +252,4 @@ Comment.propTypes = {
   handleRemoveComment: PropTypes.func.isRequired,
   handleUpdateCommentOrLike: PropTypes.func.isRequired,
 };
-export default Comment;
+export default withRouter(Comment);
