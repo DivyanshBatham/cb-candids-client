@@ -10,6 +10,7 @@ export const addAuthDataToState = (data) => {
   return action;
 };
 export const addAuthData = () => (dispatch) => {
+  // TODO: Set intialstore using the data from localStorage.
   const username = localStorage.getItem('cb-username');
   axios({
     method: 'get',

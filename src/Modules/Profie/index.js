@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import axios from 'axios';
 import CardRenderer from '../../components/CardRenderer';
 import './profile.scss';
@@ -6,8 +7,8 @@ import Loader from '../../components/Loader';
 import Navbar from '../../components/Navbar';
 
 class Profile extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       data: '',
       errors: null,
@@ -50,9 +51,11 @@ class Profile extends Component {
     const {
       likeCount, postCount, posts, user,
     } = this.state.data;
+    const othersProfile = this.props.userData.username !== this.props.match.params.username;
+
     return (
       <React.Fragment>
-        <Navbar />
+        <Navbar showBackIcon={othersProfile} />
         {loading ? (
           <Loader />
         ) : (
@@ -108,4 +111,6 @@ class Profile extends Component {
   }
 }
 
-export default Profile;
+const mapStateToProps = state => ({ userData: state.user });
+
+export default connect(mapStateToProps, null)(Profile);
