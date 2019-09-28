@@ -14,8 +14,8 @@ import {
   faSearch,
   faPlusCircle,
   faBell,
-  faTimes,
   faCheck,
+  faTimes,
 } from '@fortawesome/free-solid-svg-icons';
 
 import { faHeart as farHeart, faComment } from '@fortawesome/free-regular-svg-icons';

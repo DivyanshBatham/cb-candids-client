@@ -8,6 +8,7 @@ import CommentBox from '../../components/CommentBox';
 import Card from '../../components/Card';
 import Comment from '../../components/Comment';
 import './postDetails.scss';
+import Navbar from '../../components/Navbar';
 
 class PostDetails extends Component {
   constructor(props) {
@@ -104,6 +105,35 @@ class PostDetails extends Component {
     const { post } = this.state;
     const { comments } = this.state;
     return (
+// <<<<<<< feature/DynamicNavbar
+//       <React.Fragment>
+//         <Navbar showBackIcon />
+//         <div className="postDetails">
+//           <div className="container">
+//             {post ? (
+//               <React.Fragment>
+//                 <Card post={post} />
+//                 <h2 className="sectionHeading">Conversation:</h2>
+//                 <div className="postDetails--commets">
+//                   {comments.map((comment, idx) => (
+//                     <Comment
+//                       idx={idx}
+//                       commentItem={comment}
+//                       userComment={this.isAuthorComment(comment)}
+//                       handleRemoveComment={this.removeCommentFromState}
+//                       postId={post._id}
+//                     />
+//                   ))}
+//                 </div>
+//               </React.Fragment>
+//             ) : (
+//               <div>Loading</div>
+//               )}
+//           </div>
+//           <div className="postDetails--commentBox">
+//             <CommentBox submitComment={this.submitComment} />
+//           </div>
+// =======
       <div className="postDetails">
         <div className="container">
           {Object.entries(post).length !== 0 ? (
@@ -126,11 +156,9 @@ class PostDetails extends Component {
           ) : (
             <div>Loading</div>
           )}
+// >>>>>>> dev
         </div>
-        <div className="postDetails--commentBox">
-          <CommentBox submitComment={this.submitComment} />
-        </div>
-      </div>
+      </React.Fragment>
     );
   }
 }
