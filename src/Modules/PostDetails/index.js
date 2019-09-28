@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import axios from 'axios';
@@ -12,14 +13,20 @@ import Navbar from '../../components/Navbar';
 class PostDetails extends Component {
   constructor(props) {
     super(props);
+    const findPostFromState = () => {
+      const id = this.props.match.params.postId;
+      const matchedPost = this.props.postsData.posts.filter(post => post._id === id);
+      return { ...matchedPost[0] };
+    };
     this.state = {
-      post: this.props.location.state,
-      comments: this.props.location.state && this.props.location.state.comments,
+      post: findPostFromState(),
+      comments: findPostFromState().comments,
       errorMessage: null,
     };
   }
   componentDidMount() {
-    if (this.props.location.state === undefined) {
+    if (this.props.postsData.posts.length === 0) {
+      // alert('fetching individual post');
       axios({
         method: 'get',
         url: `https://calm-waters-47062.herokuapp.com/posts/${this.props.match.params.postId}`,
@@ -38,15 +45,28 @@ class PostDetails extends Component {
         .catch(err => this.setState({ errorMessage: 'Post Not Found!' }));
     }
   }
-  isAuthorComment = (comment) => {
-    const currentUser = this.props.userData.username;
-    return comment.author.username === currentUser;
-  };
+
   removeCommentFromState = (id) => {
     const { comments } = this.state;
     const commentsAfterDeletedComment = comments.filter(comment => comment._id !== id);
     this.setState({ comments: commentsAfterDeletedComment });
-  }
+  };
+
+  updateCommentOrLikeStatus = (idx, commentId, requestType) => {
+    // here Type is an Object ---> requestType:{name:'comment or like', value:'...'}
+    const { comments } = this.state;
+    const tempComment = [...comments];
+    let index = idx;
+    if (tempComment[index]._id !== commentId) {
+      index = tempComment.findIndex(commentObj => commentObj._id === commentId);
+    }
+    if (requestType.type === 'comment') {
+      tempComment[index].comment = requestType.value;
+    } else if (requestType.type === 'like') {
+      tempComment[index].isLiked = requestType.value;
+    }
+    this.setState({ comments: tempComment });
+  };
 
   submitComment = (commentText) => {
     const { _id: submittedPostId } = this.state.post;
@@ -74,7 +94,9 @@ class PostDetails extends Component {
       },
     })
       .then((res) => {
-        // console.log('comment--->', res.data);
+        if (res.data.success) {
+          this.setState({ comments: res.data.data.comments });
+        }
       })
       .catch(err => console.log(err));
   };
@@ -83,39 +105,67 @@ class PostDetails extends Component {
     const { post } = this.state;
     const { comments } = this.state;
     return (
-      <React.Fragment>
-        <Navbar showBackIcon />
-        <div className="postDetails">
-          <div className="container">
-            {post ? (
-              <React.Fragment>
-                <Card post={post} />
-                <h2 className="sectionHeading">Conversation:</h2>
-                <div className="postDetails--commets">
-                  {comments.map((comment, idx) => (
+// <<<<<<< feature/DynamicNavbar
+//       <React.Fragment>
+//         <Navbar showBackIcon />
+//         <div className="postDetails">
+//           <div className="container">
+//             {post ? (
+//               <React.Fragment>
+//                 <Card post={post} />
+//                 <h2 className="sectionHeading">Conversation:</h2>
+//                 <div className="postDetails--commets">
+//                   {comments.map((comment, idx) => (
+//                     <Comment
+//                       idx={idx}
+//                       commentItem={comment}
+//                       userComment={this.isAuthorComment(comment)}
+//                       handleRemoveComment={this.removeCommentFromState}
+//                       postId={post._id}
+//                     />
+//                   ))}
+//                 </div>
+//               </React.Fragment>
+//             ) : (
+//               <div>Loading</div>
+//               )}
+//           </div>
+//           <div className="postDetails--commentBox">
+//             <CommentBox submitComment={this.submitComment} />
+//           </div>
+// =======
+      <div className="postDetails">
+        <div className="container">
+          {Object.entries(post).length !== 0 ? (
+            <React.Fragment>
+              <Card post={post} />
+              <h2 className="sectionHeading">Conversation:</h2>
+              <div className="postDetails--commets">
+                {comments &&
+                  comments.map((comment, idx) => (
                     <Comment
                       idx={idx}
                       commentItem={comment}
-                      userComment={this.isAuthorComment(comment)}
                       handleRemoveComment={this.removeCommentFromState}
+                      handleUpdateCommentOrLike={this.updateCommentOrLikeStatus}
                       postId={post._id}
                     />
                   ))}
-                </div>
-              </React.Fragment>
-            ) : (
-              <div>Loading</div>
-              )}
-          </div>
-          <div className="postDetails--commentBox">
-            <CommentBox submitComment={this.submitComment} />
-          </div>
+              </div>
+            </React.Fragment>
+          ) : (
+            <div>Loading</div>
+          )}
+// >>>>>>> dev
         </div>
       </React.Fragment>
     );
   }
 }
-const mapStateToProps = state => ({ userData: state.user });
+const mapStateToProps = state => ({
+  userData: state.user,
+  postsData: state.posts,
+});
 
 PostDetails.propTypes = {
   location: PropTypes.oneOfType(Object).isRequired,

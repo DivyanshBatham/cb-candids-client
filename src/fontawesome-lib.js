@@ -6,9 +6,8 @@ import {
   faAt,
   faInfoCircle,
   faCog,
-  faHeart,
+  faHeart as fasHeart,
   faEllipsisV,
-  faComment,
   faChevronLeft,
   faAngleLeft,
   faHome,
@@ -18,14 +17,15 @@ import {
   faCheck,
   faTimes,
 } from '@fortawesome/free-solid-svg-icons';
-// import { faComment } from '@fortawesome/free-regular-svg-icons';
+
+import { faHeart as farHeart, faComment } from '@fortawesome/free-regular-svg-icons';
 
 library.add(
   faUser,
   faUnlockAlt,
   faAt,
   faInfoCircle,
-  faHeart,
+  fasHeart,
   faComment,
   faCog,
   faEllipsisV,
@@ -37,4 +37,5 @@ library.add(
   faBell,
   faCheck,
   faTimes,
+  farHeart,
 );

@@ -73,7 +73,8 @@ class Card extends Component {
     e.preventDefault();
     const { post } = this.props;
     const { _id: id } = post;
-    this.props.history.push(`/post/${id}`, { ...post });
+    // this.props.history.push(`/post/${id}`, { ...post });
+    this.props.history.push(`/post/${id}`);
   };
   handleShowOption = (e) => {
     e.preventDefault();
@@ -173,7 +174,7 @@ class Card extends Component {
             <div className="card--footer--stats--item">
               <FontAwesomeIcon
                 onClick={this.handleLikes}
-                icon={['fas', 'heart']}
+                icon={[`${liked ? 'fas' : 'far'}`, 'heart']}
                 className={`card--footer--stats--item--icon ${liked &&
                   'card--footer--stats--item--icon--liked'}`}
               />
@@ -184,7 +185,7 @@ class Card extends Component {
             <div className="card--footer--stats--item">
               <FontAwesomeIcon
                 onClick={this.handlePostRedirect}
-                icon={['fas', 'comment']}
+                icon={['far', 'comment']}
                 className="card--footer--stats--item--icon"
               />
               <span className="card--footer--stats--item--text">
