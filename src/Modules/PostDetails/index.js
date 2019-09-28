@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 import { connect } from 'react-redux';
@@ -105,58 +105,35 @@ class PostDetails extends Component {
     const { post } = this.state;
     const { comments } = this.state;
     return (
-// <<<<<<< feature/DynamicNavbar
-//       <React.Fragment>
-//         <Navbar showBackIcon />
-//         <div className="postDetails">
-//           <div className="container">
-//             {post ? (
-//               <React.Fragment>
-//                 <Card post={post} />
-//                 <h2 className="sectionHeading">Conversation:</h2>
-//                 <div className="postDetails--commets">
-//                   {comments.map((comment, idx) => (
-//                     <Comment
-//                       idx={idx}
-//                       commentItem={comment}
-//                       userComment={this.isAuthorComment(comment)}
-//                       handleRemoveComment={this.removeCommentFromState}
-//                       postId={post._id}
-//                     />
-//                   ))}
-//                 </div>
-//               </React.Fragment>
-//             ) : (
-//               <div>Loading</div>
-//               )}
-//           </div>
-//           <div className="postDetails--commentBox">
-//             <CommentBox submitComment={this.submitComment} />
-//           </div>
-// =======
-      <div className="postDetails">
-        <div className="container">
-          {Object.entries(post).length !== 0 ? (
-            <React.Fragment>
-              <Card post={post} />
-              <h2 className="sectionHeading">Conversation:</h2>
-              <div className="postDetails--commets">
-                {comments &&
-                  comments.map((comment, idx) => (
-                    <Comment
-                      idx={idx}
-                      commentItem={comment}
-                      handleRemoveComment={this.removeCommentFromState}
-                      handleUpdateCommentOrLike={this.updateCommentOrLikeStatus}
-                      postId={post._id}
-                    />
-                  ))}
-              </div>
-            </React.Fragment>
-          ) : (
-            <div>Loading</div>
-          )}
-// >>>>>>> dev
+      <React.Fragment>
+        <Navbar showBackIcon />
+        <div className="postDetails">
+          <div className="container">
+            {Object.entries(post).length !== 0 ? (
+              <React.Fragment>
+                <Card post={post} />
+                <h2 className="sectionHeading">Conversation:</h2>
+                <div className="postDetails--commets">
+                  {comments &&
+                    comments.map((comment, idx) => (
+                      <Comment
+                        idx={idx}
+                        commentItem={comment}
+                        handleRemoveComment={this.removeCommentFromState}
+                        handleUpdateCommentOrLike={this.updateCommentOrLikeStatus}
+                        postId={post._id}
+                      />
+                    ))}
+                </div>
+              </React.Fragment>
+            ) : (
+              <div>Loading</div>
+              )}
+          </div>
+        </div>
+        <div className="postDetails--commentBox">
+          {/* TODO: Profile image shows error while userImage is fetched */}
+          <CommentBox submitComment={this.submitComment} />
         </div>
       </React.Fragment>
     );
