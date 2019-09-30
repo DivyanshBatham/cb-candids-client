@@ -77,7 +77,10 @@ Navbar.propTypes = {
   handleCancel: PropTypes.func,
   handleSubmit: PropTypes.func,
   options: PropTypes.arrayOf(PropTypes.shape({
-    title: PropTypes.string,
+    title: PropTypes.oneOfType([
+      PropTypes.element,
+      PropTypes.string,
+    ]),
     handleClick: PropTypes.func,
   })),
 };
