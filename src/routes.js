@@ -3,6 +3,7 @@ import { Switch, Route, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { addAuthData } from './actions/authActions';
 import PrivateRoute from './PrivateRoute';
+import Share from './components/Share';
 
 const Home = lazy(() => import('./Modules/Home'));
 const Login = lazy(() => import('./Modules/Login'));
@@ -28,6 +29,7 @@ class Routes extends React.Component {
     }
   }
   render() {
+    const { stateData } = this.props;
     return (
       <Suspense fallback={<div>loading...</div>}>
         <main>
@@ -50,6 +52,7 @@ class Routes extends React.Component {
           </Switch>
         </main>
         <Footer />
+        {stateData.share.showShareMenu && <Share />}
       </Suspense>
     );
   }
@@ -59,4 +62,7 @@ function mapStateToProps(state) {
     stateData: state,
   };
 }
-export default connect(mapStateToProps, { addAuthData })(withRouter(Routes));
+export default connect(
+  mapStateToProps,
+  { addAuthData },
+)(withRouter(Routes));

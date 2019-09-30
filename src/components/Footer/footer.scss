@@ -6,7 +6,7 @@
     align-items: center;
     position: fixed;
     bottom: 0;
-    z-index: 10000000000;
+    z-index: 10000;
     &__items{
         transition: all 2s ease-in-out;
         display: flex;

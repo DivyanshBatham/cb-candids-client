@@ -56,8 +56,9 @@
     "react-image-crop": "^8.3.0",
     "react-redux": "^7.1.1",
     "react-router-dom": "^5.0.1",
-    "react-textarea-autosize": "^7.1.0",
     "react-select": "^3.0.4",
+    "react-share": "^3.0.1",
+    "react-textarea-autosize": "^7.1.0",
     "redux": "^4.0.4",
     "redux-thunk": "^2.3.0"
   }
