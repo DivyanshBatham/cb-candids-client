@@ -36,7 +36,7 @@ class Options extends Component {
 
   render() {
     const { displayOption } = this.state;
-    const { iconProps, children, lightIcon } = this.props;
+    const { iconProps, lightIcon } = this.props;
     return (
       <div
         className={`dropdownOption iconContainer ${lightIcon ? ' iconContainer--light' : ''}`}
@@ -54,7 +54,6 @@ class Options extends Component {
             <div className="dropdownOption__triangle dropdownOption__triangle--noShadow" />
             <div
               className={displayOption ? 'options' : 'hide'}
-            // ref={this.setWrapperRef}
             >
               {this.props.options.map(option =>
                 option.title && (
@@ -69,7 +68,6 @@ class Options extends Component {
                     {option.title}
                   </div>
                 ))}
-              {children && <div className="options__option">{children}</div>}
             </div>
           </React.Fragment>
         )}
@@ -81,16 +79,17 @@ class Options extends Component {
 Options.propTypes = {
   iconProps: PropTypes.oneOfType(Object),
   options: PropTypes.arrayOf(PropTypes.shape({
-    title: PropTypes.string,
+    title: PropTypes.oneOfType([
+      PropTypes.element,
+      PropTypes.string,
+    ]),
     handleClick: PropTypes.func,
   })),
-  children: PropTypes.instanceOf(Element),
   lightIcon: PropTypes.bool,
 };
 Options.defaultProps = {
   iconProps: { fontSize: '1rem' },
   options: [],
-  children: null,
   lightIcon: false,
 };
 export default Options;
