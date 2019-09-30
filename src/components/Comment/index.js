@@ -176,7 +176,10 @@ class Comment extends Component {
           onKeyDown={this.handleAuthorRedirect}
           onClick={this.handleAuthorRedirect}
         />
-        <div className="comment__content" style={{ backgroundColor: `${currentBackgroundColor}` }}>
+        <div
+          className="comment__content"
+          style={{ backgroundColor: `${currentBackgroundColor}` }}
+        >
           <div className="comment__content__header">
             <span className="comment__content__header__username">
               {showCommentBox ? 'Edit Comment' : commentItem.author.username}
@@ -186,12 +189,14 @@ class Comment extends Component {
                 <div className="comment__content__icons__iconContainer iconContainer">
                   <FontAwesomeIcon
                     icon="times"
+                    className="comment__content__icons__iconContainer__color"
                     onClick={this.handleCancleComment}
                   />
                 </div>
                 <div className="comment__content__icons__iconContainer iconContainer">
                   <FontAwesomeIcon
                     icon="check"
+                    className="comment__content__icons__iconContainer__color"
                     onClick={this.handleEditComment}
                   />
                 </div>
@@ -207,6 +212,7 @@ class Comment extends Component {
                     }`}
                   >
                     <FontAwesomeIcon
+                      className={`${!isLiked ? 'comment__content__icons__iconContainer__color' : ''}`}
                       icon={[`${isLiked ? 'fas' : 'far'}`, 'heart']}
                       onClick={this.handleCommentLike}
                     />
