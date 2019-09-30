@@ -102,7 +102,7 @@ class Profile extends Component {
                 <TextareaAutosize
                   className="profile__bio profile__editBox"
                   value={bio}
-                  placeholder="write your bio"
+                  placeholder={editUserDetails && 'Write your bio!'}
                   readOnly={!editUserDetails}
                   name="bio"
                   onChange={this.handleStateData}
