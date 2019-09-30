@@ -76,17 +76,34 @@ class Profile extends Component {
     return (
       <React.Fragment>
         <Navbar
-          showBackIcon={othersProfile}
-          showOptionsIcon={!editingUserDetails}
-          options={[
-            {
-              title: 'Edit Profile',
-              handleClick: this.handleEditProfile,
-            }]}
+          showBackIcon={othersProfile && !editingUserDetails}
           showCrossIcon={editingUserDetails}
           handleCancel={() => alert('Add Handler')}
           showCheckIcon={editingUserDetails}
           handleSubmit={() => alert('Add Handler')}
+          showOptionsIcon={!editingUserDetails}
+          options={[
+            {
+              title: 'Share Profile',
+              handleClick: () => alert('Handle Share Profile'),
+            },
+            {
+              title: othersProfile ? null : 'Edit Profile',
+              handleClick: this.handleEditProfile,
+            },
+            {
+              title: othersProfile ? null : (
+                <label htmlFor="pushNotification">
+                  Notification
+                  <input type="radio" name="pushNotification" id="pushNotification" />
+                </label>),
+              handleClick: () => alert('Handle Push'),
+            },
+            {
+              title: othersProfile ? null : 'Logout',
+              handleClick: () => alert('Handle Logout'),
+            },
+          ]}
         />
         {
           loading ? (
