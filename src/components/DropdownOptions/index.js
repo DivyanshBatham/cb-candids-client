@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PropTypes from 'prop-types';
-import './options.scss';
+import './dropdownOptions.scss';
 
 class Options extends Component {
   constructor() {
