@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PropTypes from 'prop-types';
-import './options.scss';
+import './dropdownOptions.scss';
 
 class Options extends Component {
   constructor() {
@@ -36,9 +36,12 @@ class Options extends Component {
 
   render() {
     const { displayOption } = this.state;
-    const { iconProps, children } = this.props;
+    const { iconProps, lightIcon } = this.props;
     return (
-      <div className="dropdownOption" ref={this.setWrapperRef}>
+      <div
+        className={`dropdownOption iconContainer ${lightIcon ? ' iconContainer--light' : ''}`}
+        ref={this.setWrapperRef}
+      >
         <FontAwesomeIcon
           style={iconProps}
           icon="ellipsis-v"
@@ -51,22 +54,20 @@ class Options extends Component {
             <div className="dropdownOption__triangle dropdownOption__triangle--noShadow" />
             <div
               className={displayOption ? 'options' : 'hide'}
-              // ref={this.setWrapperRef}
             >
               {this.props.options.map(option =>
-                  option.title && (
-                    <div
-                      className="options__option"
-                      key={option.title}
-                      onClick={option.handleClick}
-                      role="button"
-                      tabIndex={-2}
-                      onKeyDown={this.handleAuthorRedirect}
-                    >
-                      {option.title}
-                    </div>
-                  ))}
-              {children && <div className="options__option">{children}</div>}
+                option.title && (
+                  <div
+                    className="options__option"
+                    key={option.title}
+                    onClick={option.handleClick}
+                    role="button"
+                    tabIndex={-2}
+                    onKeyDown={this.handleAuthorRedirect}
+                  >
+                    {option.title}
+                  </div>
+                ))}
             </div>
           </React.Fragment>
         )}
@@ -77,12 +78,18 @@ class Options extends Component {
 
 Options.propTypes = {
   iconProps: PropTypes.oneOfType(Object),
-  options: PropTypes.oneOfType(Array),
-  children: PropTypes.instanceOf(Element),
+  options: PropTypes.arrayOf(PropTypes.shape({
+    title: PropTypes.oneOfType([
+      PropTypes.element,
+      PropTypes.string,
+    ]),
+    handleClick: PropTypes.func,
+  })),
+  lightIcon: PropTypes.bool,
 };
 Options.defaultProps = {
   iconProps: { fontSize: '1rem' },
   options: [],
-  children: null,
+  lightIcon: false,
 };
 export default Options;
