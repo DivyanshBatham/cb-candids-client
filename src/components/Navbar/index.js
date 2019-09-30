@@ -2,6 +2,7 @@ import React from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PropTypes from 'prop-types';
+import DropdownOptions from '../../components/DropdownOptions';
 import PumpkinWithText from '../../assets/pumpkinWithText';
 import './navbar.scss';
 
@@ -9,7 +10,7 @@ import './navbar.scss';
 const Navbar = (props) => {
   const {
     showBackIcon, showCrossIcon, showOptionsIcon, showCheckIcon,
-    handleCancel, handleSubmit, handleOptions,
+    handleCancel, handleSubmit, options,
   } = props;
 
   const handleGoBack = (e) => {
@@ -24,7 +25,7 @@ const Navbar = (props) => {
 
       <div className="box">
         {showBackIcon &&
-          <div className="iconContainer">
+          <div className="iconContainer iconContainer--light">
             <FontAwesomeIcon
               icon="angle-left"
               onClick={handleGoBack}
@@ -32,7 +33,7 @@ const Navbar = (props) => {
           </div>
         }
         {showCrossIcon &&
-          <div className="iconContainer">
+          <div className="iconContainer iconContainer--light">
             <FontAwesomeIcon
               icon="times"
               onClick={handleCancel}
@@ -47,15 +48,14 @@ const Navbar = (props) => {
 
       <div className="box">
         {showOptionsIcon &&
-          <div className="iconContainer">
-            <FontAwesomeIcon
-              icon="ellipsis-v"
-              onClick={handleOptions}
-            />
-          </div>
+          <DropdownOptions
+            lightIcon
+            iconProps={{ fontSize: '1rem' }}
+            options={options}
+          />
         }
         {showCheckIcon &&
-          <div className="iconContainer">
+          <div className="iconContainer iconContainer--light">
             <FontAwesomeIcon
               icon="check"
               onClick={handleSubmit}
@@ -76,7 +76,10 @@ Navbar.propTypes = {
   showCheckIcon: PropTypes.bool,
   handleCancel: PropTypes.func,
   handleSubmit: PropTypes.func,
-  handleOptions: PropTypes.func,
+  options: PropTypes.arrayOf(PropTypes.shape({
+    title: PropTypes.string,
+    handleClick: PropTypes.func,
+  })),
 };
 
 Navbar.defaultProps = {
@@ -84,8 +87,8 @@ Navbar.defaultProps = {
   showOptionsIcon: false,
   showCrossIcon: false,
   showCheckIcon: false,
+  options: [],
   handleCancel: () => { },
   handleSubmit: () => { },
-  handleOptions: () => { },
 };
 export default withRouter(Navbar);
