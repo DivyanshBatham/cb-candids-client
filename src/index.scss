@@ -55,15 +55,5 @@ main {
   &:hover,
   &:focus {
     opacity: 1;
-    
-  }
-}
-.share{
-  transition: transform 1s ease-in-out;
-  &__show {
-    transform: translateX(0%);
-  }
-  &__hide {
-    transform: translateY(100%);
   }
 }
