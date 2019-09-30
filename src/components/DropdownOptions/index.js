@@ -80,7 +80,10 @@ class Options extends Component {
 
 Options.propTypes = {
   iconProps: PropTypes.oneOfType(Object),
-  options: PropTypes.oneOfType(Array),
+  options: PropTypes.arrayOf(PropTypes.shape({
+    title: PropTypes.string,
+    handleClick: PropTypes.func,
+  })),
   children: PropTypes.instanceOf(Element),
   lightIcon: PropTypes.bool,
 };
