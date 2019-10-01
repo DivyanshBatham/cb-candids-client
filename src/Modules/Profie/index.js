@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import TextareaAutosize from 'react-textarea-autosize';
+import PropTypes from 'prop-types';
+import { toggleShareMenu } from '../../actions/shareAction';
 import CardRenderer from '../../components/CardRenderer';
 import './profile.scss';
 import Loader from '../../components/Loader';
@@ -71,7 +73,8 @@ class Profile extends Component {
     const {
       likeCount, postCount, posts, user,
     } = this.state.data;
-    const othersProfile = this.props.userData.username !== this.props.match.params.username;
+    const othersProfile =
+      this.props.userData.username !== this.props.match.params.username;
 
     return (
       <React.Fragment>
@@ -85,7 +88,11 @@ class Profile extends Component {
           options={[
             {
               title: 'Share Profile',
-              handleClick: () => alert('Handle Share Profile'),
+              handleClick: () =>
+                this.props.toggleShareMenu(
+                  `Share ${username} Profile`,
+                  window.location.href,
+                ),
             },
             {
               title: othersProfile ? null : 'Edit Profile',
@@ -95,8 +102,13 @@ class Profile extends Component {
               title: othersProfile ? null : (
                 <label htmlFor="pushNotification">
                   Notification
-                  <input type="radio" name="pushNotification" id="pushNotification" />
-                </label>),
+                  <input
+                    type="radio"
+                    name="pushNotification"
+                    id="pushNotification"
+                  />
+                </label>
+              ),
               handleClick: () => alert('Handle Push'),
             },
             {
@@ -105,67 +117,66 @@ class Profile extends Component {
             },
           ]}
         />
-        {
-          loading ? (
-            <Loader />
-          ) : (
-            <React.Fragment>
-              {errors ? (
-                <div className="error">{errors}</div>
-                ) : (
-                  <div className="profile">
-                    <div
-                      className="profile__imageContainer"
-                      style={{
-                          backgroundImage: `url(${user && user.imgSrcLarge})`,
-                        }}
-                    />
-                    <TextareaAutosize
-                      className="profile__username profile__editBox"
-                      value={username}
-                      readOnly={!editingUserDetails}
-                      placeholder="Enter username"
-                      name="username"
-                      onChange={this.handleStateData}
-                      inputRef={tag => (this.textarea = tag)}
-                    />
-                    <TextareaAutosize
-                      className="profile__bio profile__editBox"
-                      value={bio}
-                      placeholder="write your bio"
-                      readOnly={!editingUserDetails}
-                      name="bio"
-                      onChange={this.handleStateData}
-                    />
-                    <h2 className="sectionHeading profile__heading">Stats</h2>
-                    <div className="profile__stats">
-                      <div className="profile__stats__item">
-                        <span className="profile__stats__item__number">
-                          {postCount}
-                        </span>
-                        <span className="profile__stats__item__text">POSTS</span>
-                      </div>
-                      <div className="profile__stats__item">
-                        <span className="profile__stats__item__number">
-                          {likeCount}
-                        </span>
-                        <span className="profile__stats__item__text">LIKES</span>
-                      </div>
-                      <div className="profile__stats__item">
-                        <span className="profile__stats__item__number">10</span>
-                        <span className="profile__stats__item__text">PHOTOS</span>
-                      </div>
-                    </div>
-                    <h2 className="sectionHeading profile__heading">Candids</h2>
-                    {posts && posts.length > 0 ? (
-                      <CardRenderer posts={posts} />
-                      ) : (
-                        <div className="error">No post found</div>
-                        )}
+        {loading ? (
+          <Loader />
+        ) : (
+          <React.Fragment>
+            {errors ? (
+              <div className="error">{errors}</div>
+            ) : (
+              <div className="profile">
+                <div
+                  className="profile__imageContainer"
+                  style={{
+                    backgroundImage: `url(${user && user.imgSrcLarge})`,
+                  }}
+                />
+                <TextareaAutosize
+                  className="profile__username profile__editBox"
+                  value={username}
+                  readOnly={!editingUserDetails}
+                  placeholder="Enter username"
+                  name="username"
+                  onChange={this.handleStateData}
+                  inputRef={tag => (this.textarea = tag)}
+                />
+                <TextareaAutosize
+                  className="profile__bio profile__editBox"
+                  value={bio}
+                  placeholder="write your bio"
+                  readOnly={!editingUserDetails}
+                  name="bio"
+                  onChange={this.handleStateData}
+                />
+                <h2 className="sectionHeading profile__heading">Stats</h2>
+                <div className="profile__stats">
+                  <div className="profile__stats__item">
+                    <span className="profile__stats__item__number">
+                      {postCount}
+                    </span>
+                    <span className="profile__stats__item__text">POSTS</span>
                   </div>
-                  )}
-            </React.Fragment>
+                  <div className="profile__stats__item">
+                    <span className="profile__stats__item__number">
+                      {likeCount}
+                    </span>
+                    <span className="profile__stats__item__text">LIKES</span>
+                  </div>
+                  <div className="profile__stats__item">
+                    <span className="profile__stats__item__number">10</span>
+                    <span className="profile__stats__item__text">PHOTOS</span>
+                  </div>
+                </div>
+                <h2 className="sectionHeading profile__heading">Candids</h2>
+                {posts && posts.length > 0 ? (
+                  <CardRenderer posts={posts} />
+                ) : (
+                  <div className="error">No post found</div>
+                )}
+              </div>
             )}
+          </React.Fragment>
+        )}
       </React.Fragment>
     );
   }
@@ -173,4 +184,20 @@ class Profile extends Component {
 
 const mapStateToProps = state => ({ userData: state.user });
 
-export default connect(mapStateToProps, null)(Profile);
+Profile.propTypes = {
+  userData: PropTypes.shape({
+    username: PropTypes.string,
+  }).isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      username: PropTypes.string,
+    }),
+  }).isRequired,
+  toggleShareMenu: PropTypes.func.isRequired,
+
+};
+
+export default connect(
+  mapStateToProps,
+  { toggleShareMenu },
+)(Profile);
