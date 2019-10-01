@@ -232,14 +232,16 @@ Card.propTypes = {
     comments: PropTypes.array.isRequired,
     imgSrc: PropTypes.string.isRequired,
     taggedUsers: PropTypes.array.isRequired,
-    history: PropTypes.oneOfType(Object),
-  }).isRequired,
+    history: PropTypes.oneOfType([
+      PropTypes.object,
+    ]),
+  }),
   deletePost: PropTypes.func.isRequired,
   toggleShareMenu: PropTypes.func.isRequired,
 };
 
 Card.defaultProps = {
-  description: '',
+  post: {},
 };
 
 const mapStateToProps = state => ({ stateData: state });

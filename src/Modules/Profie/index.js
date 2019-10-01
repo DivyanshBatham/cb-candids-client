@@ -200,6 +200,7 @@ Profile.propTypes = {
     }),
   }).isRequired,
   toggleShareMenu: PropTypes.func.isRequired,
+  logout: PropTypes.func.isRequired,
 };
 
 export default connect(
