@@ -4,6 +4,7 @@ import axios from 'axios';
 import TextareaAutosize from 'react-textarea-autosize';
 import PropTypes from 'prop-types';
 import { toggleShareMenu } from '../../actions/shareAction';
+import { logout } from '../../actions/logoutAction';
 import CardRenderer from '../../components/CardRenderer';
 import './profile.scss';
 import Loader from '../../components/Loader';
@@ -113,7 +114,7 @@ class Profile extends Component {
             },
             {
               title: othersProfile ? null : 'Logout',
-              handleClick: () => alert('Handle Logout'),
+              handleClick: () => this.props.logout(),
             },
           ]}
         />
@@ -199,5 +200,5 @@ Profile.propTypes = {
 
 export default connect(
   mapStateToProps,
-  { toggleShareMenu },
+  { toggleShareMenu, logout },
 )(Profile);
