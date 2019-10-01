@@ -16,6 +16,7 @@ import {
   faBell,
   faCheck,
   faTimes,
+  faCopy,
 } from '@fortawesome/free-solid-svg-icons';
 
 import { faHeart as farHeart, faComment } from '@fortawesome/free-regular-svg-icons';
@@ -38,4 +39,5 @@ library.add(
   faCheck,
   faTimes,
   farHeart,
+  faCopy,
 );

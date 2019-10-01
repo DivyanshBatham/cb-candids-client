@@ -4,10 +4,10 @@ const passwordValidator = (password) => {
     message = message.concat('atleast 5 characters');
   }
   if (!/\d/.test(password)) {
-    message = message.concat(`${message.length > 1 ? ', one digit' : 'one digit'}`);
+    message = message.concat(`${message.length > 1 ? ', one digit' : 'one digit'}` );
   }
   if (!/[A-Z]/.test(password)) {
-    message = message.concat(`${message.length > 1 ? ', one capital letter' : 'one capital letter'}`);
+    message = message.concat(`${message.length > 1 ? ', one capital letter' : 'one capital letter'}` );
   }
   return message;
 };
@@ -40,9 +40,13 @@ const compareUser = (pathname) => {
     currentUserPage === 'post'
   );
 };
-
-const shareLink = () => {
-  // TODO: implement logic for sharing in local messaging app.
+const copyTextToClipboard = (text) => {
+  navigator.clipboard
+    .writeText(text)
+    .then(() => {
+      // TODO: show something for text copied
+    })
+    .catch(err => console.log(err));
 };
 
-export { passwordValidator, getBackgroundColor, currentPage, compareUser, shareLink };
+export { passwordValidator, getBackgroundColor, currentPage, compareUser, copyTextToClipboard };

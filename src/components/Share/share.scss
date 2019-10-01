@@ -1,0 +1,32 @@
+@import '../../variables.scss';
+
+.shareContainer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  padding-top: 2rem;
+  background-color: $navbar;
+  z-index: 999999;
+  &__share {
+    display: flex;
+    flex-direction: column;
+    &__row {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 2rem;
+      &__copyContainer {
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        background-color: blue;
+        display: flex;
+        justify-content: center;
+        &__copy {
+          align-self: center;
+          font-size: 1rem;
+          color: $white;
+        }
+      }
+    }
+  }
+}

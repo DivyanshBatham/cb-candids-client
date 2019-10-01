@@ -4,8 +4,8 @@ import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import { shareLink } from '../../helpers';
 import { deletePost } from '../../actions/postActions';
+import { toggleShareMenu } from '../../actions/shareAction';
 import './card.scss';
 import Tag from '../Tag';
 import DropdownOptions from '../DropdownOptions';
@@ -101,7 +101,15 @@ class Card extends Component {
   checkLoginAuthor = () => {
     const { author } = this.props.post;
     return this.props.stateData.user.username === author.username;
-  }
+  };
+  shareLink = (e) => {
+    e.preventDefault();
+    const title = 'Share the candid moment';
+    let url = window.location.href;
+    url = url.split('/');
+    url = `${url[0]}//${url[2]}/post/${this.props.post._id}`;
+    this.props.toggleShareMenu(title, url);
+  };
   render() {
     const {
       openDescription,
@@ -145,7 +153,7 @@ class Card extends Component {
               },
               {
                 title: 'Share Candid',
-                handleClick: shareLink,
+                handleClick: this.shareLink,
               },
             ]}
           />
@@ -227,6 +235,7 @@ Card.propTypes = {
     history: PropTypes.oneOfType(Object),
   }).isRequired,
   deletePost: PropTypes.func.isRequired,
+  toggleShareMenu: PropTypes.func.isRequired,
 };
 
 Card.defaultProps = {
@@ -235,4 +244,7 @@ Card.defaultProps = {
 
 const mapStateToProps = state => ({ stateData: state });
 
-export default connect(mapStateToProps, { deletePost })(withRouter(Card));
+export default connect(
+  mapStateToProps,
+  { deletePost, toggleShareMenu },
+)(withRouter(Card));

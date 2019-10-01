@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import TextareaAutosize from 'react-textarea-autosize';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { withRouter } from 'react-router-dom';
+import { copyTextToClipboard } from '../../helpers';
 import DropdownOptions from '../DropdownOptions';
 import ConfirmationModal from '../ConfirmationModal';
 import RandomColor from '../../helpers/RandomColor';
@@ -30,13 +31,7 @@ class Comment extends Component {
   handleCopyComment = (e) => {
     e.preventDefault();
     const { commentText } = this.state;
-    // TODO: copy is not working
-    navigator.clipboard
-      .writeText(commentText)
-      .then(() => {
-        // TODO: show something for text copied
-      })
-      .catch(err => console.log(err));
+    copyTextToClipboard(commentText);
   };
 
   handleDeleteComment = () => {
