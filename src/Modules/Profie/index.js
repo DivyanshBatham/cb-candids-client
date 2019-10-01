@@ -33,8 +33,13 @@ class Profile extends Component {
   // handler for editing the user profile details
   handleEditProfile = (e) => {
     e.preventDefault();
-    this.setState({ editingUserDetails: true });
-    this.textarea.focus();
+    this.setState(prevState => ({
+      editingUserDetails: !prevState.editingUserDetails,
+    }), () => {
+      if (this.state.editingUserDetails === true) {
+        this.textarea.focus();
+      }
+    });
   };
 
   handleStateData = (e) => {
@@ -82,7 +87,7 @@ class Profile extends Component {
         <Navbar
           showBackIcon={othersProfile && !editingUserDetails}
           showCrossIcon={editingUserDetails}
-          handleCancel={() => alert('Add Handler')}
+          handleCancel={this.handleEditProfile}
           showCheckIcon={editingUserDetails}
           handleSubmit={() => alert('Add Handler')}
           showOptionsIcon={!editingUserDetails}
@@ -144,7 +149,7 @@ class Profile extends Component {
                 <TextareaAutosize
                   className="profile__bio profile__editBox"
                   value={bio}
-                  placeholder="write your bio"
+                  placeholder={editingUserDetails ? 'write your bio' : null}
                   readOnly={!editingUserDetails}
                   name="bio"
                   onChange={this.handleStateData}
@@ -195,7 +200,6 @@ Profile.propTypes = {
     }),
   }).isRequired,
   toggleShareMenu: PropTypes.func.isRequired,
-
 };
 
 export default connect(
