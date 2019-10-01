@@ -11,11 +11,12 @@ const appReducer = combineReducers({
 });
 
 const rootReducer = (state, action) => {
+  let tempState = state;
   if (action.type === LOGOUT) {
     localStorage.clear();
-    return undefined;
+    tempState = undefined;
   }
-  return appReducer(state, action);
+  return appReducer(tempState, action);
 };
 
 export default rootReducer;
