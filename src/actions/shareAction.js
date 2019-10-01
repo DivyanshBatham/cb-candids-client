@@ -1,8 +1,8 @@
-import { SHOW_SHARE_MENU, HIDE_SHARE_MENU } from '../constant';
+import { TOGGLE_SHARE_MENU } from '../constant';
 
-export const showShareMenu = (title, url) => {
+export const toggleShareMenu = (title = null, url = null) => {
   const action = {
-    type: SHOW_SHARE_MENU,
+    type: TOGGLE_SHARE_MENU,
     payload: {
       title,
       url,
@@ -10,11 +10,3 @@ export const showShareMenu = (title, url) => {
   };
   return action;
 };
-
-export const hideShareMenu = () => {
-  const action = {
-    type: HIDE_SHARE_MENU,
-  };
-  return action;
-};
-

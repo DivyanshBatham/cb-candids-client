@@ -15,7 +15,7 @@ import {
   TelegramIcon,
 } from 'react-share';
 import { copyTextToClipboard } from '../../helpers';
-import { hideShareMenu } from '../../actions/shareAction';
+import { toggleShareMenu } from '../../actions/shareAction';
 import './share.scss';
 
 class Share extends Component {
@@ -38,12 +38,12 @@ class Share extends Component {
       this.setWrapperRefInShare &&
       !this.setWrapperRefInShare.contains(event.target)
     ) {
-      this.props.hideShareMenu();
+      this.props.toggleShareMenu();
     }
   };
   handleCopy = () => {
     const { shareData } = this.props;
-    this.props.hideShareMenu();
+    this.props.toggleShareMenu();
     copyTextToClipboard(shareData.url);
   };
   render() {
@@ -52,7 +52,7 @@ class Share extends Component {
     return (
       <div
         className="shareContainer"
-        ref={this.setWrapperRefInShare}
+        ref={el => (this.setWrapperRefInShare = el)}
       >
         <div className="shareContainer__share">
           <div className="shareContainer__share__row">
@@ -60,20 +60,20 @@ class Share extends Component {
               url={shareData.url}
               title={shareData.title}
               separator="::"
-              onShareWindowClose={() => this.props.hideShareMenu()}
+              onShareWindowClose={() => this.props.toggleShareMenu()}
             >
               <WhatsappIcon size={iconSize} round />
             </WhatsappShareButton>
             <FacebookShareButton
               url={shareData.url}
-              onShareWindowClose={() => this.props.hideShareMenu()}
+              onShareWindowClose={() => this.props.toggleShareMenu()}
               quote={shareData.title}
             >
               <FacebookIcon size={iconSize} round />
             </FacebookShareButton>
             <TwitterShareButton
               url={shareData.url}
-              onShareWindowClose={() => this.props.hideShareMenu()}
+              onShareWindowClose={() => this.props.toggleShareMenu()}
               title={shareData.title}
             >
               <TwitterIcon size={iconSize} round />
@@ -82,14 +82,14 @@ class Share extends Component {
           <div className="shareContainer__share__row">
             <TelegramShareButton
               url={shareData.url}
-              onShareWindowClose={() => this.props.hideShareMenu()}
+              onShareWindowClose={() => this.props.toggleShareMenu()}
               title={shareData.tit}
             >
               <TelegramIcon size={iconSize} round />
             </TelegramShareButton>
             <LinkedinShareButton
               url={shareData.url}
-              onShareWindowClose={() => this.props.hideShareMenu()}
+              onShareWindowClose={() => this.props.toggleShareMenu()}
               windowWidth={750}
               windowHeight={600}
             >
@@ -113,9 +113,15 @@ function mapStateToProps(state) {
     shareData: state.share,
   };
 }
-Share.propTypes = {};
+Share.propTypes = {
+  shareData: PropTypes.shape({
+    url: PropTypes.string,
+    title: PropTypes.string,
+  }).isRequired,
+  toggleShareMenu: PropTypes.func.isRequired,
+};
 
 export default connect(
   mapStateToProps,
-  { hideShareMenu },
+  { toggleShareMenu },
 )(Share);

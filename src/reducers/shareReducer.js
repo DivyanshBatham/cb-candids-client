@@ -1,13 +1,17 @@
-import { SHOW_SHARE_MENU, HIDE_SHARE_MENU } from '../constant';
+import { TOGGLE_SHARE_MENU } from '../constant';
 
 const shareReducer = (state = {}, action) => {
   switch (action.type) {
-    case SHOW_SHARE_MENU:
-      return {
-        ...state, showShareMenu: true, url: action.payload.url, title: action.payload.title,
-      };
-    case HIDE_SHARE_MENU: {
-      return {};
+    case TOGGLE_SHARE_MENU: {
+      const tempState = state.showShareMenu
+        ? {}
+        : {
+          ...state,
+          showShareMenu: true,
+          url: action.payload.url,
+          title: action.payload.title,
+        };
+      return tempState;
     }
     default:
       return state;
