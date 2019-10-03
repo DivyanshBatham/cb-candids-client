@@ -31,10 +31,11 @@ class Profile extends Component {
     if (currentUserName !== previousUserName) this.fetchData();
   }
   // handler for editing the user profile details
-  handleEditProfile = (e) => {
-    e.preventDefault();
+  handleEditProfile = () => {
     this.setState(prevState => ({
       editingUserDetails: !prevState.editingUserDetails,
+      username: prevState.data.user.username,
+      bio: prevState.data.user.bio,
     }), () => {
       if (this.state.editingUserDetails === true) {
         this.textarea.focus();
@@ -72,6 +73,37 @@ class Profile extends Component {
         });
       });
   };
+  handleSubmitEditProfile = () => {
+    const { bio, username, data: userData } = this.state;
+    const data = new FormData();
+    data.append('bio', bio);
+    data.append('username', username);
+    axios({
+      method: 'patch',
+      url: 'https://calm-waters-47062.herokuapp.com/users',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('cb-token')}`,
+        'Content-Type': 'multipart/form-data',
+      },
+      data,
+    }).then((res) => {
+      if (res.data.success) {
+        localStorage.setItem('cb-username', username);
+        this.setState({
+          data: { ...userData, user: res.data.data },
+        }, () => {
+          this.handleEditProfile();
+        });
+      }
+    }).catch(() => {
+      this.setState(prevState => ({
+        username: prevState.data.user.username,
+        bio: prevState.data.user.bio,
+      }), () => {
+        this.handleEditProfile();
+      });
+    });
+  }
   render() {
     const {
       errors, loading, editingUserDetails, username, bio,
@@ -89,7 +121,7 @@ class Profile extends Component {
           showCrossIcon={editingUserDetails}
           handleCancel={this.handleEditProfile}
           showCheckIcon={editingUserDetails}
-          handleSubmit={() => alert('Add Handler')}
+          handleSubmit={this.handleSubmitEditProfile}
           showOptionsIcon={!editingUserDetails}
           options={[
             {
@@ -144,6 +176,7 @@ class Profile extends Component {
                   placeholder="Enter username"
                   name="username"
                   onChange={this.handleStateData}
+                  spellcheck="false"
                   inputRef={tag => (this.textarea = tag)}
                 />
                 <TextareaAutosize
