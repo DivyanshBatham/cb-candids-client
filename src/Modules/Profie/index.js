@@ -42,29 +42,34 @@ class Profile extends Component {
   };
   fetchData = () => {
     const { username } = this.props.match.params;
-    axios({
-      method: 'get',
-      url: `https://calm-waters-47062.herokuapp.com/users/${username}`,
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('cb-token')}`,
-      },
-    })
-      .then((res) => {
-        if (res.data.success) {
-          this.setState({
-            data: res.data.data,
-            loading: false,
-            username: res.data.data.user.username,
-            bio: res.data.data.user.bio,
-          });
-        }
+    this.setState({
+      errors: null,
+      loading: true,
+    }, () => {
+      axios({
+        method: 'get',
+        url: `https://calm-waters-47062.herokuapp.com/users/${username}`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('cb-token')}`,
+        },
       })
-      .catch((err) => {
-        this.setState({
-          errors: err.response.data.errors,
-          loading: false,
+        .then((res) => {
+          if (res.data.success) {
+            this.setState({
+              data: res.data.data,
+              loading: false,
+              username: res.data.data.user.username,
+              bio: res.data.data.user.bio,
+            });
+          }
+        })
+        .catch((err) => {
+          this.setState({
+            errors: err.response.data.errors,
+            loading: false,
+          });
         });
-      });
+    });
   };
   render() {
     const {
