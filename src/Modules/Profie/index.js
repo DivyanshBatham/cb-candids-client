@@ -185,6 +185,7 @@ class Profile extends Component {
                   placeholder={editingUserDetails ? 'write your bio' : null}
                   readOnly={!editingUserDetails}
                   name="bio"
+                  spellcheck="false"
                   onChange={this.handleStateData}
                 />
                 <h2 className="sectionHeading profile__heading">Stats</h2>
