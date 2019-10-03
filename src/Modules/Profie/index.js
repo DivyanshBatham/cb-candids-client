@@ -79,12 +79,12 @@ class Profile extends Component {
     return (
       <React.Fragment>
         <Navbar
-          showBackIcon={othersProfile && !editingUserDetails}
+          showBackIcon={!loading && othersProfile && !editingUserDetails}
           showCrossIcon={editingUserDetails}
           handleCancel={() => alert('Add Handler')}
           showCheckIcon={editingUserDetails}
           handleSubmit={() => alert('Add Handler')}
-          showOptionsIcon={!editingUserDetails}
+          showOptionsIcon={!errors && !editingUserDetails}
           options={[
             {
               title: 'Share Profile',
