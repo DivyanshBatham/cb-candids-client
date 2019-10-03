@@ -22,31 +22,17 @@ class Profile extends Component {
       bio: '',
     };
   }
+
   componentDidMount() {
     this.fetchData();
   }
+
   componentDidUpdate(prevProps) {
     const { username: currentUserName } = this.props.match.params;
     const { username: previousUserName } = prevProps.match.params;
     if (currentUserName !== previousUserName) this.fetchData();
   }
-  // handler for editing the user profile details
-  handleEditProfile = () => {
-    this.setState(prevState => ({
-      editingUserDetails: !prevState.editingUserDetails,
-      username: prevState.data.user.username,
-      bio: prevState.data.user.bio,
-    }), () => {
-      if (this.state.editingUserDetails === true) {
-        this.textarea.focus();
-      }
-    });
-  };
 
-  handleStateData = (e) => {
-    e.preventDefault();
-    this.setState({ [e.target.name]: e.target.value });
-  };
   fetchData = () => {
     const { username } = this.props.match.params;
     this.setState({
@@ -78,6 +64,25 @@ class Profile extends Component {
         });
     });
   };
+
+  // handler for editing the user profile details
+  handleEditProfile = () => {
+    this.setState(prevState => ({
+      editingUserDetails: !prevState.editingUserDetails,
+      username: prevState.data.user.username,
+      bio: prevState.data.user.bio,
+    }), () => {
+      if (this.state.editingUserDetails === true) {
+        this.textarea.focus();
+      }
+    });
+  };
+
+  handleStateData = (e) => {
+    e.preventDefault();
+    this.setState({ [e.target.name]: e.target.value });
+  };
+
   handleSubmitEditProfile = () => {
     const { bio, username, data: userData } = this.state;
     const data = new FormData();
@@ -96,17 +101,11 @@ class Profile extends Component {
         localStorage.setItem('cb-username', username);
         this.setState({
           data: { ...userData, user: res.data.data },
-        }, () => {
-          this.handleEditProfile();
+          editingUserDetails: false,
         });
       }
     }).catch(() => {
-      this.setState(prevState => ({
-        username: prevState.data.user.username,
-        bio: prevState.data.user.bio,
-      }), () => {
-        this.handleEditProfile();
-      });
+      this.handleEditProfile();
     });
   }
   render() {
@@ -118,7 +117,6 @@ class Profile extends Component {
     } = this.state.data;
     const othersProfile =
       this.props.userData.username !== this.props.match.params.username;
-
     return (
       <React.Fragment>
         <Navbar
@@ -181,7 +179,7 @@ class Profile extends Component {
                   placeholder="Enter username"
                   name="username"
                   onChange={this.handleStateData}
-                  spellCheck={editingUserDetails}
+                  spellCheck="false"
                   inputRef={tag => (this.textarea = tag)}
                 />
                 <TextareaAutosize
@@ -190,7 +188,7 @@ class Profile extends Component {
                   placeholder={editingUserDetails ? 'write your bio' : null}
                   readOnly={!editingUserDetails}
                   name="bio"
-                  spellCheck={editingUserDetails}
+                  spellCheck="false"
                   onChange={this.handleStateData}
                 />
                 <h2 className="sectionHeading profile__heading">Stats</h2>
