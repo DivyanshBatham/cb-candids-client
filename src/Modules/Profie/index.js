@@ -58,6 +58,7 @@ class Profile extends Component {
     })
       .then((res) => {
         if (res.data.success) {
+          console.log(res.data.data);
           this.setState({
             data: res.data.data,
             loading: false,
@@ -176,7 +177,7 @@ class Profile extends Component {
                   placeholder="Enter username"
                   name="username"
                   onChange={this.handleStateData}
-                  spellcheck="false"
+                  spellCheck={editingUserDetails}
                   inputRef={tag => (this.textarea = tag)}
                 />
                 <TextareaAutosize
@@ -185,7 +186,7 @@ class Profile extends Component {
                   placeholder={editingUserDetails ? 'write your bio' : null}
                   readOnly={!editingUserDetails}
                   name="bio"
-                  spellcheck="false"
+                  spellCheck={editingUserDetails}
                   onChange={this.handleStateData}
                 />
                 <h2 className="sectionHeading profile__heading">Stats</h2>
