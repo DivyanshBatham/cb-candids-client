@@ -20,7 +20,9 @@ class CardRenderer extends Component {
 }
 
 CardRenderer.propTypes = {
-  posts: PropTypes.oneOfType(Array),
+  posts: PropTypes.oneOfType([
+    PropTypes.array,
+  ]),
 };
 
 CardRenderer.defaultProps = {

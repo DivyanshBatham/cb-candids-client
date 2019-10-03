@@ -238,6 +238,7 @@ class Comment extends Component {
             onChange={this.handleCommentText}
             value={commentText}
             readOnly={!showCommentBox}
+            spellCheck={showCommentBox}
             inputRef={tag => (this.textarea = tag)}
           />
           <span className="comment__content__time">{postedTime} ago</span>

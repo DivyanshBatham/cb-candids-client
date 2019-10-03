@@ -77,7 +77,9 @@ class Options extends Component {
 }
 
 Options.propTypes = {
-  iconProps: PropTypes.oneOfType(Object),
+  iconProps: PropTypes.oneOfType([
+    PropTypes.object,
+  ]),
   options: PropTypes.arrayOf(PropTypes.shape({
     title: PropTypes.oneOfType([
       PropTypes.element,

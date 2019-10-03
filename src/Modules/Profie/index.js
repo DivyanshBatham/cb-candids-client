@@ -4,6 +4,7 @@ import axios from 'axios';
 import TextareaAutosize from 'react-textarea-autosize';
 import PropTypes from 'prop-types';
 import { toggleShareMenu } from '../../actions/shareAction';
+import { logout } from '../../actions/logoutAction';
 import CardRenderer from '../../components/CardRenderer';
 import './profile.scss';
 import Loader from '../../components/Loader';
@@ -30,10 +31,16 @@ class Profile extends Component {
     if (currentUserName !== previousUserName) this.fetchData();
   }
   // handler for editing the user profile details
-  handleEditProfile = (e) => {
-    e.preventDefault();
-    this.setState({ editingUserDetails: true });
-    this.textarea.focus();
+  handleEditProfile = () => {
+    this.setState(prevState => ({
+      editingUserDetails: !prevState.editingUserDetails,
+      username: prevState.data.user.username,
+      bio: prevState.data.user.bio,
+    }), () => {
+      if (this.state.editingUserDetails === true) {
+        this.textarea.focus();
+      }
+    });
   };
 
   handleStateData = (e) => {
@@ -71,6 +78,37 @@ class Profile extends Component {
         });
     });
   };
+  handleSubmitEditProfile = () => {
+    const { bio, username, data: userData } = this.state;
+    const data = new FormData();
+    data.append('bio', bio);
+    data.append('username', username);
+    axios({
+      method: 'patch',
+      url: 'https://calm-waters-47062.herokuapp.com/users',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('cb-token')}`,
+        'Content-Type': 'multipart/form-data',
+      },
+      data,
+    }).then((res) => {
+      if (res.data.success) {
+        localStorage.setItem('cb-username', username);
+        this.setState({
+          data: { ...userData, user: res.data.data },
+        }, () => {
+          this.handleEditProfile();
+        });
+      }
+    }).catch(() => {
+      this.setState(prevState => ({
+        username: prevState.data.user.username,
+        bio: prevState.data.user.bio,
+      }), () => {
+        this.handleEditProfile();
+      });
+    });
+  }
   render() {
     const {
       errors, loading, editingUserDetails, username, bio,
@@ -86,10 +124,10 @@ class Profile extends Component {
         <Navbar
           showBackIcon={!loading && othersProfile && !editingUserDetails}
           showCrossIcon={editingUserDetails}
-          handleCancel={() => alert('Add Handler')}
+          handleCancel={this.handleEditProfile}
           showCheckIcon={editingUserDetails}
-          handleSubmit={() => alert('Add Handler')}
           showOptionsIcon={!errors && !editingUserDetails}
+          handleSubmit={this.handleSubmitEditProfile}
           options={[
             {
               title: 'Share Profile',
@@ -118,7 +156,7 @@ class Profile extends Component {
             },
             {
               title: othersProfile ? null : 'Logout',
-              handleClick: () => alert('Handle Logout'),
+              handleClick: () => this.props.logout(),
             },
           ]}
         />
@@ -143,14 +181,16 @@ class Profile extends Component {
                   placeholder="Enter username"
                   name="username"
                   onChange={this.handleStateData}
+                  spellCheck={editingUserDetails}
                   inputRef={tag => (this.textarea = tag)}
                 />
                 <TextareaAutosize
                   className="profile__bio profile__editBox"
                   value={bio}
-                  placeholder="write your bio"
+                  placeholder={editingUserDetails ? 'write your bio' : null}
                   readOnly={!editingUserDetails}
                   name="bio"
+                  spellCheck={editingUserDetails}
                   onChange={this.handleStateData}
                 />
                 <h2 className="sectionHeading profile__heading">Stats</h2>
@@ -199,10 +239,10 @@ Profile.propTypes = {
     }),
   }).isRequired,
   toggleShareMenu: PropTypes.func.isRequired,
-
+  logout: PropTypes.func.isRequired,
 };
 
 export default connect(
   mapStateToProps,
-  { toggleShareMenu },
+  { toggleShareMenu, logout },
 )(Profile);

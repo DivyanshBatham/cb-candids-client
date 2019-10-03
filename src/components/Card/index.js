@@ -102,8 +102,7 @@ class Card extends Component {
     const { author } = this.props.post;
     return this.props.stateData.user.username === author.username;
   };
-  shareLink = (e) => {
-    e.preventDefault();
+  shareLink = () => {
     const title = 'Share the candid moment';
     let url = window.location.href;
     url = url.split('/');
@@ -232,14 +231,16 @@ Card.propTypes = {
     comments: PropTypes.array.isRequired,
     imgSrc: PropTypes.string.isRequired,
     taggedUsers: PropTypes.array.isRequired,
-    history: PropTypes.oneOfType(Object),
-  }).isRequired,
+    history: PropTypes.oneOfType([
+      PropTypes.object,
+    ]),
+  }),
   deletePost: PropTypes.func.isRequired,
   toggleShareMenu: PropTypes.func.isRequired,
 };
 
 Card.defaultProps = {
-  description: '',
+  post: {},
 };
 
 const mapStateToProps = state => ({ stateData: state });
