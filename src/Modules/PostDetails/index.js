@@ -118,6 +118,7 @@ class PostDetails extends Component {
                     comments.map((comment, idx) => (
                       <Comment
                         idx={idx}
+                        key={comment._id}
                         commentItem={comment}
                         handleRemoveComment={this.removeCommentFromState}
                         handleUpdateCommentOrLike={this.updateCommentOrLikeStatus}
@@ -145,7 +146,17 @@ const mapStateToProps = state => ({
 });
 
 PostDetails.propTypes = {
-  location: PropTypes.oneOfType(Object).isRequired,
+  userData: PropTypes.shape({
+    username: PropTypes.string,
+    imgSrc: PropTypes.string,
+  }),
+  postsData: PropTypes.oneOfType([
+    PropTypes.object,
+  ]),
+};
+PostDetails.defaultProps = {
+  userData: {},
+  postsData: {},
 };
 
 export default connect(

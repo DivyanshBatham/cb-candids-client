@@ -40,7 +40,7 @@ function mapStateToProps(state) {
 }
 Home.propTypes = {
   postsData: PropTypes.shape({
-    posts: PropTypes.object.isRequired,
+    posts: PropTypes.array.isRequired,
     newDataAvailable: PropTypes.bool.isRequired,
   }).isRequired,
   fetchAllPosts: PropTypes.func.isRequired,
