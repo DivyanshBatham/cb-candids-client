@@ -49,30 +49,34 @@ class Profile extends Component {
   };
   fetchData = () => {
     const { username } = this.props.match.params;
-    axios({
-      method: 'get',
-      url: `https://calm-waters-47062.herokuapp.com/users/${username}`,
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('cb-token')}`,
-      },
-    })
-      .then((res) => {
-        if (res.data.success) {
-          console.log(res.data.data);
-          this.setState({
-            data: res.data.data,
-            loading: false,
-            username: res.data.data.user.username,
-            bio: res.data.data.user.bio,
-          });
-        }
+    this.setState({
+      errors: null,
+      loading: true,
+    }, () => {
+      axios({
+        method: 'get',
+        url: `https://calm-waters-47062.herokuapp.com/users/${username}`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('cb-token')}`,
+        },
       })
-      .catch((err) => {
-        this.setState({
-          errors: err.response.data.errors,
-          loading: false,
+        .then((res) => {
+          if (res.data.success) {
+            this.setState({
+              data: res.data.data,
+              loading: false,
+              username: res.data.data.user.username,
+              bio: res.data.data.user.bio,
+            });
+          }
+        })
+        .catch((err) => {
+          this.setState({
+            errors: err.response.data.errors,
+            loading: false,
+          });
         });
-      });
+    });
   };
   handleSubmitEditProfile = () => {
     const { bio, username, data: userData } = this.state;
@@ -118,12 +122,12 @@ class Profile extends Component {
     return (
       <React.Fragment>
         <Navbar
-          showBackIcon={othersProfile && !editingUserDetails}
+          showBackIcon={!loading && othersProfile && !editingUserDetails}
           showCrossIcon={editingUserDetails}
           handleCancel={this.handleEditProfile}
           showCheckIcon={editingUserDetails}
+          showOptionsIcon={!errors && !editingUserDetails}
           handleSubmit={this.handleSubmitEditProfile}
-          showOptionsIcon={!editingUserDetails}
           options={[
             {
               title: 'Share Profile',
