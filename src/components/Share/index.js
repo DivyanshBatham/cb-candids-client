@@ -51,6 +51,11 @@ class Share extends Component {
     const iconSize = 32;
     return (
       <div
+        // className={`shareContainer ${
+        //   shareData.showShareMenu
+        //     ? 'shareContainer__show'
+        //     : 'shareContainer__hide'
+        // }`}
         className="shareContainer"
         ref={el => (this.setWrapperRefInShare = el)}
       >

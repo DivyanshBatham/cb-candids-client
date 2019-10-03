@@ -102,8 +102,7 @@ class Card extends Component {
     const { author } = this.props.post;
     return this.props.stateData.user.username === author.username;
   };
-  shareLink = (e) => {
-    e.preventDefault();
+  shareLink = () => {
     const title = 'Share the candid moment';
     let url = window.location.href;
     url = url.split('/');

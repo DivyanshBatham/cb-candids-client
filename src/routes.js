@@ -53,6 +53,7 @@ class Routes extends React.Component {
         </main>
         <Footer />
         {stateData.share.showShareMenu && <Share />}
+        {/* <Share /> */}
       </Suspense>
     );
   }
