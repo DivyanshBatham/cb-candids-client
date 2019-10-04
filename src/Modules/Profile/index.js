@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import TextareaAutosize from 'react-textarea-autosize';
 import PropTypes from 'prop-types';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { toggleShareMenu } from '../../actions/shareAction';
 import { logout } from '../../actions/logoutAction';
 import CardRenderer from '../../components/CardRenderer';
@@ -20,6 +21,7 @@ class Profile extends Component {
       editingUserDetails: false,
       username: '',
       bio: '',
+      imgSrc: null,
     };
   }
 
@@ -38,6 +40,7 @@ class Profile extends Component {
     this.setState({
       errors: null,
       loading: true,
+      editingUserDetails: false,
     }, () => {
       axios({
         method: 'get',
@@ -53,6 +56,8 @@ class Profile extends Component {
               loading: false,
               username: res.data.data.user.username,
               bio: res.data.data.user.bio,
+              imgSrcDisplay: res.data.data.user.imgSrcLarge,
+              imgSrc: null,
             });
           }
         })
@@ -71,6 +76,8 @@ class Profile extends Component {
       editingUserDetails: !prevState.editingUserDetails,
       username: prevState.data.user.username,
       bio: prevState.data.user.bio,
+      imgSrc: null,
+      imgSrcDisplay: prevState.data.user.imgSrcLarge,
     }), () => {
       if (this.state.editingUserDetails === true) {
         this.textarea.focus();
@@ -83,10 +90,21 @@ class Profile extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
+  handleFileChange = (e) => {
+    const file = e.target.files[0];
+    this.setState({
+      imgSrc: file,
+      imgSrcDisplay: URL.createObjectURL(file),
+    });
+  }
+
   handleSubmitEditProfile = () => {
-    const { bio, username, data: userData } = this.state;
+    const {
+      bio, username, data: userData, imgSrc,
+    } = this.state;
     const data = new FormData();
     data.append('bio', bio);
+    if (imgSrc) data.append('imgSrc', imgSrc);
     data.append('username', username);
     axios({
       method: 'patch',
@@ -111,6 +129,7 @@ class Profile extends Component {
   render() {
     const {
       errors, loading, editingUserDetails, username, bio,
+      imgSrcDisplay,
     } = this.state;
     const {
       likeCount, postCount, posts, user,
@@ -164,62 +183,74 @@ class Profile extends Component {
           <React.Fragment>
             {errors ? (
               <div className="error">{errors}</div>
-            ) : (
-              <div className="profile">
-                <div
-                  className="profile__imageContainer"
-                  style={{
-                    backgroundImage: `url(${user && user.imgSrcLarge})`,
-                  }}
-                />
-                <TextareaAutosize
-                  className="profile__username profile__editBox"
-                  value={username}
-                  readOnly={!editingUserDetails}
-                  placeholder="Enter username"
-                  name="username"
-                  onChange={this.handleStateData}
-                  spellCheck="false"
-                  inputRef={tag => (this.textarea = tag)}
-                />
-                <TextareaAutosize
-                  className="profile__bio profile__editBox"
-                  value={bio}
-                  placeholder={editingUserDetails ? 'write your bio' : null}
-                  readOnly={!editingUserDetails}
-                  name="bio"
-                  spellCheck="false"
-                  onChange={this.handleStateData}
-                />
-                <h2 className="sectionHeading profile__heading">Stats</h2>
-                <div className="profile__stats">
-                  <div className="profile__stats__item">
-                    <span className="profile__stats__item__number">
-                      {postCount}
-                    </span>
-                    <span className="profile__stats__item__text">POSTS</span>
+              ) : (
+                <div className="profile">
+                  <label
+                    htmlFor="imgSrc"
+                    className="profile__imageContainer"
+                    style={{
+                        backgroundImage: `url(${user && imgSrcDisplay})`,
+                      }}
+                  >
+                    {editingUserDetails &&
+                    <div className="profile__imageContainer__icon" >
+                      <div className="iconContainer iconContainer--light">
+                        <FontAwesomeIcon
+                          icon="camera"
+                        />
+                      </div>
+                    </div>
+                      }
+                    <input type="file" id="imgSrc" onChange={this.handleFileChange} disabled={!editingUserDetails} />
+                  </label>
+                  <TextareaAutosize
+                    className="profile__username profile__editBox"
+                    value={username}
+                    readOnly={!editingUserDetails}
+                    placeholder="Enter username"
+                    name="username"
+                    onChange={this.handleStateData}
+                    spellCheck="false"
+                    inputRef={tag => (this.textarea = tag)}
+                  />
+                  <TextareaAutosize
+                    className="profile__bio profile__editBox"
+                    value={bio}
+                    placeholder={editingUserDetails ? 'write your bio' : null}
+                    readOnly={!editingUserDetails}
+                    name="bio"
+                    spellCheck="false"
+                    onChange={this.handleStateData}
+                  />
+                  <h2 className="sectionHeading profile__heading">Stats</h2>
+                  <div className="profile__stats">
+                    <div className="profile__stats__item">
+                      <span className="profile__stats__item__number">
+                        {postCount}
+                      </span>
+                      <span className="profile__stats__item__text">POSTS</span>
+                    </div>
+                    <div className="profile__stats__item">
+                      <span className="profile__stats__item__number">
+                        {likeCount}
+                      </span>
+                      <span className="profile__stats__item__text">LIKES</span>
+                    </div>
+                    <div className="profile__stats__item">
+                      <span className="profile__stats__item__number">10</span>
+                      <span className="profile__stats__item__text">PHOTOS</span>
+                    </div>
                   </div>
-                  <div className="profile__stats__item">
-                    <span className="profile__stats__item__number">
-                      {likeCount}
-                    </span>
-                    <span className="profile__stats__item__text">LIKES</span>
-                  </div>
-                  <div className="profile__stats__item">
-                    <span className="profile__stats__item__number">10</span>
-                    <span className="profile__stats__item__text">PHOTOS</span>
-                  </div>
+                  <h2 className="sectionHeading profile__heading">Candids</h2>
+                  {posts && posts.length > 0 ? (
+                    <CardRenderer posts={posts} />
+                    ) : (
+                      <div className="error">No post found</div>
+                      )}
                 </div>
-                <h2 className="sectionHeading profile__heading">Candids</h2>
-                {posts && posts.length > 0 ? (
-                  <CardRenderer posts={posts} />
-                ) : (
-                  <div className="error">No post found</div>
                 )}
-              </div>
-            )}
           </React.Fragment>
-        )}
+          )}
       </React.Fragment>
     );
   }
