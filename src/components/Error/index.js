@@ -1,12 +1,15 @@
 import React from 'react';
 import SadPumpkin from '../../assets/sadPumpkin';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import './error.scss';
 
 const Error = props => (
   <div className="error">
     <div className="error__logo">
-      <SadPumpkin />
+      <Link to="/">
+        <SadPumpkin />
+      </Link>
     </div>
     {props.error}
   </div>
