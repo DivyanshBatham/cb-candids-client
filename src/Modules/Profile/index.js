@@ -71,7 +71,7 @@ class Profile extends Component {
   };
 
   // handler for editing the user profile details
-  handleEditProfile = () => {
+  toggleEditingAndReset = () => {
     this.setState(prevState => ({
       editingUserDetails: !prevState.editingUserDetails,
       username: prevState.data.user.username,
@@ -85,20 +85,22 @@ class Profile extends Component {
     });
   };
 
-  handleStateData = (e) => {
+  handleTextChange = (e) => {
     e.preventDefault();
     this.setState({ [e.target.name]: e.target.value });
   };
 
   handleFileChange = (e) => {
     const file = e.target.files[0];
-    this.setState({
-      imgSrc: file,
-      imgSrcDisplay: URL.createObjectURL(file),
-    });
+    if (file) {
+      this.setState({
+        imgSrc: file,
+        imgSrcDisplay: URL.createObjectURL(file),
+      });
+    }
   }
 
-  handleSubmitEditProfile = () => {
+  handleSubmit = () => {
     const {
       bio, username, data: userData, imgSrc,
     } = this.state;
@@ -120,12 +122,15 @@ class Profile extends Component {
         this.setState({
           data: { ...userData, user: res.data.data },
           editingUserDetails: false,
+          imgSrc: null,
+          imgSrcDisplay: res.data.data.user.imgSrcLarge,
         });
       }
     }).catch(() => {
-      this.handleEditProfile();
+      this.toggleEditingAndReset();
     });
   }
+
   render() {
     const {
       errors, loading, editingUserDetails, username, bio,
@@ -141,10 +146,10 @@ class Profile extends Component {
         <Navbar
           showBackIcon={!loading && othersProfile && !editingUserDetails}
           showCrossIcon={editingUserDetails}
-          handleCancel={this.handleEditProfile}
+          handleCancel={this.toggleEditingAndReset}
           showCheckIcon={editingUserDetails}
           showOptionsIcon={!errors && !editingUserDetails}
-          handleSubmit={this.handleSubmitEditProfile}
+          handleSubmit={this.handleSubmit}
           options={[
             {
               title: 'Share Profile',
@@ -156,7 +161,7 @@ class Profile extends Component {
             },
             {
               title: othersProfile ? null : 'Edit Profile',
-              handleClick: this.handleEditProfile,
+              handleClick: this.toggleEditingAndReset,
             },
             {
               title: othersProfile ? null : (
@@ -209,7 +214,7 @@ class Profile extends Component {
                     readOnly={!editingUserDetails}
                     placeholder="Enter username"
                     name="username"
-                    onChange={this.handleStateData}
+                    onChange={this.handleTextChange}
                     spellCheck="false"
                     inputRef={tag => (this.textarea = tag)}
                   />
@@ -220,7 +225,7 @@ class Profile extends Component {
                     readOnly={!editingUserDetails}
                     name="bio"
                     spellCheck="false"
-                    onChange={this.handleStateData}
+                    onChange={this.handleTextChange}
                   />
                   <h2 className="sectionHeading profile__heading">Stats</h2>
                   <div className="profile__stats">
