@@ -10,7 +10,7 @@ const Login = lazy(() => import('./Modules/Login'));
 const Register = lazy(() => import('./Modules/Register'));
 const Footer = lazy(() => import('./components/Footer'));
 const forgetPassword = lazy(() => import('./Modules/ForgetPassword'));
-const Profile = lazy(() => import('./Modules/Profie'));
+const Profile = lazy(() => import('./Modules/Profile'));
 const VerifyEmail = lazy(() => import('./Modules/VerifyEmail'));
 const resetPassword = lazy(() => import('./Modules/ResetPassword'));
 const PostDetails = lazy(() => import('./Modules/PostDetails'));
