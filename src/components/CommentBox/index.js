@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import './commentBox.scss';
 
 class CommentBox extends Component {
@@ -15,6 +16,7 @@ class CommentBox extends Component {
     const { value } = this.state;
     if (value.length === 0) return;
     this.props.submitComment(value);
+    this.setState({ value: '' });
   };
   handleValue = (e) => {
     e.preventDefault();
@@ -51,5 +53,9 @@ class CommentBox extends Component {
 const mapStateToProps = state => ({
   userData: state.user,
 });
+CommentBox.propTypes = {
+  submitComment: PropTypes.func.isRequired,
+  userData: PropTypes.shape({}).isRequired,
+};
 
 export default connect(mapStateToProps, null)(CommentBox);

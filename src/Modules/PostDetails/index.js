@@ -9,6 +9,7 @@ import Card from '../../components/Card';
 import Comment from '../../components/Comment';
 import './postDetails.scss';
 import Navbar from '../../components/Navbar';
+import Error from '../../components/Error';
 
 class PostDetails extends Component {
   constructor(props) {
@@ -21,7 +22,7 @@ class PostDetails extends Component {
     this.state = {
       post: findPostFromState(),
       comments: findPostFromState().comments,
-      errorMessage: null,
+      errors: null,
     };
   }
   componentDidMount() {
@@ -42,7 +43,9 @@ class PostDetails extends Component {
             });
           }
         })
-        .catch(err => this.setState({ errorMessage: 'Post Not Found!' }));
+        .catch((err) => {
+          this.setState({ errors: err.response.data.errors });
+        });
     }
   }
 
@@ -102,40 +105,48 @@ class PostDetails extends Component {
   };
 
   render() {
-    const { post } = this.state;
-    const { comments } = this.state;
+    const { post, comments, errors } = this.state;
     return (
       <React.Fragment>
         <Navbar showBackIcon />
-        <div className="postDetails">
-          <div className="container">
-            {Object.entries(post).length !== 0 ? (
-              <React.Fragment>
-                <Card post={post} />
-                <h2 className="sectionHeading">Conversation:</h2>
-                <div className="postDetails--commets">
-                  {comments &&
+        {
+          errors ?
+            <Error error={errors} />
+          :
+            <React.Fragment>
+              <div className="postDetails">
+                <div className="container">
+                  {Object.entries(post).length !== 0 ? (
+                  <React.Fragment>
+                    <Card post={post} />
+                    <h2 className="sectionHeading">Conversation:</h2>
+                    <div className="postDetails--commets">
+                      {comments &&
                     comments.map((comment, idx) => (
                       <Comment
                         idx={idx}
                         key={comment._id}
                         commentItem={comment}
                         handleRemoveComment={this.removeCommentFromState}
-                        handleUpdateCommentOrLike={this.updateCommentOrLikeStatus}
+                        handleUpdateCommentOrLike={
+                          this.updateCommentOrLikeStatus
+                        }
                         postId={post._id}
                       />
                     ))}
-                </div>
-              </React.Fragment>
+                    </div>
+                  </React.Fragment>
             ) : (
               <div>Loading</div>
-              )}
-          </div>
-        </div>
-        <div className="postDetails--commentBox">
-          {/* TODO: Profile image shows error while userImage is fetched */}
-          <CommentBox submitComment={this.submitComment} />
-        </div>
+            )}
+                </div>
+              </div>
+              <div className="postDetails--commentBox">
+                {/* TODO: Profile image shows error while userImage is fetched */}
+                <CommentBox submitComment={this.submitComment} />
+              </div>
+            </React.Fragment>
+      }
       </React.Fragment>
     );
   }
@@ -150,9 +161,7 @@ PostDetails.propTypes = {
     username: PropTypes.string,
     imgSrc: PropTypes.string,
   }),
-  postsData: PropTypes.oneOfType([
-    PropTypes.object,
-  ]),
+  postsData: PropTypes.oneOfType([PropTypes.object]),
 };
 PostDetails.defaultProps = {
   userData: {},

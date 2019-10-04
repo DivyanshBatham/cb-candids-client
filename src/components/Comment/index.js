@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import TextareaAutosize from 'react-textarea-autosize';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { withRouter } from 'react-router-dom';
-import { copyTextToClipboard } from '../../helpers';
+import copy from 'copy-to-clipboard';
 import DropdownOptions from '../DropdownOptions';
 import ConfirmationModal from '../ConfirmationModal';
 import RandomColor from '../../helpers/RandomColor';
@@ -28,10 +28,9 @@ class Comment extends Component {
     });
   }
 
-  handleCopyComment = (e) => {
-    e.preventDefault();
+  handleCopyComment = () => {
     const { commentText } = this.state;
-    copyTextToClipboard(commentText);
+    copy(commentText);
   };
 
   handleDeleteComment = () => {

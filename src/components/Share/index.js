@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import copy from 'copy-to-clipboard';
 import {
   FacebookShareButton,
   FacebookIcon,
@@ -14,7 +15,6 @@ import {
   TelegramShareButton,
   TelegramIcon,
 } from 'react-share';
-import { copyTextToClipboard } from '../../helpers';
 import { toggleShareMenu } from '../../actions/shareAction';
 import './share.scss';
 
@@ -44,7 +44,7 @@ class Share extends Component {
   handleCopy = () => {
     const { shareData } = this.props;
     this.props.toggleShareMenu();
-    copyTextToClipboard(shareData.url);
+    copy(shareData.url);
   };
   render() {
     const { shareData } = this.props;

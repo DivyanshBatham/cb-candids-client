@@ -27,6 +27,8 @@ body {
   cursor: pointer;
 }
 main {
+  display: flex;
+  flex-direction: column;
   flex: 1;
   // margin-top: 3rem;
 }
