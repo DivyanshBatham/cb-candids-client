@@ -1,0 +1,17 @@
+@import '../../variables.scss';
+.error {
+    color: $darkText;
+    flex: 1;
+    font-size: 1.5rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Pacifico', cursive;
+    &__logo{
+      width: 100px;
+      overflow: hidden;
+      align-self: center;
+    }
+  }

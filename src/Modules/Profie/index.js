@@ -9,6 +9,7 @@ import CardRenderer from '../../components/CardRenderer';
 import './profile.scss';
 import Loader from '../../components/Loader';
 import Navbar from '../../components/Navbar';
+import Error from '../../components/Error';
 
 class Profile extends Component {
   constructor(props) {
@@ -112,11 +113,13 @@ class Profile extends Component {
     const {
       errors, loading, editingUserDetails, username, bio,
     } = this.state;
+    const { username: searcedUser } = this.props.match.params;
+
     const {
       likeCount, postCount, posts, user,
     } = this.state.data;
     const othersProfile =
-      this.props.userData.username !== this.props.match.params.username;
+      this.props.userData.username !== searcedUser;
     return (
       <React.Fragment>
         <Navbar
@@ -163,7 +166,7 @@ class Profile extends Component {
         ) : (
           <React.Fragment>
             {errors ? (
-              <div className="error">{errors}</div>
+              <Error error={errors} />
             ) : (
               <div className="profile">
                 <div
