@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { addAuthData } from './actions/authActions';
 import PrivateRoute from './PrivateRoute';
 import Share from './components/Share';
+import cropper from './components/Cropper';
 
 const Home = lazy(() => import('./Modules/Home'));
 const Login = lazy(() => import('./Modules/Login'));
@@ -16,6 +17,7 @@ const resetPassword = lazy(() => import('./Modules/ResetPassword'));
 const PostDetails = lazy(() => import('./Modules/PostDetails'));
 const Upload = lazy(() => import('./Modules/Upload'));
 const Search = lazy(() => import('./Modules/Search'));
+const Notifications = lazy(() => import('./Modules/Notifications'));
 
 class Routes extends React.Component {
   constructor() {
@@ -51,6 +53,7 @@ class Routes extends React.Component {
             />
             <PrivateRoute path="/post/:postId" component={PostDetails} />
             <PrivateRoute path="/search" component={Search} />
+            <PrivateRoute path="/notifications" component={Notifications} />
           </Switch>
         </main>
         <Footer />
