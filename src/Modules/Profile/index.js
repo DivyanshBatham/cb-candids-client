@@ -32,11 +32,11 @@ class Profile extends Component {
     this.fetchData();
   }
 
-  componentDidUpdate(prevProps) {
-    const { username: currentUserName } = this.props.match.params;
-    const { username: previousUserName } = prevProps.match.params;
-    if (currentUserName !== previousUserName) this.fetchData();
-  }
+  // componentDidUpdate(prevProps) {
+  //   const { username: currentUserName } = this.props.match.params;
+  //   const { username: previousUserName } = prevProps.match.params;
+  //   if (currentUserName !== previousUserName) this.fetchData();
+  // }
 
   fetchData = () => {
     const { username } = this.props.match.params;
@@ -144,6 +144,7 @@ class Profile extends Component {
             imgSrc: null,
             imgSrcDisplay: res.data.data.imgSrcLarge,
           });
+          this.props.history.replace({ pathname: `/user/${username}` });
         }
       })
       .catch(() => {
