@@ -1,0 +1,26 @@
+@import '../../variables.scss';
+.crop {
+  position: fixed;
+  width: 100vw;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  z-index: 1000;
+  background-color: black;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  &__iconContainer{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    padding: 0.5rem 1rem;
+  }
+}
+.ReactCrop--disabled{
+    background-color: red;
+}
+.ReactCrop__image{
+    width: 100%;
+}
