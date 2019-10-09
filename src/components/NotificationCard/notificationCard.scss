@@ -1,0 +1,37 @@
+.notificationCard {
+  display: flex;
+  align-items: center;
+  &__commentedUser {
+    width: 2.3rem;
+    height: 2.3rem;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+  }
+  &__card {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0.8rem 0.5rem 0.5rem;
+    border-radius: 0.6rem;
+    align-items: center;
+    &__texts {
+      flex: 1;
+      font-size: 12px;
+      &__medium {
+        font-weight: 600;
+        margin-right: 0.2rem;
+      }
+      &__lightText {
+        font-weight: 300;
+      }
+      &__time {
+        font-family: 'Pacifico', cursive;
+        margin-left: 0.2rem;
+      }
+    }
+    &__postImage {
+      width: 2rem;
+      height: 2rem;
+      border-radius: 0.5rem;
+    }
+  }
+}

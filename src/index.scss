@@ -18,6 +18,9 @@ body {
 .container {
   padding: 1rem;
   margin-bottom: 2rem;
+  &--removeTopPadding{
+    padding-top: 0;
+  }
 }
 .hide {
   // display: none !important;
