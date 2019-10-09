@@ -142,7 +142,7 @@ class Profile extends Component {
             data: { ...userData, user: res.data.data },
             editingUserDetails: false,
             imgSrc: null,
-            imgSrcDisplay: res.data.data.user.imgSrcLarge,
+            imgSrcDisplay: res.data.data.imgSrcLarge,
           });
         }
       })
