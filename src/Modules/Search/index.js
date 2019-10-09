@@ -12,10 +12,10 @@ class Search extends Component {
     super(props);
     this.state = {
       posts: null,
-
     };
   }
   componentDidMount() {
+    if (this.props.postsData.posts.length > 0) { this.setState({ posts: this.props.postsData.posts }); }
     this.props.fetchAllPosts();
   }
   componentWillReceiveProps(nextProps) {
@@ -34,9 +34,12 @@ class Search extends Component {
           <SearchBox />
           <h2 className="sectionHeading">Users</h2>
           <div className="search__userList">
-            {
-              arr.map(user => <div className="search__userList__user"> <UserCard user={user} /></div>)
-          }
+            {arr.map(user => (
+              <div className="search__userList__user">
+                {' '}
+                <UserCard user={user} />
+              </div>
+            ))}
           </div>
           <span className="search__userViewText">View all Results</span>
           <h2 className="sectionHeading">Moments</h2>
