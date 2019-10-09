@@ -1,0 +1,27 @@
+@import '../../variables.scss';
+.userCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: $white;
+  border-radius: 0.6rem;
+  width: 9.4rem;
+  height: 9rem;
+  box-shadow: 0 0 8px 0 rgba(17, 22, 26, 0.16),
+    0 4px 8px 0 rgba(17, 22, 26, 0.08), 0 8px 16px 0 rgba(17, 22, 26, 0.08);
+  &__image {
+    height: 5.3rem;
+    width: 5.3rem;
+    background-repeat: no-repeat;
+    border-radius: 50%;
+    background-position: center;
+    overflow: hidden;
+    background-size: cover;
+    // margin-bottom: 0.6rem;
+  }
+  &__text{
+      font-size: 1rem;
+      font-weight: 600;
+  }
+}

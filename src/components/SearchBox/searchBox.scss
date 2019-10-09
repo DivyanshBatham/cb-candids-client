@@ -1,0 +1,28 @@
+@import '../../variables.scss';
+.searchBox {
+  position: relative;
+  display: flex;
+  box-shadow: 0 0 8px 0 rgba(17, 22, 26, 0.16),
+  0 4px 8px 0 rgba(17, 22, 26, 0.08), 0 8px 16px 0 rgba(17, 22, 26, 0.08);
+  border-radius: 0.6rem;
+  &__input {
+      padding-left: 0.6rem;
+      width: 20rem;
+      height: 2.5rem;
+      flex: 1;
+      border: none;
+      border-radius: 0.6rem;
+    &::placeholder {
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.8rem;
+      line-height: 21;
+    }
+  }
+  &__icon {
+    position: absolute;
+    right: 1rem;
+    top: 0.8rem;
+    color: $lightPlaceholder;
+    // font-size: 1.5rem;
+  }
+}

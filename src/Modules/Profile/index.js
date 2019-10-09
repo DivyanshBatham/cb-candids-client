@@ -250,11 +250,13 @@ class Profile extends Component {
                     </div>
                   </div>
                   <h2 className="sectionHeading profile__heading">Candids</h2>
-                  {posts && posts.length > 0 ? (
-                    <CardRenderer posts={posts} />
+                  <div className="container">
+                    {posts && posts.length > 0 ? (
+                      <CardRenderer posts={posts} />
                     ) : (
                       <div className="error">No post found</div>
                       )}
+                  </div>
                 </div>
                 )}
           </React.Fragment>
