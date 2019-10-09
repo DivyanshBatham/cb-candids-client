@@ -11,6 +11,7 @@ import './profile.scss';
 import Loader from '../../components/Loader';
 import Navbar from '../../components/Navbar';
 import Error from '../../components/Error';
+import Cropper from '../../components/Cropper';
 
 class Profile extends Component {
   constructor(props) {
@@ -23,6 +24,7 @@ class Profile extends Component {
       username: '',
       bio: '',
       imgSrc: null,
+      isCropping: false,
     };
   }
 
@@ -38,53 +40,67 @@ class Profile extends Component {
 
   fetchData = () => {
     const { username } = this.props.match.params;
-    this.setState({
-      errors: null,
-      loading: true,
-      editingUserDetails: false,
-    }, () => {
-      axios({
-        method: 'get',
-        url: `https://calm-waters-47062.herokuapp.com/users/${username}`,
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('cb-token')}`,
-        },
-      })
-        .then((res) => {
-          if (res.data.success) {
-            this.setState({
-              data: res.data.data,
-              loading: false,
-              username: res.data.data.user.username,
-              bio: res.data.data.user.bio,
-              imgSrcDisplay: res.data.data.user.imgSrcLarge,
-              imgSrc: null,
-            });
-          }
+    this.setState(
+      {
+        errors: null,
+        loading: true,
+        editingUserDetails: false,
+      },
+      () => {
+        axios({
+          method: 'get',
+          url: `https://calm-waters-47062.herokuapp.com/users/${username}`,
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('cb-token')}`,
+          },
         })
-        .catch((err) => {
-          this.setState({
-            errors: err.response.data.errors,
-            loading: false,
+          .then((res) => {
+            if (res.data.success) {
+              this.setState({
+                data: res.data.data,
+                loading: false,
+                username: res.data.data.user.username,
+                bio: res.data.data.user.bio,
+                imgSrcDisplay: res.data.data.user.imgSrcLarge,
+                imgSrc: null,
+              });
+            }
+          })
+          .catch((err) => {
+            this.setState({
+              errors: err.response.data.errors,
+              loading: false,
+            });
           });
-        });
-    });
+      },
+    );
   };
 
   // handler for editing the user profile details
   toggleEditingAndReset = () => {
-    this.setState(prevState => ({
-      editingUserDetails: !prevState.editingUserDetails,
-      username: prevState.data.user.username,
-      bio: prevState.data.user.bio,
-      imgSrc: null,
-      imgSrcDisplay: prevState.data.user.imgSrcLarge,
-    }), () => {
-      if (this.state.editingUserDetails === true) {
-        this.textarea.focus();
-      }
-    });
+    this.setState(
+      prevState => ({
+        editingUserDetails: !prevState.editingUserDetails,
+        username: prevState.data.user.username,
+        bio: prevState.data.user.bio,
+        imgSrc: null,
+        imgSrcDisplay: prevState.data.user.imgSrcLarge,
+      }),
+      () => {
+        if (this.state.editingUserDetails === true) {
+          this.textarea.focus();
+        }
+      },
+    );
   };
+
+  handleEditedProfileImageBlob = (blob) => {
+    this.setState({ imgSrcDisplay: blob, isCropping: false });
+  };
+  handleCancelProfileImageEdit = () => {
+    const { data } = this.state;
+    this.setState({ isCropping: false, imgSrcDisplay: data.user.imgSrcLarge, imgSrc: null });
+  }
 
   handleTextChange = (e) => {
     e.preventDefault();
@@ -97,9 +113,10 @@ class Profile extends Component {
       this.setState({
         imgSrc: file,
         imgSrcDisplay: URL.createObjectURL(file),
+        isCropping: true,
       });
     }
-  }
+  };
 
   handleSubmit = () => {
     const {
@@ -117,40 +134,47 @@ class Profile extends Component {
         'Content-Type': 'multipart/form-data',
       },
       data,
-    }).then((res) => {
-      if (res.data.success) {
-        localStorage.setItem('cb-username', username);
-        this.setState({
-          data: { ...userData, user: res.data.data },
-          editingUserDetails: false,
-          imgSrc: null,
-          imgSrcDisplay: res.data.data.user.imgSrcLarge,
-        });
-      }
-    }).catch(() => {
-      this.toggleEditingAndReset();
-    });
-  }
+    })
+      .then((res) => {
+        if (res.data.success) {
+          localStorage.setItem('cb-username', username);
+          this.setState({
+            data: { ...userData, user: res.data.data },
+            editingUserDetails: false,
+            imgSrc: null,
+            imgSrcDisplay: res.data.data.user.imgSrcLarge,
+          });
+        }
+      })
+      .catch(() => {
+        this.toggleEditingAndReset();
+      });
+  };
 
   render() {
     const {
-      errors, loading, editingUserDetails, username, bio,
+      errors,
+      loading,
+      editingUserDetails,
+      username,
+      bio,
       imgSrcDisplay,
+      imgSrc,
+      isCropping,
     } = this.state;
     const { username: searcedUser } = this.props.match.params;
 
     const {
       likeCount, postCount, posts, user,
     } = this.state.data;
-    const othersProfile =
-      this.props.userData.username !== searcedUser;
+    const othersProfile = this.props.userData.username !== searcedUser;
     return (
       <React.Fragment>
         <Navbar
           showBackIcon={!loading && othersProfile && !editingUserDetails}
-          showCrossIcon={editingUserDetails}
+          showCrossIcon={editingUserDetails && !isCropping}
           handleCancel={this.toggleEditingAndReset}
-          showCheckIcon={editingUserDetails}
+          showCheckIcon={editingUserDetails && !isCropping}
           showOptionsIcon={!errors && !editingUserDetails}
           handleSubmit={this.handleSubmit}
           options={[
@@ -191,74 +215,86 @@ class Profile extends Component {
           <React.Fragment>
             {errors ? (
               <Error error={errors} />
-              ) : (
-                <div className="profile">
-                  <label
-                    htmlFor="imgSrc"
-                    className="profile__imageContainer"
-                    style={{
-                        backgroundImage: `url(${user && imgSrcDisplay})`,
-                      }}
-                  >
-                    {editingUserDetails &&
-                    <div className="profile__imageContainer__icon" >
+            ) : (
+              <div className="profile">
+                <label
+                  htmlFor="imgSrc"
+                  className="profile__imageContainer"
+                  style={{
+                    backgroundImage: `url(${user && imgSrcDisplay})`,
+                  }}
+                >
+                  {editingUserDetails && (
+                    <div className="profile__imageContainer__icon">
                       <div className="iconContainer iconContainer--light">
-                        <FontAwesomeIcon
-                          icon="camera"
-                        />
+                        <FontAwesomeIcon icon="camera" />
                       </div>
                     </div>
-                      }
-                    <input type="file" id="imgSrc" onChange={this.handleFileChange} disabled={!editingUserDetails} />
-                  </label>
-                  <TextareaAutosize
-                    className="profile__username profile__editBox"
-                    value={username}
-                    readOnly={!editingUserDetails}
-                    placeholder="Enter username"
-                    name="username"
-                    onChange={this.handleTextChange}
-                    spellCheck="false"
-                    inputRef={tag => (this.textarea = tag)}
+                  )}
+                  <input
+                    type="file"
+                    id="imgSrc"
+                    onChange={this.handleFileChange}
+                    disabled={!editingUserDetails}
                   />
-                  <TextareaAutosize
-                    className="profile__bio profile__editBox"
-                    value={bio}
-                    placeholder={editingUserDetails ? 'write your bio' : null}
-                    readOnly={!editingUserDetails}
-                    name="bio"
-                    spellCheck="false"
-                    onChange={this.handleTextChange}
+                </label>
+                {imgSrc && imgSrcDisplay && editingUserDetails && isCropping && (
+                  <Cropper
+                    imgSrc={imgSrcDisplay}
+                    updateEditedBlob={this.handleEditedProfileImageBlob}
+                    onCancleEdit={this.handleCancelProfileImageEdit}
                   />
-                  <h2 className="sectionHeading profile__heading">Stats</h2>
-                  <div className="profile__stats">
-                    <div className="profile__stats__item">
-                      <span className="profile__stats__item__number">
-                        {postCount}
-                      </span>
-                      <span className="profile__stats__item__text">POSTS</span>
-                    </div>
-                    <div className="profile__stats__item">
-                      <span className="profile__stats__item__number">
-                        {likeCount}
-                      </span>
-                      <span className="profile__stats__item__text">LIKES</span>
-                    </div>
-                    <div className="profile__stats__item">
-                      <span className="profile__stats__item__number">10</span>
-                      <span className="profile__stats__item__text">PHOTOS</span>
-                    </div>
+                )}
+                <TextareaAutosize
+                  className="profile__username profile__editBox"
+                  value={username}
+                  readOnly={!editingUserDetails}
+                  placeholder="Enter username"
+                  name="username"
+                  onChange={this.handleTextChange}
+                  spellCheck="false"
+                  inputRef={tag => (this.textarea = tag)}
+                />
+                <TextareaAutosize
+                  className="profile__bio profile__editBox"
+                  value={bio}
+                  placeholder={editingUserDetails ? 'write your bio' : null}
+                  readOnly={!editingUserDetails}
+                  name="bio"
+                  spellCheck="false"
+                  onChange={this.handleTextChange}
+                />
+                <h2 className="sectionHeading profile__heading">Stats</h2>
+                <div className="profile__stats">
+                  <div className="profile__stats__item">
+                    <span className="profile__stats__item__number">
+                      {postCount}
+                    </span>
+                    <span className="profile__stats__item__text">POSTS</span>
                   </div>
-                  <h2 className="sectionHeading profile__heading">Candids</h2>
+                  <div className="profile__stats__item">
+                    <span className="profile__stats__item__number">
+                      {likeCount}
+                    </span>
+                    <span className="profile__stats__item__text">LIKES</span>
+                  </div>
+                  <div className="profile__stats__item">
+                    <span className="profile__stats__item__number">10</span>
+                    <span className="profile__stats__item__text">PHOTOS</span>
+                  </div>
+                </div>
+                <h2 className="sectionHeading profile__heading">Candids</h2>
+                <div className="container">
                   {posts && posts.length > 0 ? (
                     <CardRenderer posts={posts} />
-                    ) : (
-                      <div className="error">No post found</div>
-                      )}
-                </div>
+                ) : (
+                  <div className="error">No post found</div>
                 )}
+                </div>
+              </div>
+            )}
           </React.Fragment>
-          )}
+        )}
       </React.Fragment>
     );
   }
