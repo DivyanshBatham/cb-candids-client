@@ -283,13 +283,14 @@ class Profile extends Component {
                     <span className="profile__stats__item__number">10</span>
                     <span className="profile__stats__item__text">PHOTOS</span>
                   </div>
-                </div>
-                <h2 className="sectionHeading profile__heading">Candids</h2>
-                {posts && posts.length > 0 ? (
-                  <CardRenderer posts={posts} />
-                ) : (
-                  <div className="error">No post found</div>
-                )}
+                  <h2 className="sectionHeading profile__heading">Candids</h2>
+                  <div className="container">
+                    {posts && posts.length > 0 ? (
+                      <CardRenderer posts={posts} />
+                    ) : (
+                      <div className="error">No post found</div>
+                      )}
+                  </div>
               </div>
             )}
           </React.Fragment>

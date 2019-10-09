@@ -10,7 +10,7 @@ class CardRenderer extends Component {
   render() {
     const { posts } = this.props;
     return (
-      <div className="container">
+      <div>
         {
          posts && posts.map(post => <Card key={post._id} post={post} />)
         }

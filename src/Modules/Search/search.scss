@@ -1,0 +1,20 @@
+@import '../../variables.scss';
+.search{
+    display: flex;
+    flex-direction: column;
+    margin-top: 1rem;
+    &__userViewText{
+        align-self: flex-end;
+        font-size: 12px;
+        margin-top: 0.3rem;
+        color: $navbar;
+        font-weight: 600;
+    }
+    &__userList{
+       display: flex;
+    //    overflow: hidden;
+       &__user{
+           margin-right: 1.5rem;
+       }
+    }
+}
