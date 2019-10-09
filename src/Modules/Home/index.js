@@ -24,7 +24,7 @@ class Home extends Component {
     return (
       <React.Fragment>
         <Navbar />
-        <span className="home">
+        <span className="home container">
           {newDataAvailable && <button onClick={this.handleNewPostData} className="home__button" >new posts</button>}
           <CardRenderer posts={posts} />
         </span>

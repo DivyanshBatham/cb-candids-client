@@ -17,6 +17,7 @@ const resetPassword = lazy(() => import('./Modules/ResetPassword'));
 const PostDetails = lazy(() => import('./Modules/PostDetails'));
 const Upload = lazy(() => import('./Modules/Upload'));
 const Notifications = lazy(() => import('./Modules/Notifications'));
+const Search = lazy(() => import('./Modules/Search'));
 
 class Routes extends React.Component {
   constructor() {
@@ -52,6 +53,7 @@ class Routes extends React.Component {
             />
             <PrivateRoute path="/post/:postId" component={PostDetails} />
             <PrivateRoute path="/notifications" component={Notifications} />
+            <PrivateRoute path="/search" component={Search} />
           </Switch>
         </main>
         <Footer />
