@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { toggleShareMenu } from '../../actions/shareAction';
 import { logout } from '../../actions/logoutAction';
+import { addAuthDataToState } from '../../actions/authActions';
 import CardRenderer from '../../components/CardRenderer';
 import './profile.scss';
 import Loader from '../../components/Loader';
@@ -138,6 +139,7 @@ class Profile extends Component {
       .then((res) => {
         if (res.data.success) {
           localStorage.setItem('cb-username', username);
+          this.props.addAuthDataToState({ ...res.data.data });
           this.setState({
             data: { ...userData, user: res.data.data },
             editingUserDetails: false,
@@ -318,5 +320,5 @@ Profile.propTypes = {
 
 export default connect(
   mapStateToProps,
-  { toggleShareMenu, logout },
+  { toggleShareMenu, logout, addAuthDataToState },
 )(Profile);
