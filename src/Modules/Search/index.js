@@ -26,7 +26,7 @@ class Search extends Component {
   }
   render() {
     const { posts } = this.state;
-    const arr = [1, 2];
+    const arr = [1, 2, 3, 4];
     return (
       <React.Fragment>
         <Navbar />
