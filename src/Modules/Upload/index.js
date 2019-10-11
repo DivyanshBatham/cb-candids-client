@@ -76,10 +76,14 @@ class Upload extends Component {
   // With Debounce:
   getOptions = debounce(
     inputValue => new Promise(resolve => axios.get('https://calm-waters-47062.herokuapp.com/users/options', {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('cb-token')}`,
+      },
       params: {
         search: inputValue,
       },
     }).then((res) => {
+      console.log(res.data.data.options);
       resolve(res.data.data.options);
     }).catch((err) => {
       console.error(err);
