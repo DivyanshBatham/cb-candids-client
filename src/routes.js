@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { addAuthData } from './actions/authActions';
 import PrivateRoute from './PrivateRoute';
 import Share from './components/Share';
-import cropper from './components/Cropper';
 
 const Home = lazy(() => import('./Modules/Home'));
 const Login = lazy(() => import('./Modules/Login'));
@@ -58,7 +57,6 @@ class Routes extends React.Component {
         </main>
         <Footer />
         {stateData.share.showShareMenu && <Share />}
-        {/* <Share /> */}
       </Suspense>
     );
   }

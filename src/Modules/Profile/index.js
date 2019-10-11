@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { toggleShareMenu } from '../../actions/shareAction';
 import { logout } from '../../actions/logoutAction';
+import { addAuthDataToState } from '../../actions/authActions';
 import CardRenderer from '../../components/CardRenderer';
 import './profile.scss';
 import Loader from '../../components/Loader';
@@ -32,11 +33,11 @@ class Profile extends Component {
     this.fetchData();
   }
 
-  componentDidUpdate(prevProps) {
-    const { username: currentUserName } = this.props.match.params;
-    const { username: previousUserName } = prevProps.match.params;
-    if (currentUserName !== previousUserName) this.fetchData();
-  }
+  // componentDidUpdate(prevProps) {
+  //   const { username: currentUserName } = this.props.match.params;
+  //   const { username: previousUserName } = prevProps.match.params;
+  //   if (currentUserName !== previousUserName) this.fetchData();
+  // }
 
   fetchData = () => {
     const { username } = this.props.match.params;
@@ -138,12 +139,14 @@ class Profile extends Component {
       .then((res) => {
         if (res.data.success) {
           localStorage.setItem('cb-username', username);
+          this.props.addAuthDataToState({ ...res.data.data });
           this.setState({
             data: { ...userData, user: res.data.data },
             editingUserDetails: false,
             imgSrc: null,
-            imgSrcDisplay: res.data.data.user.imgSrcLarge,
+            imgSrcDisplay: res.data.data.imgSrcLarge,
           });
+          this.props.history.replace({ pathname: `/user/${username}` });
         }
       })
       .catch(() => {
@@ -317,5 +320,5 @@ Profile.propTypes = {
 
 export default connect(
   mapStateToProps,
-  { toggleShareMenu, logout },
+  { toggleShareMenu, logout, addAuthDataToState },
 )(Profile);

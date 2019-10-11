@@ -12,7 +12,17 @@
     }
     &__userList{
        display: flex;
-    //    overflow: hidden;
+       overflow: scroll;
+       padding: 0.5rem 0.5rem 0.5rem 1rem;
+       margin: 0 -1rem;
+       border: none;
+
+       &::-webkit-scrollbar{
+           width: 0;
+       }
+       &::-webkit-scrollbar-thumb{
+           background-color: transparent;
+       }
        &__user{
            margin-right: 1.5rem;
        }

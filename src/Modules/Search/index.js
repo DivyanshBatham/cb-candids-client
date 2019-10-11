@@ -24,14 +24,27 @@ class Search extends Component {
       this.setState({ posts: postsData.posts });
     }
   }
+  searchUsers = (value) => {
+    // TODO: Call search user api here
+  }
+  searchTaggedUsers = (value) => {
+    // TODO: call search tagged user api
+  }
+  searchPosts = (value) => {
+    // TODO: call posts api
+  }
+  handleSearch = (option) => {
+    console.log(option);
+    // By checking type call call above respective functions
+  }
   render() {
     const { posts } = this.state;
-    const arr = [1, 2];
+    const arr = [1, 2, 3, 4];
     return (
       <React.Fragment>
         <Navbar />
         <div className="container search">
-          <SearchBox />
+          <SearchBox handleSearch={this.handleSearch} />
           <h2 className="sectionHeading">Users</h2>
           <div className="search__userList">
             {arr.map(user => (

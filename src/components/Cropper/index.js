@@ -96,7 +96,6 @@ class Cropper extends React.Component {
 
   render() {
     const { crop, disabled, imgSrc } = this.state;
-    console.log(this.state);
     return (
       <div className="crop">
         <div className="crop__iconContainer">

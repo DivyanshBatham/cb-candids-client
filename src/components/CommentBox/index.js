@@ -27,7 +27,13 @@ class CommentBox extends Component {
     const { value } = this.state;
     return (
       <form className="commentBox" onSubmit={this.handleComment}>
-        <img className="commentBox--image" src={userData.imgSrc} alt="user" />
+        {
+          userData.imgSrc ?
+            <img className="commentBox--image" src={userData.imgSrc} alt="user" />
+          :
+            <div className="commentBox--image commentBox__border" />
+
+        }
         <TextareaAutosize
           maxRows={4}
           value={value}

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { withRouter, NavLink } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import { currentPage, compareUser } from '../../helpers';
 import './footer.scss';
 
@@ -12,7 +13,7 @@ class Footer extends Component {
   }
 
   render() {
-    const currentProfileUserPath = window.location.pathname;
+    const currentProfileUserPath = this.props.history.location.pathname;
     const display = currentPage(currentProfileUserPath);
     const showFooter = compareUser(currentProfileUserPath);
     return (
@@ -65,5 +66,11 @@ class Footer extends Component {
     );
   }
 }
-
+Footer.propTypes = {
+  history: PropTypes.shape({
+    location: PropTypes.shape({
+      pathname: PropTypes.string,
+    }),
+  }).isRequired,
+};
 export default withRouter(Footer);
