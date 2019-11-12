@@ -1,0 +1,78 @@
+@import "../../variables.scss";
+
+.inputWrapper {
+  margin-bottom: 1.5rem;
+  position: relative;
+
+  >input, >textarea {
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 8px;
+    border: solid 1px $bgDark; // TEST
+    // border: none;
+    padding: 0.3rem 0.5rem;
+    font-family: "Poppins", sans-serif;
+    font-size: 1rem;
+    color: $darkText;
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 1px $lightPlaceholder;
+    }
+  }
+
+  textarea {
+    resize: none;
+    font-size: 0.9rem;
+  }
+
+  &::after {
+    content: attr(data-error);
+    // color: ;
+    font-size: 0.8rem;
+    font-weight: 500;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 0.2rem;
+    color: $primaryPink;
+  }
+  
+  &--error {
+    input{
+      border-color: $primaryPink;
+
+      &:focus {
+        outline: none;
+        box-shadow: 0 0 0 1px $lightPink;
+      }
+    }
+  }
+}
+
+
+.imageContainer {
+  border-radius: 8px;
+  background-size: cover;
+  position: relative;
+
+  .image {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    border-radius: 8px;
+    background-size: cover,
+  }
+}
+
+
+.uploadCard{
+  background-color: #FFFFFF;
+  border-radius: 0.5rem;
+  box-shadow: 
+      0 0 8px 0 rgba(17, 22, 26, 0.16),
+      0 4px 8px 0 rgba(17, 22, 26, 0.08), 
+      0 8px 16px 0 rgba(17, 22, 26, 0.08);
+  padding: 1rem;
+}

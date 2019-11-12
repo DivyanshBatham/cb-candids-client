@@ -1,9 +1,9 @@
-@import url('https://fonts.googleapis.com/css?family=Poppins:300,400|Roboto:500&display=swap');
-@import url('https://fonts.googleapis.com/css?family=Pacifico&display=swap');
-@import './variables.scss';
-:root{
+@import url("https://fonts.googleapis.com/css?family=Poppins:300,400|Roboto:500&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Pacifico&display=swap");
+@import "./variables.scss";
+:root {
   font-size: 16px;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 body {
   margin: 0;
@@ -15,13 +15,58 @@ body {
   min-height: 100vh;
   // background-color: black;
 }
-.container{
+.container {
   padding: 1rem;
   margin-bottom: 2rem;
+  &--removeTopPadding{
+    padding-top: 0;
+  }
 }
 .hide {
-display: none !important;
+  // display: none !important;
+  display: none;
 }
-.hover{
+.hover {
   cursor: pointer;
+}
+main {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  // margin-top: 3rem;
+}
+.sectionHeading {
+  font-family: "Pacifico", cursive;
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: $navbar;
+  &--light{
+    color: $white;
+    opacity: 0.8;
+  }
+}
+.icon {
+  cursor: pointer;
+  position: relative;
+}
+
+.iconContainer {
+  height: 24px;
+  width: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.5s ease-in-out;
+  color: $darkText;
+  opacity: 0.8;
+  
+  &--light {
+    color: $white;
+  }
+
+  &:hover,
+  &:focus {
+    opacity: 1;
+  }
 }

@@ -1,42 +1,23 @@
-@import '../../variables.scss';
+@import "../../variables.scss";
+
 .navbar {
+  display: flex;
+  justify-content: space-between;
+  background-color: $navbar;
+  align-content: center;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 10000000000;
+  padding: 0 1rem;
+
+  &__logo {
     display: flex;
-    justify-content: space-between;
-    width: 100%;
-    background-color: $navbar;
-    align-content: center;
-    align-items: center;
-    position: fixed;
-    top: 0;
-    z-index: 10000000000;
-    &__logo{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        align-content: center;
-        &__pumpkin{
-            width: 2.3rem;
-            margin-right: 0.2rem;
-            margin-top: 4px;
-        }
-        &__name{
-            width: 5.1rem;
-            fill: $white;
-            padding-top: 10px;
-        }
-    }
-    &__backLogo{
-        margin-left: 1rem;
-        &__icon{
-            color: $white;
-            cursor: pointer;
-        }
-    }
-    &__optionLogo{
-        margin-right: 1rem;
-        &__icon{
-            color: $white;
-            cursor: pointer;
-        }
-    }
+    padding-left: 2px;
+  }
+
+  .box {
+    height: 24px;
+    width: 24px;
+  }
 }

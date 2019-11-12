@@ -1,6 +1,7 @@
-/* eslint-disable no-bitwise */
-/* eslint-disable no-param-reassign */
 import React, { Component } from 'react';
+import TextareaAutosize from 'react-textarea-autosize';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import './commentBox.scss';
 
 class CommentBox extends Component {
@@ -8,73 +9,59 @@ class CommentBox extends Component {
     super();
     this.state = {
       value: '',
-      rows: 1,
-      minRows: 1,
-      maxRows: 5,
     };
   }
   handleComment = (e) => {
     e.preventDefault();
-    console.log('comment Submit');
-    // TODO: logic for handleComment
+    const { value } = this.state;
+    if (value.length === 0) return;
+    this.props.submitComment(value);
+    this.setState({ value: '' });
   };
-
-  // handleKeyPress = (e) => {
-  //   e.preventDefault();
-  //   if (e.key === 'Enter') {
-  //     this.handleComment(e);
-  //   }
-  // };
-
-  // REFERENCE = https://codepen.io/Libor_G/pen/eyzwOx
-  handleValue = (event) => {
-    const textareaLineHeight = 18;
-    const { minRows, maxRows } = this.state;
-
-    const previousRows = event.target.rows;
-    event.target.rows = minRows; // reset number of rows in textarea
-
-    const currentRows = ~~(event.target.scrollHeight / textareaLineHeight);
-
-    if (currentRows === previousRows) {
-      event.target.rows = currentRows;
-    }
-
-    if (currentRows >= maxRows) {
-      event.target.rows = maxRows;
-      event.target.scrollTop = event.target.scrollHeight;
-    }
-
-    this.setState({
-      value: event.target.value,
-      rows: currentRows < maxRows ? currentRows : maxRows,
-    });
-  };
-
+  handleValue = (e) => {
+    e.preventDefault();
+    this.setState({ value: e.target.value });
+  }
   render() {
-    console.log(this.state.value);
-    const userImage =
-      'https://avatars0.githubusercontent.com/u/29652551?s=460&v=4';
-    const { rows, value } = this.state;
+    const { userData } = this.props;
+    const { value } = this.state;
     return (
       <form className="commentBox" onSubmit={this.handleComment}>
-        <img className="commentBox--image" src={userImage} alt="user" />
-        <textarea
-          rows={rows}
+        {
+          userData.imgSrc ?
+            <img className="commentBox--image" src={userData.imgSrc} alt="user" />
+          :
+            <div className="commentBox--image commentBox__border" />
+
+        }
+        <TextareaAutosize
+          maxRows={4}
           value={value}
           onChange={this.handleValue}
           className="commentBox--input"
           type="text"
           name="commentBox"
           placeholder="Add a comment..."
-          // onKeyUp={this.handleKeyPress}
         />
-        <span className="commentBox--button" onClick={this.handleComment}>
+        <span
+          className="commentBox--button"
+          role="button"
+          tabIndex={0}
+          onKeyDown={this.handleComment}
+          onClick={this.handleComment}
+        >
           Post
         </span>
       </form>
     );
   }
 }
+const mapStateToProps = state => ({
+  userData: state.user,
+});
+CommentBox.propTypes = {
+  submitComment: PropTypes.func.isRequired,
+  userData: PropTypes.shape({}).isRequired,
+};
 
-export default CommentBox;
+export default connect(mapStateToProps, null)(CommentBox);

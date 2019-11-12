@@ -1,3 +1,23 @@
-.home{
-    margin-top: 3rem;
+@import "../../variables.scss";
+.home {
+  // margin-top: 3rem;
+  position: relative;
+  &__button{
+    position: fixed;
+    top: 4rem;
+    left: 50%;
+    transform: translateX(-50%);
+    border: none;
+    width: 200px;
+    height: 40px;
+    border-radius: 3rem;
+    font-size: 18px;
+    background-color: $white;
+    text-align: center;
+    outline: none;
+    box-shadow: 0 0 8px 0 rgba(17, 22, 26, 0.16), 0 4px 8px 0 rgba(17, 22, 26, 0.08),
+      0 8px 16px 0 rgba(17, 22, 26, 0.08);
+    cursor: pointer;
+    z-index: 100000;
+  }
 }

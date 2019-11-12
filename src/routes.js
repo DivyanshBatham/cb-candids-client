@@ -1,45 +1,72 @@
 import React, { lazy, Suspense } from 'react';
 import { Switch, Route, withRouter } from 'react-router-dom';
-import Card from './components/Card';
-import Comment from './components/Comment';
+import { connect } from 'react-redux';
+import { addAuthData } from './actions/authActions';
 import PrivateRoute from './PrivateRoute';
+import Share from './components/Share';
 
-const Dashboard = lazy(() => import('./components/Dashboard'));
 const Home = lazy(() => import('./Modules/Home'));
 const Login = lazy(() => import('./Modules/Login'));
 const Register = lazy(() => import('./Modules/Register'));
-const Navbar = lazy(() => import('./components/Navbar'));
 const Footer = lazy(() => import('./components/Footer'));
-const ProfileSetting = lazy(() => import('./Modules/ProfileSetting'));
 const forgetPassword = lazy(() => import('./Modules/ForgetPassword'));
-const Profile = lazy(() => import('./Modules/Profie'));
+const Profile = lazy(() => import('./Modules/Profile'));
 const VerifyEmail = lazy(() => import('./Modules/VerifyEmail'));
 const resetPassword = lazy(() => import('./Modules/ResetPassword'));
 const PostDetails = lazy(() => import('./Modules/PostDetails'));
+const Upload = lazy(() => import('./Modules/Upload'));
+const Search = lazy(() => import('./Modules/Search'));
+const Notifications = lazy(() => import('./Modules/Notifications'));
 
-const Routes = (props) => {
-  console.log(props);
-  return (
-    <Suspense fallback={<div>loading...</div>}>
-      <Navbar />
-      <Switch>
-        <PrivateRoute path="/" component={Home} exact />
-        <Route path="/dashboard" component={Dashboard} />
-        <Route path="/login" component={Login} />
-        <Route path="/register" component={Register} />
-        <Route path="/verifyEmail/:token" component={VerifyEmail} />
-        <Route path="/forgetPassword" component={forgetPassword} />
-        <Route path="/resetPassword/:token" component={resetPassword} />
-        <PrivateRoute path="/setting" component={ProfileSetting} />
-        <PrivateRoute sensitive path="/user/:username" component={Profile} />
-        <PrivateRoute path="/post/:postId" component={PostDetails} />
-        {/* Route for tesing */}
-        <Route path="/card" component={Card} />
-        <Route path="/comment" component={Comment} />
-        <Route path="/navbar" component={Navbar} />
-      </Switch>
-      <Footer />
-    </Suspense>
-  );
-};
-export default withRouter(Routes);
+class Routes extends React.Component {
+  constructor() {
+    super();
+    this.state = {};
+  }
+  componentDidMount() {
+    const token = localStorage.getItem('cb-token');
+    const { stateData } = this.props;
+    if (!stateData.username && token) {
+      this.props.addAuthData();
+    }
+  }
+  render() {
+    const { stateData } = this.props;
+    return (
+      <Suspense fallback={<div>loading...</div>}>
+        <main>
+          <Switch>
+            <PrivateRoute path="/" component={Home} exact />
+            <Route path="/login" component={Login} />
+            <Route path="/register" component={Register} />
+            {/* TODO: Handle /verifyEmail i.e. without any subroute */}
+            <Route path="/verifyEmail/:token" component={VerifyEmail} />
+            <Route path="/forgetPassword" component={forgetPassword} />
+            {/* TODO: Handle /resetPassword i.e. without any subroute */}
+            <Route path="/resetPassword/:token" component={resetPassword} />
+            <PrivateRoute path="/upload" component={Upload} />
+            <PrivateRoute
+              sensitive
+              path="/user/:username"
+              component={Profile}
+            />
+            <PrivateRoute path="/post/:postId" component={PostDetails} />
+            <PrivateRoute path="/search" component={Search} />
+            <PrivateRoute path="/notifications" component={Notifications} />
+          </Switch>
+        </main>
+        <Footer />
+        {stateData.share.showShareMenu && <Share />}
+      </Suspense>
+    );
+  }
+}
+function mapStateToProps(state) {
+  return {
+    stateData: state,
+  };
+}
+export default connect(
+  mapStateToProps,
+  { addAuthData },
+)(withRouter(Routes));

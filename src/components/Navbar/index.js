@@ -1,73 +1,97 @@
-import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
+import React from 'react';
+import { withRouter, Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import PumpkinLogo from '../../assets/pumpkin';
-import nameLogo from '../../assets/name';
-import { currentPage } from '../../helpers';
+import PropTypes from 'prop-types';
+import DropdownOptions from '../../components/DropdownOptions';
+import PumpkinWithText from '../../assets/pumpkinWithText';
 import './navbar.scss';
 
-class Navbar extends Component {
-  constructor() {
-    super();
-    this.state = {
-      optionIconClicked: false,
-    };
-  }
-  findCurrentPage = (pathname) => {
-    const currentPage = pathname === '/' ? 'home' : 'otherPage';
-    // pathname.contains('post)  ---> post
-    // pathname.contains('user) ---> user??
-    return currentPage;
-  };
-  handleGoBack = (e) => {
+
+const Navbar = (props) => {
+  const {
+    showBackIcon, showCrossIcon, showOptionsIcon, showCheckIcon,
+    handleCancel, handleSubmit, options,
+  } = props;
+
+  const handleGoBack = (e) => {
     e.preventDefault();
-    this.props.history.goBack();
+    props.history.length <= 2
+      ? props.history.push('/')
+      : props.history.goBack();
   };
-  handleOptions = (e) => {
-    e.preventDefault();
-  };
-  render() {
-    console.log('props is-->', this.props.location.pathname);
-    const { pathname } = this.props.location;
-    const page = this.findCurrentPage(pathname);
-    let display;
-    if (window.location.pathname.indexOf('/post') !== -1) {
-      display = true;
-    } else display = currentPage(window.location.pathname);
-    return (
-      <div className={`navbar ${display ? '' : ' hide'}`}>
-        {/* when '/'--> icon and name
-          when '/post/:id' --> back button logo name verticleOption
-          when '/user/:username'----> back button logo name verticleOption */}
-        <div className="navbar__backLogo">
-          {page !== 'home' ? (
+
+  return (
+    <nav className="navbar">
+
+      <div className="box">
+        {showBackIcon &&
+          <div className="iconContainer iconContainer--light">
             <FontAwesomeIcon
               icon="angle-left"
-              className="navbar__backLogo__icon"
-              onClick={this.handleGoBack}
+              onClick={handleGoBack}
             />
-          ) : (
-            ''
-          )}
-        </div>
-        <div className="navbar__logo">
-          <div className="navbar__logo__pumpkin">{PumpkinLogo}</div>
-          <div className="navbar__logo__name">{nameLogo}</div>
-        </div>
-        <div className="navbar__optionLogo">
-          {page !== 'home' ? (
+          </div>
+        }
+        {showCrossIcon &&
+          <div className="iconContainer iconContainer--light">
             <FontAwesomeIcon
-              icon="ellipsis-v"
-              className="navbar__optionLogo__icon"
-              onClick={this.handleOptions}
+              icon="times"
+              onClick={handleCancel}
             />
-          ) : (
-            ''
-          )}
-        </div>
+          </div>
+        }
       </div>
-    );
-  }
-}
 
+      <Link to="/" className="navbar__logo">
+        <PumpkinWithText />
+      </Link>
+
+      <div className="box">
+        {showOptionsIcon &&
+          <DropdownOptions
+            lightIcon
+            iconProps={{ fontSize: '1rem' }}
+            options={options}
+          />
+        }
+        {showCheckIcon &&
+          <div className="iconContainer iconContainer--light">
+            <FontAwesomeIcon
+              icon="check"
+              onClick={handleSubmit}
+            />
+          </div>
+        }
+      </div>
+
+    </nav>
+  );
+};
+
+// TODO: I can probably merge showCross and showCheck
+Navbar.propTypes = {
+  showBackIcon: PropTypes.bool,
+  showOptionsIcon: PropTypes.bool,
+  showCrossIcon: PropTypes.bool,
+  showCheckIcon: PropTypes.bool,
+  handleCancel: PropTypes.func,
+  handleSubmit: PropTypes.func,
+  options: PropTypes.arrayOf(PropTypes.shape({
+    title: PropTypes.oneOfType([
+      PropTypes.element,
+      PropTypes.string,
+    ]),
+    handleClick: PropTypes.func,
+  })),
+};
+
+Navbar.defaultProps = {
+  showBackIcon: false,
+  showOptionsIcon: false,
+  showCrossIcon: false,
+  showCheckIcon: false,
+  options: [],
+  handleCancel: () => { },
+  handleSubmit: () => { },
+};
 export default withRouter(Navbar);

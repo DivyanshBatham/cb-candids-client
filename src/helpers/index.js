@@ -4,10 +4,10 @@ const passwordValidator = (password) => {
     message = message.concat('atleast 5 characters');
   }
   if (!/\d/.test(password)) {
-    message = message.concat(`${message.length > 1 ? ', one digit' : 'one digit'}`);
+    message = message.concat(`${message.length > 1 ? ', one digit' : 'one digit'}` );
   }
   if (!/[A-Z]/.test(password)) {
-    message = message.concat(`${message.length > 1 ? ', one capital letter' : 'one capital letter'}`);
+    message = message.concat(`${message.length > 1 ? ', one capital letter' : 'one capital letter'}` );
   }
   return message;
 };
@@ -19,7 +19,6 @@ const getBackgroundColor = (idx) => {
 };
 
 const currentPage = (pathname) => {
-  console.log(pathname);
   if (pathname.indexOf('/post') !== -1) return false;
   if (pathname.indexOf('/login') !== -1) return false;
   if (pathname.indexOf('/register') !== -1) return false;
@@ -30,4 +29,24 @@ const currentPage = (pathname) => {
   if (pathname.indexOf('/verifyEmail') !== -1) return false;
   return true;
 };
-export { passwordValidator, getBackgroundColor, currentPage };
+
+const compareUser = (pathname) => {
+  const currentLoggedInUser = localStorage.getItem('cb-username');
+  const currentUserPage = pathname.split('/')[1];
+  const currentUserProfile = pathname.split('/')[2];
+  return (
+    (currentUserPage === 'user' &&
+      currentLoggedInUser !== currentUserProfile) ||
+    currentUserPage === 'post'
+  );
+};
+const copyTextToClipboard = (text) => {
+  navigator.clipboard
+    .writeText(text)
+    .then(() => {
+      // TODO: show something for text copied
+    })
+    .catch(err => console.log(err));
+};
+
+export { passwordValidator, getBackgroundColor, currentPage, compareUser, copyTextToClipboard };

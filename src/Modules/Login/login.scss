@@ -1,5 +1,5 @@
-@import '../../variables.scss';
-@import url('https://fonts.googleapis.com/css?family=Pacifico&display=swap');
+@import "../../variables.scss";
+@import url("https://fonts.googleapis.com/css?family=Pacifico&display=swap");
 
 .login {
   display: flex;
@@ -46,7 +46,7 @@
           background-color: $bgDark;
           padding-left: 1rem;
           padding-bottom: 0.2rem;
-          font-family: 'Poppins', sans-serif;
+          font-family: "Poppins", sans-serif;
         }
         &__error {
           position: absolute;
@@ -55,7 +55,7 @@
           right: 0;
           // transform: translateX(-50%);
           // width: 50%;
-          color: $primeryPink;
+          color: $primaryPink;
           font-size: 0.8rem;
         }
       }
@@ -79,8 +79,8 @@
       font-size: 18px;
       background-color: $white;
       outline: none;
-      box-shadow: 0 0 8px 0 rgba(17, 22, 26, 0.16),
-        0 4px 8px 0 rgba(17, 22, 26, 0.08), 0 8px 16px 0 rgba(17, 22, 26, 0.08);
+      box-shadow: 0 0 8px 0 rgba(17, 22, 26, 0.16), 0 4px 8px 0 rgba(17, 22, 26, 0.08),
+        0 8px 16px 0 rgba(17, 22, 26, 0.08);
       cursor: pointer;
       margin-bottom: 1rem;
     }

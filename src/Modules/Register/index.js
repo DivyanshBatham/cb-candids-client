@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { passwordValidator } from '../../helpers';
 import PumpkinLogo from '../../assets/pumpkin';
-import nameLogo from '../../assets/name';
+import Candids from '../../assets/candids';
 import './register.scss';
 
 class register extends Component {
@@ -49,7 +49,6 @@ class register extends Component {
       },
     })
       .then((res) => {
-        console.log(res);
         const { success } = res.data;
         if (success) {
           const { token } = res.data;
@@ -61,7 +60,6 @@ class register extends Component {
         }
       })
       .catch((err) => {
-        console.log(err.response);
         this.setState({
           usernameError: err.response.data.errors.username || null,
           emailError: err.response.data.errors.email || null,
@@ -82,7 +80,7 @@ class register extends Component {
       <div className="register">
         <div className="register__logo">
           <div className="register__logo__pumpkin">{PumpkinLogo}</div>
-          <div className="register__logo__name">{nameLogo}</div>
+          <div className="register__logo__name"><Candids /></div>
         </div>
         <form className="register__form" onSubmit={this.handleRegister}>
           <div className="register__form__wrapper">

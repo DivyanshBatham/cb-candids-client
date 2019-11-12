@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { withRouter, NavLink } from 'react-router-dom';
-import { currentPage } from '../../helpers';
+import PropTypes from 'prop-types';
+import { currentPage, compareUser } from '../../helpers';
 import './footer.scss';
 
 class Footer extends Component {
@@ -10,13 +11,13 @@ class Footer extends Component {
     this.state = {
     };
   }
-  render() {
-    const display = currentPage(window.location.pathname);
-    const currentLoggedInUser = localStorage.getItem('cb-username');
 
-    console.log(display);
+  render() {
+    const currentProfileUserPath = this.props.history.location.pathname;
+    const display = currentPage(currentProfileUserPath);
+    const showFooter = compareUser(currentProfileUserPath);
     return (
-      <div className={`footer ${display ? '' : ' hide'}`}>
+      <div className={display && !showFooter ? 'footer' : ' hide'}>
         <span className="footer__items">
           <NavLink className="test" to="/" exact activeClassName="test--active">
             <FontAwesomeIcon
@@ -40,7 +41,7 @@ class Footer extends Component {
           </NavLink>
           <NavLink
             className="test"
-            to="/notification"
+            to="/notifications"
             activeClassName="test--active"
           >
             <FontAwesomeIcon
@@ -65,5 +66,11 @@ class Footer extends Component {
     );
   }
 }
-
+Footer.propTypes = {
+  history: PropTypes.shape({
+    location: PropTypes.shape({
+      pathname: PropTypes.string,
+    }),
+  }).isRequired,
+};
 export default withRouter(Footer);

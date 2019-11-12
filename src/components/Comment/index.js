@@ -1,46 +1,245 @@
 import React, { Component } from 'react';
+import axios from 'axios';
+import PropTypes from 'prop-types';
+import TextareaAutosize from 'react-textarea-autosize';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { getBackgroundColor } from '../../helpers';
+import { withRouter } from 'react-router-dom';
+import copy from 'copy-to-clipboard';
+import DropdownOptions from '../DropdownOptions';
+import ConfirmationModal from '../ConfirmationModal';
+import RandomColor from '../../helpers/RandomColor';
 import './comment.scss';
 
 class Comment extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      comment: (props.commentItem && props.commentItem.comment) || null,
-      username: (props.commentItem && props.commentItem.author.username) || null
+      showConfirmationModal: false,
+      showCommentBox: false,
+      commentText: '',
+      isLiked: null,
+      currentBackgroundColor: RandomColor.getLightColorGuaranteed(),
     };
   }
-  // getBackgroundColor = () => {
-  //   const { idx } = this.props;
-  //   const availableColors = ['3FBF3E1', '#FAEEE1', '#F3F9EC', '#FDE8EF'];
-  //   const totalColors = availableColors.length;
-  //   return { backgroundColor: availableColors[idx % totalColors] };
-  // };
+  componentDidMount() {
+    this.setState({
+      commentText: this.props.commentItem.comment,
+      isLiked: this.props.commentItem.isLiked,
+    });
+  }
+
+  handleCopyComment = () => {
+    const { commentText } = this.state;
+    copy(commentText);
+  };
+
+  handleDeleteComment = () => {
+    const { postId, commentItem, handleRemoveComment } = this.props;
+    axios({
+      method: 'delete',
+      url: `https://calm-waters-47062.herokuapp.com/posts/${postId}/comments/${commentItem._id}`,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('cb-token')}`,
+      },
+    })
+      .then((res) => {
+        if (res.data.success) {
+          handleRemoveComment(commentItem._id);
+          this.setState({ showConfirmationModal: false });
+        }
+      })
+      .catch(err => console.log(err));
+  };
+
+  handleShowCommentBox = (e) => {
+    e.preventDefault();
+    this.setState(prevState => ({
+      showCommentBox: !prevState.showCommentBox,
+    }));
+    this.textarea.focus();
+  };
+
+  handleShowConfirmation = () => {
+    this.setState(prevState => ({
+      showConfirmationModal: !prevState.showConfirmationModal,
+    }));
+  };
+  handleCommentText = (e) => {
+    e.preventDefault();
+    this.setState({ commentText: e.target.value });
+  };
+  handleCancleComment = (e) => {
+    e.preventDefault();
+    this.handleShowCommentBox(e);
+    this.setState({ commentText: this.props.commentItem.comment });
+  };
+  handleEditComment = (e) => {
+    e.preventDefault();
+    const {
+      postId, commentItem, handleUpdateCommentOrLike, idx,
+    } = this.props;
+    const { commentText } = this.state;
+    if (commentText === commentItem.comment) return;
+    this.handleShowCommentBox(e);
+    axios({
+      method: 'patch',
+      url: `https://calm-waters-47062.herokuapp.com/posts/${postId}/comments/${commentItem._id}`,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('cb-token')}`,
+      },
+      data: {
+        comment: commentText,
+      },
+    })
+      .then((res) => {
+        if (res.data.success) {
+          handleUpdateCommentOrLike(idx, commentItem._id, {
+            type: 'comment',
+            value: commentText,
+          });
+        }
+      })
+      .catch(err => console.log(err));
+  };
+  handleCommentLike = (e) => {
+    const { isLiked: currentLikedState } = this.state;
+    e.preventDefault();
+    const {
+      postId, commentItem, handleUpdateCommentOrLike, idx,
+    } = this.props;
+    this.setState(prevState => ({
+      isLiked: !prevState.isLiked,
+    }));
+    axios({
+      method: 'post',
+      url: `https://calm-waters-47062.herokuapp.com/posts/${postId}/comments/${commentItem._id}/likes`,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('cb-token')}`,
+      },
+    })
+      .then((res) => {
+        if (res.data.success) {
+          this.setState({ isLiked: res.data.message === 'liked' }, () => {
+            handleUpdateCommentOrLike(idx, commentItem._id, {
+              type: 'like',
+              value: this.state.isLiked,
+            });
+          });
+        }
+      })
+      .catch(() => this.setState({ isLiked: currentLikedState }));
+  };
+  handleAuthorRedirect = (e) => {
+    e.preventDefault();
+    this.props.history.push(`/user/${this.props.commentItem.author.username}`);
+  };
   render() {
-    const { comment, username, idx } = this.state;
-    const userImage =
-      'https://avatars0.githubusercontent.com/u/29652551?s=460&v=4';
+    const {
+      showConfirmationModal,
+      showCommentBox,
+      commentText,
+      isLiked,
+      currentBackgroundColor,
+    } = this.state;
     const postedTime = '15 mins';
-    const { userComment } = this.props;
+    const { commentItem } = this.props;
     return (
-      <div className={userComment ? 'comment comment--self' : 'comment'}>
+      <div
+        className={commentItem.isAuthor ? 'comment comment--self' : 'comment'}
+      >
+        {showConfirmationModal && (
+          <ConfirmationModal
+            headerText="Delete Comment?"
+            description="You will lost a good thought !"
+            dangerButtonText="Yes, Delete!"
+            cancelButtonText="No, Keep Comment"
+            dangerButtonHandler={this.handleDeleteComment}
+            cancelButtonHandler={this.handleShowConfirmation}
+          />
+        )}
         <img
-          className={userComment ? 'comment__image comment__image--self' : 'comment__image'}
-          src={userImage}
+          className={
+            commentItem.isAuthor
+              ? 'comment__image comment__image--self'
+              : 'comment__image'
+          }
+          src={commentItem.author.imgSrc}
           alt="user"
+          role="button"
+          tabIndex={0}
+          onKeyDown={this.handleAuthorRedirect}
+          onClick={this.handleAuthorRedirect}
         />
-        <div className="comment__content" style={getBackgroundColor(idx)}>
+        <div
+          className="comment__content"
+          style={{ backgroundColor: `${currentBackgroundColor}` }}
+        >
           <div className="comment__content__header">
             <span className="comment__content__header__username">
-              {username}
+              {showCommentBox ? 'Edit Comment' : commentItem.author.username}
             </span>
-            <FontAwesomeIcon
-              className="comment__content__header__icon"
-              icon="ellipsis-v"
-            />
+            {showCommentBox ? (
+              <span className="comment__content__icons">
+                <div className="comment__content__icons__iconContainer iconContainer">
+                  <FontAwesomeIcon
+                    icon="times"
+                    className="comment__content__icons__iconContainer__color"
+                    onClick={this.handleCancleComment}
+                  />
+                </div>
+                <div className="comment__content__icons__iconContainer iconContainer">
+                  <FontAwesomeIcon
+                    icon="check"
+                    className="comment__content__icons__iconContainer__color"
+                    onClick={this.handleEditComment}
+                  />
+                </div>
+              </span>
+            ) : (
+              <div className="comment__content__header__iconWrapper">
+                {!showCommentBox && (
+                  <div
+                    className={`comment__content__header__iconWrapper__likeIcon iconContainer ${
+                      isLiked
+                        ? 'comment__content__header__iconWrapper__likeIcon__liked'
+                        : ''
+                    }`}
+                  >
+                    <FontAwesomeIcon
+                      className={`${!isLiked ? 'comment__content__icons__iconContainer__color' : ''}`}
+                      icon={[`${isLiked ? 'fas' : 'far'}`, 'heart']}
+                      onClick={this.handleCommentLike}
+                    />
+                    {/* <span>{commentItem.likes.length}</span> */}
+                  </div>
+                )}
+                <DropdownOptions
+                  options={[
+                    {
+                      title: 'Copy',
+                      handleClick: this.handleCopyComment,
+                    },
+                    {
+                      title: commentItem.isAuthor ? 'Edit' : null,
+                      handleClick: this.handleShowCommentBox,
+                    },
+                    {
+                      title: commentItem.isAuthor ? 'Delete' : null,
+                      handleClick: this.handleShowConfirmation,
+                    },
+                  ]}
+                />
+              </div>
+            )}
           </div>
-          <span className="comment__content__text">{comment}</span>
+          <TextareaAutosize
+            className="comment__content__input"
+            onChange={this.handleCommentText}
+            value={commentText}
+            readOnly={!showCommentBox}
+            spellCheck="false"
+            inputRef={tag => (this.textarea = tag)}
+          />
           <span className="comment__content__time">{postedTime} ago</span>
         </div>
       </div>
@@ -48,4 +247,11 @@ class Comment extends Component {
   }
 }
 
-export default Comment;
+Comment.propTypes = {
+  idx: PropTypes.number.isRequired,
+  commentItem: PropTypes.shape({}).isRequired,
+  postId: PropTypes.string.isRequired,
+  handleRemoveComment: PropTypes.func.isRequired,
+  handleUpdateCommentOrLike: PropTypes.func.isRequired,
+};
+export default withRouter(Comment);

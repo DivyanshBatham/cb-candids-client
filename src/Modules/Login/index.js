@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import axios from 'axios';
+import { connect } from 'react-redux';
+import { addAuthDataToState } from '../../actions/authActions';
 import { passwordValidator } from '../../helpers';
 import PumpkinLogo from '../../assets/pumpkin';
-import nameLogo from '../../assets/name';
+import Candids from '../../assets/candids';
 import './login.scss';
 
 class Login extends Component {
@@ -51,10 +53,11 @@ class Login extends Component {
       data,
     })
       .then((res) => {
-        console.log(res.data);
         const { success, token } = res.data;
         if (success) {
           const { user } = res.data.data;
+          const userData = { ...user };
+          this.props.addAuthDataToState(userData);
           this.handleLocalStorage('cb-token', token);
           this.handleLocalStorage('cb-username', user.username);
           this.handleLocalStorage('cb-email', user.email);
@@ -85,7 +88,7 @@ class Login extends Component {
       <div className="login">
         <div className="login__logo">
           <div className="login__logo__pumpkin">{PumpkinLogo}</div>
-          <div className="login__logo__name">{nameLogo}</div>
+          <div className="login__logo__name"><Candids /></div>
         </div>
         <form className="login__form" onSubmit={this.handleLogin}>
           <div className="login__form__wrapper">
@@ -138,4 +141,7 @@ class Login extends Component {
   }
 }
 
-export default Login;
+export default connect(
+  null,
+  { addAuthDataToState },
+)(Login);
