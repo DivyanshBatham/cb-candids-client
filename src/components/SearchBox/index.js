@@ -39,6 +39,11 @@ class SearchBox extends React.Component {
       cbFunction(e);
     }
   };
+  handleEscPress = (e) => {
+    if (e.key === 'Escape') {
+      this.setState({ showOptions: false });
+    }
+  }
   render() {
     const { value, showOptions } = this.state;
     return (
@@ -48,10 +53,15 @@ class SearchBox extends React.Component {
           className="searchBox__input"
           onChange={this.handleSetTextToState}
           value={value}
+          onKeyDown={this.handleEscPress}
+
         />
         <FontAwesomeIcon icon="search" className="searchBox__icon" />
         {value && showOptions && (
-          <div className="searchBox__optionsList" ref={this.setWrapperRef}>
+          <div
+            className="searchBox__optionsList"
+            ref={this.setWrapperRef}
+          >
             <div className="searchBox__optionsList__options">
               <span
                 className="searchBox__optionsList__options__option"
@@ -59,7 +69,8 @@ class SearchBox extends React.Component {
                 role="button"
                 onClick={() => this.handleSelectOption({ value, type: 'user' })}
                 onKeyDown={e =>
-                  this.handleEnter(e, () => this.handleSelectOption({ value, type: 'user' }))
+                  this.handleEnter(e, () =>
+                    this.handleSelectOption({ value, type: 'user' }))
                 }
               >
                 {`Search for user '${value}'`}
@@ -70,7 +81,8 @@ class SearchBox extends React.Component {
                 role="button"
                 onClick={() => this.handleSelectOption({ value, type: 'tag' })}
                 onKeyDown={e =>
-                  this.handleEnter(e, () => this.handleSelectOption({ value, type: 'tag' }))
+                  this.handleEnter(e, () =>
+                    this.handleSelectOption({ value, type: 'tag' }))
                 }
               >
                 {`Search for tagged User '${value}'`}
@@ -81,7 +93,8 @@ class SearchBox extends React.Component {
                 role="button"
                 onClick={() => this.handleSelectOption({ value, type: 'post' })}
                 onKeyDown={e =>
-                  this.handleEnter(e, () => this.handleSelectOption({ value, type: 'post' }))
+                  this.handleEnter(e, () =>
+                    this.handleSelectOption({ value, type: 'post' }))
                 }
               >
                 {`Search for Post '${value}'`}
